@@ -10,4 +10,4 @@ https://blog.floydhub.com/exploring-dna-with-deep-learning/
 
 https://www.freenome.com/ai-genomics
 
-
+https://persagen.com/files/misc/leung2016machine.pdf
