@@ -1,0 +1,13 @@
+https://www.kaggle.com/thomasnelson/working-with-dna-sequence-data-for-ml  
+
+https://www.nature.com/articles/s41588-018-0328-0
+
+https://www.nature.com/articles/s41588-018-0295-5
+
+https://medium.com/ccg-ai/machine-learning-in-genomics-research-and-healthcare-4a23e5871dcc
+
+https://blog.floydhub.com/exploring-dna-with-deep-learning/
+
+https://www.freenome.com/ai-genomics
+
+
