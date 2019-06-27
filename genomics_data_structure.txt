@@ -1,3 +1,4 @@
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2705231/
 http://www.biostat.umn.edu/~cavanr/introGenomicDataStr.pdf  
 https://bmi.inf.ethz.ch/research/data-structures-for-genome-representation/
+https://www.coursera.org/learn/dna-sequencing
