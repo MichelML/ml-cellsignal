@@ -112,6 +112,14 @@ The experiment uses 384-well plates (see Fig. 5) to isolate populations of cells
   <img src="https://raw.githubusercontent.com/michelml/ml-cellsignal/master/juxtapose.png" alt="Images Composition">
   <figcaption>The top-left image is a composite of the 6 channels. It is followed by each of the 6 individual channel faux-colored images of HUVEC cells: nuclei (blue), endoplasmic reticuli (green), actin (red), nucleoli (cyan), mitochondria (magenta), and golgi apparatus (yellow). The overlap in channel content is due in part to the lack of complete spectral separation between fluorescent stains.</figcaption>
 </figure>
+- Use [progressive resizing](https://towardsdatascience.com/boost-your-cnn-image-classifier-performance-with-progressive-resizing-in-keras-a7d96da06e20) to speed up the learning process.  
+- Transform categorical variables 1) experiment, 2) plate and 3) well in dummy variables.
+- Since there are two snapshots (site) per well, an extra categorical (dummy) variable could be added for this too. 
+
+Since we have images and categorical data, we will want to [use both](https://www.pyimagesearch.com/2019/02/04/keras-multiple-inputs-and-mixed-data/) in our multiclass classification model:  
+![using categorical and images data](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/data_types.png)
+
+
 
 
 #### Short-list promising models  
