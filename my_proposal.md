@@ -4,9 +4,10 @@ Michel Moreau
 July 2nd, 2019
 
 ## Proposal  
+[**CellSignal** - _Disentangling biological signal from experimental noise in cellular images_](https://www.rxrx.ai/)
 
 ## Introduction
-My final project is to participale in the NeurIPS competition on Kaggle called *CellSignal* - _Disentangling biological signal from experimental noise in cellular images_. More information about this competition is available here:  
+My final project is to participale in the NeurIPS competition on Kaggle called **CellSignal** - _Disentangling biological signal from experimental noise in cellular images_. More information about this competition is available here:  
 - Competition's website https://www.rxrx.ai  
 - Kaggle competition's link: https://www.kaggle.com/c/recursion-cellular-image-classification/overview
 
