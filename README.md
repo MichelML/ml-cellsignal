@@ -33,7 +33,7 @@ For more information about the dataset, see the [competition's website](https://
 The solution for this problem will likely be resolved with the type of model architecture used in computer vision and image classification, e.g convolutional neural networks. This is a multiclass classification problem, but algorithms and model architectures we have seen in the dogs classification project https://github.com/MichelML/udacity-dog-project/, such as VGG-16 and ResNet-50, will be considered for this project.
 
 ### Benchmark Model
-Related to the solution statement, ResNet-50 will likely be our benchmark model, having achieved very good results in multiclass image classification problems in the past [source](https://arxiv.org/abs/1903.10035), having reached 98.87% accuracy when classifying histopathology images. ResNet-50 will be measured with multiclass accuracy, which is the same measure the competition's evaluation uses.
+Related to the solution statement, ResNet-50 will likely be our benchmark model, having achieved very good results in multiclass image classification problems in the recent past \([source](https://arxiv.org/abs/1903.10035)\), having reached 98.87% accuracy when classifying histopathology images. ResNet-50 will be measured with multiclass accuracy, which is the same measure the competition's evaluation uses.
 
 ### Evaluation Metrics
 Submissions will be evaluated on Multiclass Accuracy, which is simply the average number of observations with the correct label.
