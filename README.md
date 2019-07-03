@@ -36,7 +36,6 @@ The inputs will be 512x512 pixels images and the output is a genetic perturbatio
 
 ```
 922
-
 ```
 
 ### Datasets and Inputs  
@@ -54,9 +53,11 @@ Along with images, three other features are provided:
 - `plate`: plate number within the experiment  
 - `well`: location on the plate
 
-The outcome variable is siRNA, which is a multiclass variable which can be an integer ranging from 1 to 1,108, each representing a genetic disruption.
+The outcome variable is siRNA, which is a multiclass variable which can be an integer ranging from 1 to 1,108, each integer representing a different genetic disruption.
 
 The data is already splitted into training and test sets. Further splitting will be considered if needed.
+
+##### Some context
 
 One of the main challenges for applying AI to biological microscopy data is that even the most careful replicates of a process will not look identical. This dataset challenges you to develop a model for identifying replicates that is robust to experimental noise.
 
