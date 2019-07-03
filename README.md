@@ -78,7 +78,7 @@ To justify our decision to go along with a CNN architecture, it is to be said Re
 ### Evaluation Metrics
 Submissions will be evaluated on Multiclass Accuracy, which is simply the average number of observations with the correct label.
 
-It is okay to stick with accuracy in our context, as each class has a roughly equal number of data points.
+[It is okay to stick with accuracy in our context](https://towardsdatascience.com/accuracy-paradox-897a69e2dd9b), as each class has a roughly equal number of data points.
 
 #### Submission File
 For each id_code in the test set, we will predict the correct siRNA. As per the competition's indications, The file should contain a header and have the following format:
