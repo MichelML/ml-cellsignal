@@ -18,15 +18,50 @@ Recursion Pharmaceuticals, creators of the industry’s largest dataset of biolo
 
 This competition is designed to disentangle experimental noise from real biological signals. The goal is to classify images of cells under one of 1,108 different genetic perturbations, and thus eliminate the noise introduced by technical execution and environmental variation between \[drug\] experiments.
 
+This is a multiclass classification challenge applied to a healthcare related topic. Other papers have been published in the past in this broad field:  
+- https://arxiv.org/abs/1903.10035
+- https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.27229  
+- https://pdfs.semanticscholar.org/2583/2df680518e0b36734f54fb640668fe834be8.pdf  
+- https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.26841  
+
+### Problem Statement
+This is a multiclass classification problem.  
+
+The inputs will be 512x512 pixels images and the output is a genetic perturbation (siRNA) represented by an integer ranging from 1 to 1,108.
+
+> below is an input example  
+![cells in a well](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/example_input.png)
+
+> below is an output example  
+
+```
+922
+
+```
 
 ### Datasets and Inputs  
-The data is available on the Kaggle's competition site https://www.kaggle.com/c/recursion-cellular-image-classification/data .   
-  
+The data is available on the Kaggle's competition site https://www.kaggle.com/c/recursion-cellular-image-classification/data . For more information about the dataset, see the [competition's website](https://rxrx.ai).
+
+The input images are all 512x512 pixels black and white.  
+
+```sh  
+identify example_input.png  
+# --> example_input.png PNG 512x512 512x512+0+0 8-bit Gray 256c 58265B 0.000u 0:00.014
+```  
+
+Along with images, three other features are provided:  
+- `experiment`: the cell type and batch number  
+- `plate`: plate number within the experiment  
+- `well`: location on the plate
+
+The outcome variable is siRNA, which is a multiclass variable which can be an integer ranging from 1 to 1,108, each representing a genetic disruption.
+
+The data is already splitted into training and test sets. Further splitting will be considered if needed.
+
 One of the main challenges for applying AI to biological microscopy data is that even the most careful replicates of a process will not look identical. This dataset challenges you to develop a model for identifying replicates that is robust to experimental noise.
 
 The same siRNAs (effectively genetic perturbations) have been applied repeatedly to multiple cell lines, for a total of 51 experimental batches. Each batch has four plates, each of which has 308 filled wells. For each well, microscope images were taken at two sites and across six imaging channels. Not every batch will necessarily have every well filled or every siRNA present.
 
-For more information about the dataset, see the [competition's website](https://rxrx.ai) or the Kaggle link above.  
 
 
 ### Solution Statement  
