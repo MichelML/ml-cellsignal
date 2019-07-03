@@ -39,7 +39,14 @@ Related to the solution statement, ResNet-50 will likely be our benchmark model,
 Submissions will be evaluated on Multiclass Accuracy, which is simply the average number of observations with the correct label.
 
 #### Submission File
-For each id_code in the test set, you must predict the correct sirna. The file should contain a header and have the following format:
+For each id_code in the test set, we will predict the correct siRNA. As per the competition's indications, The file should contain a header and have the following format:
+
+```  
+id_code,sirna
+HEPG2-08_1_B03,911
+HEPG2-08_1_B04,911
+etc.   
+```
 
 ### Project Design
 
