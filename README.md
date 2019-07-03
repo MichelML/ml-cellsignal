@@ -122,14 +122,14 @@ Since we have images and categorical data, we will want to [use both](https://ww
 ![using categorical and images data](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/data_types.png)
 
 
-### Explore many different models and short-list the best ones based on training results  
+#### Explore many different models and short-list the best ones based on training results  
 The dataset is comparable to datasets such as ImageNet (ILSVRC2012) which is approximately 155 GB and 1.2m images with 1000 classes. We will try using transfer learning and use the ResNet-50 trained on ImageNet preexisting weights to train our model. The model we will try will start with the pre-trained ResNet-50 model as a fixed feature extractor, where the last convolutional output of ResNet-50 will be fed as input to our model. We will only add a global average pooling layer and a fully connected layer, where the latter will contain one node for each siRNA category (1,108), and will use softmax activation.
 
 Other models known for image classification can be tried at this stage: VGG-19, Inception, Xception, etc.
 
-### Fine-tune your models and combine them into a great solution.  
+#### Fine-tune your models and combine them into a great solution.  
  - Try to improve results tweaking hyperparameters, epoch training, feature engineering, etc.
 
-### Iterate & Final conclusions
+#### Iterate & Final conclusions
  - Repeat previous steps until no improvements are made  
  - Present final conclusions
