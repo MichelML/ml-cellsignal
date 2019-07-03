@@ -97,11 +97,10 @@ The experiment uses 384-well plates (see Fig. 5) to isolate populations of cells
 
 #### Steps anticipated:
 1. Data cleaning
-2. Prepare and pre-process the data 
-3. Explore many different models and short-list the best ones.  
+2. Prepare and pre-process the data. 
+3. Explore many different models and short-list the best ones based on training results.  
 4. Fine-tune your models and combine them into a great solution.  
-5. Iterate  
-6. Final conclusion
+5. Iterate & final conclusion.
 
 #### Data cleaning
 - Remove all images of empty wells (if present), which should be all the images representing the outer rows and columns of plates
@@ -123,25 +122,14 @@ Since we have images and categorical data, we will want to [use both](https://ww
 ![using categorical and images data](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/data_types.png)
 
 
+### Explore many different models and short-list the best ones based on training results  
+The dataset is comparable to datasets such as ImageNet (ILSVRC2012) which is approximately 155 GB and 1.2m images with 1000 classes. We will try using transfer learning and use the ResNet-50 trained on ImageNet preexisting weights to train our model. The model we will try will start with the pre-trained ResNet-50 model as a fixed feature extractor, where the last convolutional output of ResNet-50 will be fed as input to our model. We will only add a global average pooling layer and a fully connected layer, where the latter will contain one node for each siRNA category (1,108), and will use softmax activation.
 
+Other models known for image classification can be tried at this stage: VGG-19, Inception, Xception, etc.
 
-#### Short-list promising models  
-1. Train many quick and dirty models for each CNN architectures identified, using standard parameters.
+### Fine-tune your models and combine them into a great solution.  
+ - Try to improve results tweaking hyperparameters, epoch training, feature engineering, etc.
 
-2. Measure and compare their performance.  
-    - For each model, use N-fold cross-validation and compute the mean and standard deviation of their performance. 
-3. Analyze the most significant variables for each algorithm.  
-4. Analyze the types of errors the models make.  
-    - What data would a human have used to avoid these errors?  
-5. Short-list the top promising models, preferring models that make different types of errors.  
-
-#### Fine-Tune the System  
-1. Fine-tune the hyperparameters using cross-validation.  
-2. Try Ensemble methods. Combining our best models will often perform better than running them invdividually.  
-3. Once we are confident about our final model, measure its performance on the test set to estimate the generalization error.
-
-#### Iterate
-Repeat any step necessary until the competition is still open, to climb into the Kaggle ladder.
-
------------  
-
+### Iterate & Final conclusions
+ - Repeat previous steps until no improvements are made  
+ - Present final conclusions
