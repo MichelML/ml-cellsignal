@@ -69,10 +69,14 @@ The same siRNAs (effectively genetic perturbations) have been applied repeatedly
 The solution for this problem will likely be resolved with the type of model architecture used in computer vision and image classification, e.g convolutional neural networks. This is a multiclass classification problem, but algorithms and model architectures we have seen in the dogs classification project https://github.com/MichelML/udacity-dog-project/, such as VGG-16 and ResNet-50, will be considered for this project.
 
 ### Benchmark Model
-Related to the solution statement, ResNet-50 will likely be our benchmark model, having achieved very good results in multiclass image classification problems in the recent past \([see source](https://arxiv.org/abs/1903.10035)\), having reached 98.87% accuracy when classifying histopathology images. ResNet-50 will be measured with multiclass accuracy, which is the same measure the competition's evaluation uses.
+As discussed previously, our solution will most likely use a convolutional neural network architecture. We will thus use a vanilla CNN model as our benchmark, such as the one we built during step 3 of the dogs classification project https://github.com/MichelML/udacity-dog-project/blob/master/dog_app.ipynb .  
+
+To justify our decision to go along with a CNN architecture, it is to be said ResNet-50 have achieved very good results in multiclass image classification problems in the recent past \([see source](https://arxiv.org/abs/1903.10035)\), having reached 98.87% accuracy when classifying histopathology images.
 
 ### Evaluation Metrics
 Submissions will be evaluated on Multiclass Accuracy, which is simply the average number of observations with the correct label.
+
+It is okay to stick with accuracy in our context, as each class has a roughly equal number of data points.
 
 #### Submission File
 For each id_code in the test set, we will predict the correct siRNA. As per the competition's indications, The file should contain a header and have the following format:
