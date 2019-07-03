@@ -6,14 +6,14 @@ July 2nd, 2019
 ## Proposal  
 [**CellSignal** - _Disentangling biological signal from experimental noise in cellular images_](https://www.rxrx.ai/)
 
-## Introduction
+### Introduction
 My final project is to participale in the NeurIPS competition on Kaggle called **CellSignal** - _Disentangling biological signal from experimental noise in cellular images_. More information about this competition is available here:  
 - Competition's website https://www.rxrx.ai  
 - Kaggle competition's link: https://www.kaggle.com/c/recursion-cellular-image-classification/overview
 
 Full disclosure: Some text in this proposal will be taken word for word from the competition's websites.
 
-## Domain Background  
+### Domain Background  
 Recursion Pharmaceuticals, creators of the industry’s largest dataset of biological images, generated entirely in-house, believes AI has the potential to dramatically improve and expedite the drug discovery process. More specifically, machine learning could help understand how drugs interact with human cells.
 
 This competition is designed to disentangle experimental noise from real biological signals. The goal is to classify images of cells under one of 1,108 different genetic perturbations, and thus eliminate the noise introduced by technical execution and environmental variation between \[drug\] experiments.
@@ -30,7 +30,7 @@ For more information about the dataset, see the [competition's website](https://
 
 
 ### Solution Statement  
-The solution for this problem will likely be resolved with the type of model architecture used in computer vision and image classification. This is a multiclass classification problem, but algorithms and model architectures we've seen in the dogs classification project https://github.com/MichelML/udacity-dog-project/, such as VGG-16 and ResNet-50, will be considered for this project.
+The solution for this problem will likely be resolved with the type of model architecture used in computer vision and image classification, e.g convolutional neural networks. This is a multiclass classification problem, but algorithms and model architectures we have seen in the dogs classification project https://github.com/MichelML/udacity-dog-project/, such as VGG-16 and ResNet-50, will be considered for this project.
 
 ### Benchmark Model
 Related to the solution statement, ResNet-50 will likely be our benchmark model, having achieved very good results in multiclass image classification problems in the past [source](https://arxiv.org/abs/1903.10035), having reached 98.87% accuracy when classifying histopathology images. ResNet-50 will be measured with multiclass accuracy, which is the same measure the competition's evaluation uses.
