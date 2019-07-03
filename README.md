@@ -91,8 +91,6 @@ etc.
 ```
 
 ### Project Design
-**N.B. This design is inspired by Appendix B of the book  [Hands-On Machine Learning with Scikit-Learn and TensorFlow: Concepts, Tools](https://www.amazon.ca/Hands-Machine-Learning-Scikit-Learn-TensorFlow/dp/1491962291) by Aurélien Géron**  
-
 1. Get the data
 2. Explore the data to gain insights.  
 3. Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.  
