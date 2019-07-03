@@ -49,7 +49,7 @@ etc.
 ```
 
 ### Project Design
-**N.B. This design is inspired of Appendix B of the book  [Hands-On Machine Learning with Scikit-Learn and TensorFlow: Concepts, Tools](https://www.amazon.ca/Hands-Machine-Learning-Scikit-Learn-TensorFlow/dp/1491962291) by Aurélien Géron**  
+**N.B. This design is inspired by Appendix B of the book  [Hands-On Machine Learning with Scikit-Learn and TensorFlow: Concepts, Tools](https://www.amazon.ca/Hands-Machine-Learning-Scikit-Learn-TensorFlow/dp/1491962291) by Aurélien Géron**  
 
 1. Frame the problem and look at the big picture.  
 2. Get the data.  
