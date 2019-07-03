@@ -91,43 +91,32 @@ etc.
 ```
 
 ### Project Design
-1. Get the data
-2. Explore the data to gain insights.  
-3. Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.  
-4. Explore many different models and short-list the best ones.  
-5. Fine-tune your models and combine them into a great solution.  
+The dataset includes data from 51 instances of the same experiment design executed in different experimental batches. In this experiment, there is 1,108 different siRNAs to knockdown 1,108 different genes.
 
-#### Get the data   
-1. Get the data from the Kaggle's competition.  
-2. Convert the data to a format we can easily manipulate (without changing the data itself).  
+The experiment uses 384-well plates (see Fig. 5) to isolate populations of cells into wells where exactly one of 1,108 different siRNAs is introduced into the well to create distinct genetic conditions. A well is like a single test tube at a small scale, 3.3 mm2. The outer rows and columns of the plate are not used because they are subject to greater environmental effects; so there are 308 used wells on each plate. Thus the experiment consists of 4 total plates. Each plate holds the same 30 control siRNA conditions, 277 different non-control siRNA, and one untreated well. The location of each of the 1,108 non-control siRNA conditions is randomized in each experiment to prevent confounding effects of the location of a particular well (see Plate Effects). Each well in each plate contains two 512 x 512 x 6 images. The images were acquired from two non-overlapping regions of each well. Each of the [6 channels](https://www.rxrx.ai/#The-Biology) can be assigned a consistent color and composited for ease of reviewing (see Fig. 6), however the RxRx1 contains the 6-channel images and not the composite images.
 
-#### Explore the data  
-1. Create a Jupyter notebook to keep record of our data exploration.  
-2. Study each attribute and its characteristics:  
-    - Name  
-    - Type (categorical, int/float, bounded/unbounded, text, structured, etc.)
-    - % of missing values  
-    - Noisiness and type of noise (stochastic, outliers, rounding errors, etc.)
-    - Possibly useful for the task?  
-    - Type of distribution (Gaussian, uniform, logarithmic, etc.)
-3. Visualize the data.  
-4. Identify the promising transformations we may want to apply.  
-5. Document what we have learned.  
+#### Steps anticipated:
+1. Data cleaning
+2. Prepare and pre-process the data 
+3. Explore many different models and short-list the best ones.  
+4. Fine-tune your models and combine them into a great solution.  
+5. Iterate  
+6. Final conclusion
 
-#### Prepare the data  
-1. Data cleaning:  
-    - Fix or remove outliers (optional).  
-    - Fill in missing values (e.g., with zero, mean, median...) or drop their rows (or columns).  
-2. Feature selection (optional):  
-    - Drop the attributes that provide no useful information for the task.  
-3. Feature engineering, where appropriates:  
-    - Discretize continuous features.  
-    - Decompose features (e.g., categorical, date/time, etc.).  
-    - Add promising transformations of features (e.g., log(x), sqrt(x), x^2, etc.).
-    - Aggregate features into promising new features.  
+#### Data cleaning
+- Remove all images of empty wells (if present), which should be all the images representing the outer rows and columns of plates
+
+#### Prepare the data (pre-processing)
+- Combine all 6 images representing a given snapshot of each genetic perturbation (target variable, siRNA). There are two snapshot of a genetic perturbation per well. Here is an example of a recombination of a snapshot using coloring and image composition \([see Bray & al.](https://www.ncbi.nlm.nih.gov/pubmed/27560178)\):
+<figure>
+  <img src="https://raw.githubusercontent.com/michelml/ml-cellsignal/master/juxtapose.png" alt="Images Composition">
+  <figcaption>The top-left image is a composite of the 6 channels. It is followed by each of the 6 individual channel faux-colored images of HUVEC cells: nuclei (blue), endoplasmic reticuli (green), actin (red), nucleoli (cyan), mitochondria (magenta), and golgi apparatus (yellow). The overlap in channel content is due in part to the lack of complete spectral separation between fluorescent stains.</figcaption>
+</figure>
+
 
 #### Short-list promising models  
 1. Train many quick and dirty models for each CNN architectures identified, using standard parameters.
+
 2. Measure and compare their performance.  
     - For each model, use N-fold cross-validation and compute the mean and standard deviation of their performance. 
 3. Analyze the most significant variables for each algorithm.  
