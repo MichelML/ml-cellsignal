@@ -1,0 +1,10 @@
+***On the visualization notebook (https://colab.research.google.com/github/recursionpharma/rxrx1-utils/blob/master/notebooks/visualization.ipynb):
+
+This has all the elements needed to convert 6 channels images to combined RGB image. Look at this for utils for data processing. Namely the load method.
+
+
+***On the training ResNet50 notebook (https://colab.research.google.com/github/recursionpharma/rxrx1-utils/blob/master/notebooks/training.ipynb): 
+
+The other notebooks may not be necessary as we may not use TPU from google cloud.
+
+check this link: https://github.com/recursionpharma/rxrx1-utils#training-on-tpus
