@@ -1,3 +1,5 @@
+[trello board](https://trello.com/b/Yx9Bs6bk/cellsignal-recursionpharma-neurips-competition-todos)
+
 # Machine Learning Engineer Nanodegree
 ## Capstone Proposal
 Michel Moreau
