@@ -616,3 +616,6 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/vim,node,macos,python,firebase,visualstudio,jupyternotebook
+
+# data folder
+data
