@@ -86,3 +86,55 @@ This has all the elements needed to convert 6 channels images to combined RGB im
 The other notebooks may not be necessary as we may not use TPU from google cloud.
 
 check this link: https://github.com/recursionpharma/rxrx1-utils#training-on-tpus
+
+
+--------------
+
+BEST COMMENTS
+
+"Those results are pretty promising, considering that there was no architecture tuning whatsoever. The massive improvement in accuracy when you change the input from 224px jpegs to 512px pngs also seems to indicate that the compression format and size of the images plays an important factor in the accuracy." - https://www.kaggle.com/c/recursion-cellular-image-classification/discussion/101221#latest-583759
+
+best threads:
+- https://www.kaggle.com/c/recursion-cellular-image-classification/discussion/100414#latest-583479
+-------arcface codE: https://github.com/pudae/kaggle-humpback/blob/master/tasks/identifier.py
+-------train model with all data and separate all data into each experiment and train 4 model. refer to below image
+------------Aha I see, that's really clever! I imagine cell-type-specific models are initialized from the model trained on all cell types, right?
+-------arcface: https://arxiv.org/abs/1801.07698 || deep face recognition survey: https://arxiv.org/abs/1804.06655
+-------control is keypoint in this competition, I think.
+-------machine resource: 1080ti*3 and kaggle kernel
+
+- https://www.kaggle.com/c/recursion-cellular-image-classification/discussion/99171#latest-584202
+---------"""""""
+Here are some of the features I could think of:
+
+The relative number of cells in the field to monitor the effect on proliferation.
+The number of "kissing" nucleus that could be indicative of the number of cells in one particular phase of the mitosis (a division of cell).
+The size of the nucleus versus the size of the cytoplasm.
+The number of Nucleoli per nucleus
+The shapes of nucleus and cytoplasm (roundness)
+The number and size of colonies (a cluster of cells)
+The number of mitochondria per cytoplasm
+extraction 
+However, rather than designing features, one may prefer automatic extraction via ConvNet.
+"""""""""""
+-----------Regular image classification tasks use supervised training with labels. These labels are true in the absolute. Meaning that the value of the label is not changed by its context. In this challenge, however, the truthness of a label is relative. Indeed, the quantification of treatment is only valid compared to a control state. Thus the picture of a siRNA treated cell can only be interpreted relative to a control picture. The task is to interpret pairs of pictures for the classification of the treated cells. Interestingly, we have 31 control conditions for each siRNA treated replicates. These control conditions can be interpreted as the extreme phenotypic pictures for the positive controls (upper bounds of the range) and the base phenotype for the negative control (lower bound of the range). Each treatment picture can be defined in this 31-dimensional space. From there a regular classifier may use this 31-dimensional vector for training and prediction.
+- https://www.kaggle.com/c/recursion-cellular-image-classification/discussion/100624#latest-581498
+------------"""""""""
+The easiest way is to just convert 6 channel image to 3 channels using some kind of color mapping (as it is done in rxrx1-utils).
+
+Pros: easy to do, can be used with any framework and network pretrained on RGB.
+Cons: you loose some information when projecting 6 channels to 3 channels.
+Learn how to convert 6 channels to 3 channels. The idea is simple: you just add another convolutional layer just before you network (in PyTorch it would be nn.Conv2d(6, 3, 1)) and learn projection kernel via backprop.
+
+Pros: you can visualize how your network converts images, information loss is less severe (network learns useful conversion), can learn nonlinear conversion.
+Cons: Still loosing information, can be challenging to do with some frameworks.
+Replace pretrained network's first convolutional layer with one to match your input.
+
+Pros: no information loss.
+Cons: can be really hard to do with some frameworks, loosing pretrained weights from first layer (not a problem usually).
+"""""""""
+
+- https://www.kaggle.com/c/recursion-cellular-image-classification/discussion/100397#latest-581077
+
+- https://www.kaggle.com/c/recursion-cellular-image-classification/discussion/99319#latest-581917
+-------I don't think it's a leak, more likely clever use of controls/batch effects/good understanding of the problem. Also I wouldn't call out gap between 1-2 and the rest, in general LB looks very spread out at this stage, will likely become less spread out in the coming months.
