@@ -138,3 +138,17 @@ Cons: can be really hard to do with some frameworks, loosing pretrained weights 
 
 - https://www.kaggle.com/c/recursion-cellular-image-classification/discussion/99319#latest-581917
 -------I don't think it's a leak, more likely clever use of controls/batch effects/good understanding of the problem. Also I wouldn't call out gap between 1-2 and the rest, in general LB looks very spread out at this stage, will likely become less spread out in the coming months.
+
+
+
+-------------------
+-------------------
+-------------------
+-------------------
+
+KERNELS
+
+
+for visualization: https://www.kaggle.com/jesucristo/quick-visualization-eda
+for a base model with pytorch: https://www.kaggle.com/yhn112/resnet18-baseline-pytorch-ignite
+understanding of the experiment design: https://www.kaggle.com/pheaboo/a-journey-through-the-experiment-design
