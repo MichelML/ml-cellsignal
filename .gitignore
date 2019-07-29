@@ -619,3 +619,6 @@ MigrationBackup/
 
 # data folder
 data
+
+#
+get_started_workspace.ipynb
