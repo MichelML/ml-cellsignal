@@ -2,8 +2,7 @@
 
 [dataset on floydhub](https://www.floydhub.com/michelml/datasets/rxrxai)
 
-# Machine Learning Engineer Nanodegree
-## Capstone Proposal
+## Capstone Proposal For Udacity's Machine Learning Nanodegree
 Michel Moreau
 July 2nd, 2019
 
