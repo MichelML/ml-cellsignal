@@ -152,3 +152,10 @@ KERNELS
 for visualization: https://www.kaggle.com/jesucristo/quick-visualization-eda
 for a base model with pytorch: https://www.kaggle.com/yhn112/resnet18-baseline-pytorch-ignite
 understanding of the experiment design: https://www.kaggle.com/pheaboo/a-journey-through-the-experiment-design
+
+
+------------
+
+Past work
+
+*IMPORTANT* https://www.kaggle.com/c/human-protein-atlas-image-classification/discussion/78109
