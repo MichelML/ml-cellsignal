@@ -159,3 +159,9 @@ understanding of the experiment design: https://www.kaggle.com/pheaboo/a-journey
 Past work
 
 *IMPORTANT* https://www.kaggle.com/c/human-protein-atlas-image-classification/discussion/78109
+
+------------
+
+Training neural net approach
+
+http://karpathy.github.io/2019/04/25/recipe/
