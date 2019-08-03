@@ -165,3 +165,11 @@ Past work
 Training neural net approach
 
 http://karpathy.github.io/2019/04/25/recipe/
+
+-------------   
+
+cosine softmax paper
+
+https://openreview.net/forum?id=HkxLXnAcFQ
+
+
