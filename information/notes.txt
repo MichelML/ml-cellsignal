@@ -172,4 +172,9 @@ cosine softmax paper
 
 https://openreview.net/forum?id=HkxLXnAcFQ
 
+--------------
+
+“Bag of Tricks for Image Classification with Convolutional Neural Networks”: Paper Discussion
+
+https://hackernoon.com/bag-of-tricks-for-image-classification-with-convolutional-neural-networks-paper-discussion-693c9e17d1cc
 
