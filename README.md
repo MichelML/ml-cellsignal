@@ -33,7 +33,7 @@ This is a multiclass classification problem.
 The inputs will be 512x512 pixels images and the output is a genetic perturbation (siRNA) represented by an integer ranging from 1 to 1,108.
 
 > below is an input example  
-![cells in a well](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/example_input.png)
+![cells in a well](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/images/example_input.png)
 
 > below is an output example  
 
@@ -42,7 +42,7 @@ The inputs will be 512x512 pixels images and the output is a genetic perturbatio
 ```
 
 ### Datasets and Inputs  
-![the dataset](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/dataset_description.png)
+![the dataset](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/images/dataset_description.png)
 
 The data is available on the Kaggle's competition site https://www.kaggle.com/c/recursion-cellular-image-classification/data . For more information about the dataset, see the [competition's website](https://rxrx.ai).
 
@@ -111,7 +111,7 @@ The experiment uses 384-well plates to isolate populations of cells into wells w
 #### Prepare the data (pre-processing)
 - Combine all 6 images representing a given snapshot of each genetic perturbation (target variable, siRNA). There are two snapshot of a genetic perturbation per well. Here is an example of a recombination of a snapshot using coloring and image composition \([see Bray & al.](https://www.ncbi.nlm.nih.gov/pubmed/27560178)\):
 <figure>
-  <img src="https://raw.githubusercontent.com/michelml/ml-cellsignal/master/juxtapose.png" alt="Images Composition">
+  <img src="https://raw.githubusercontent.com/michelml/ml-cellsignal/master/images/juxtapose.png" alt="Images Composition">
   <figcaption>The top-left image is a composite of the 6 channels. It is followed by each of the 6 individual channel faux-colored images of HUVEC cells: nuclei (blue), endoplasmic reticuli (green), actin (red), nucleoli (cyan), mitochondria (magenta), and golgi apparatus (yellow). The overlap in channel content is due in part to the lack of complete spectral separation between fluorescent stains.</figcaption>
 </figure>  
 
@@ -122,7 +122,7 @@ The experiment uses 384-well plates to isolate populations of cells into wells w
 - Since there are two snapshots (site) per well, an extra categorical (dummy) variable could be added for this too.  
 
 Since we have images and categorical data, we will want to [use both](https://www.pyimagesearch.com/2019/02/04/keras-multiple-inputs-and-mixed-data/) in our multiclass classification model:  
-![using categorical and images data](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/data_types.png)
+![using categorical and images data](https://raw.githubusercontent.com/michelml/ml-cellsignal/master/images/data_types.png)
 
 
 #### Explore many different models and short-list the best ones based on training results  
