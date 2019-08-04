@@ -1,4 +1,0 @@
-Comments regarding divergence between protocol vs implementation (what lies ahead)
-------------------------------------------------------------------------------------
-
-Plans are always beautiful until reality hits you. 
