@@ -1,0 +1,1 @@
+floyd run --gpu --data michelml/datasets/rxrxai/1:rxrxai --env pytorch-1.0 --max-runtime 72000 "ipython workflow.py '30e-5' resnet50"
