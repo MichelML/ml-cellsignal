@@ -622,6 +622,8 @@ data
 rxrxrgb
 rxrxrgb_256
 rxrxutils
+models
+
 #
 get_started_workspace.ipynb
 
