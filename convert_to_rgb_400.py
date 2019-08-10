@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import rxrxutils.rxrx.io as rio
+import rxrx.io as rio
 from scipy import misc
 
 from PIL import Image
@@ -33,7 +33,7 @@ data_path = './data'
 train_df = pd.read_csv(f'{data_path}/train.csv')
 test_df = pd.read_csv(f'{data_path}/test.csv')
 
-def convert_to_rgb(df, split, resize=False, new_size=256, extension='jpeg'):
+def convert_to_rgb(df, split, resize=True, new_size=400, extension='jpeg'):
     N = df.shape[0]
 
     for i in tqdm(range(N)):
