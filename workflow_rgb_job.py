@@ -3,13 +3,13 @@
 
 # ## Load libraries
 
-# In[2]:
+# In[1]:
 
 
 get_ipython().system('pip install -q -r requirements.txt')
 
 
-# In[3]:
+# In[48]:
 
 
 import sys
@@ -42,13 +42,13 @@ from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings('ignore')
 
-# %matplotlib inline
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[26]:
+# In[ ]:
 
 
-learning_rate_str, model_name = sys.argv[1:] if len(sys.argv) >= 3 else ['30e-5', 'resnet18']
+learning_rate_str, model_name = sys.argv[1:] if len(sys.argv) >= 3 else ['30e-5', 'resnet50']
 learning_rate = float(learning_rate_str)
 
 print(f'learning rate: {learning_rate}')
@@ -57,20 +57,21 @@ print(f'model name: {model_name}')
 
 # ## Define dataset and model
 
-# In[4]:
+# In[49]:
 
 
+img_dir = '../input/rxrxairgb512'
 path_data = '../input/rxrxai'
 device = 'cuda'
 batch_size = 32
 torch.manual_seed(0)
 
 
-# In[12]:
+# In[112]:
 
 
 class ImagesDS(D.Dataset):
-    def __init__(self, df, img_dir=path_data, mode='train', site=1, channels=[1,2,3,4,5,6]):
+    def __init__(self, df, img_dir=img_dir, mode='train', site=1, channels=[1,2,3,4,5,6]):
         self.records = df.to_records(index=False)
         self.channels = channels
         self.site = site
@@ -83,13 +84,12 @@ class ImagesDS(D.Dataset):
         with Image.open(file_name) as img:
             return transforms.ToTensor()(img)
 
-    def _get_img_path(self, index, channel):
+    def _get_img_path(self, index):
         experiment, well, plate = self.records[index].experiment, self.records[index].well, self.records[index].plate
-        return '/'.join([self.img_dir,self.mode,experiment,f'Plate{plate}',f'{well}_s{self.site}_w{channel}.png'])
+        return f'{self.img_dir}/{self.mode}/{experiment}_{plate}_{well}_s{self.site}.jpeg'
         
     def __getitem__(self, index):
-        paths = [self._get_img_path(index, ch) for ch in self.channels]
-        img = torch.cat([self._load_img_as_tensor(img_path) for img_path in paths])
+        img = self._load_img_as_tensor(self._get_img_path(index))
         if self.mode == 'train':
             return img, int(self.records[index].sirna)
         else:
@@ -99,7 +99,7 @@ class ImagesDS(D.Dataset):
         return self.len
 
 
-# In[13]:
+# In[113]:
 
 
 # dataframes for training, cross-validation, and testing
@@ -109,42 +109,35 @@ df_test = pd.read_csv(path_data+'/test.csv')
 
 # pytorch training dataset & loader
 ds = ImagesDS(df_train, mode='train')
-loader = D.DataLoader(ds, batch_size=batch_size, shuffle=True, num_workers=0)
+loader = D.DataLoader(ds, batch_size=batch_size, shuffle=True, num_workers=4)
 
 # pytorch cross-validation dataset & loader
 ds_val = ImagesDS(df_val, mode='train')
-val_loader = D.DataLoader(ds_val, batch_size=batch_size, shuffle=True, num_workers=0)
+val_loader = D.DataLoader(ds_val, batch_size=batch_size, shuffle=True, num_workers=4)
 
 # pytorch test dataset & loader
 ds_test = ImagesDS(df_test, mode='test')
-tloader = D.DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=0)
+tloader = D.DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=4)
 
 
-# In[14]:
+# In[124]:
 
 
 classes = 1108
 
-model = getattr(models, model_name)(pretrained=True)
+model = models.resnet18(pretrained=True)
 num_ftrs = model.fc.in_features
 model.fc = torch.nn.Linear(num_ftrs, classes)
 
-# let's make our model work with 6 channels
-trained_kernel = model.conv1.weight
-new_conv = nn.Conv2d(6, 64, kernel_size=7, stride=2, padding=3, bias=False)
-with torch.no_grad():
-    new_conv.weight[:,:] = torch.stack([torch.mean(trained_kernel, 1)]*6, dim=1)
-model.conv1 = new_conv
 
-
-# In[15]:
+# In[125]:
 
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
-# In[16]:
+# In[126]:
 
 
 metrics = {
@@ -156,7 +149,7 @@ trainer = create_supervised_trainer(model, optimizer, criterion, device=device)
 val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=device)
 
 
-# In[17]:
+# In[127]:
 
 
 @trainer.on(Events.EPOCH_COMPLETED)
@@ -169,7 +162,7 @@ def compute_and_display_val_metrics(engine):
                       metrics['accuracy']))
 
 
-# In[18]:
+# In[128]:
 
 
 lr_scheduler = ExponentialLR(optimizer, gamma=0.95)
@@ -195,7 +188,7 @@ def update_lr_scheduler(engine):
     print("Learning rate: {}".format(lr))
 
 
-# In[19]:
+# In[129]:
 
 
 @trainer.on(Events.EPOCH_STARTED)
@@ -218,28 +211,28 @@ def turn_on_layers(engine):
                 param.requires_grad = True
 
 
-# In[20]:
+# In[120]:
 
 
 handler = EarlyStopping(patience=6, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
 val_evaluator.add_event_handler(Events.COMPLETED, handler)
 
 
-# In[21]:
+# In[130]:
 
 
-checkpoints = ModelCheckpoint('models', f'Model_{model_name}_6channels', save_interval=3, n_saved=10, create_dir=True)
+checkpoints = ModelCheckpoint('models', f'Model_{model_name}_3channels', save_interval=2, n_saved=10, create_dir=True)
 trainer.add_event_handler(Events.EPOCH_COMPLETED, checkpoints, {f'{learning_rate_str}': model})
 
 
-# In[22]:
+# In[131]:
 
 
 pbar = ProgressBar(bar_format='')
 pbar.attach(trainer, output_transform=lambda x: {'loss': x})
 
 
-# In[23]:
+# In[ ]:
 
 
 trainer.run(loader, max_epochs=50)
