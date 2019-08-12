@@ -178,3 +178,6 @@ https://openreview.net/forum?id=HkxLXnAcFQ
 
 https://hackernoon.com/bag-of-tricks-for-image-classification-with-convolutional-neural-networks-paper-discussion-693c9e17d1cc
 
+----------------
+
+Efficientnet: https://www.learnopencv.com/efficientnet-theory-code/
