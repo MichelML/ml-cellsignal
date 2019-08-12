@@ -3,13 +3,13 @@
 
 # ## Load libraries
 
-# In[1]:
+# In[29]:
 
 
 get_ipython().system('pip install -q -r requirements.txt')
 
 
-# In[48]:
+# In[30]:
 
 
 import sys
@@ -42,10 +42,10 @@ from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings('ignore')
 
-get_ipython().run_line_magic('matplotlib', 'inline')
+# %matplotlib inline
 
 
-# In[ ]:
+# In[31]:
 
 
 learning_rate_str, model_name = sys.argv[1:] if len(sys.argv) >= 3 else ['30e-5', 'resnet50']
@@ -57,17 +57,17 @@ print(f'model name: {model_name}')
 
 # ## Define dataset and model
 
-# In[49]:
+# In[32]:
 
 
 img_dir = '../input/rxrxairgb512'
 path_data = '../input/rxrxai'
 device = 'cuda'
-batch_size = 32
+batch_size = 16
 torch.manual_seed(0)
 
 
-# In[112]:
+# In[33]:
 
 
 class ImagesDS(D.Dataset):
@@ -99,7 +99,7 @@ class ImagesDS(D.Dataset):
         return self.len
 
 
-# In[113]:
+# In[34]:
 
 
 # dataframes for training, cross-validation, and testing
@@ -120,24 +120,24 @@ ds_test = ImagesDS(df_test, mode='test')
 tloader = D.DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=4)
 
 
-# In[124]:
+# In[35]:
 
 
 classes = 1108
 
-model = models.resnet18(pretrained=True)
+model = getattr(models, model_name)(pretrained=True)
 num_ftrs = model.fc.in_features
 model.fc = torch.nn.Linear(num_ftrs, classes)
 
 
-# In[125]:
+# In[36]:
 
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
-# In[126]:
+# In[37]:
 
 
 metrics = {
@@ -149,7 +149,7 @@ trainer = create_supervised_trainer(model, optimizer, criterion, device=device)
 val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=device)
 
 
-# In[127]:
+# In[38]:
 
 
 @trainer.on(Events.EPOCH_COMPLETED)
@@ -162,33 +162,19 @@ def compute_and_display_val_metrics(engine):
                       metrics['accuracy']))
 
 
-# In[128]:
+# In[39]:
 
 
-lr_scheduler = ExponentialLR(optimizer, gamma=0.95)
-
-def adjust_learning_rate(optimizer, epoch):
-    # inspired by https://www.kaggle.com/c/human-protein-atlas-image-classification/discussion/78109
-    lr = learning_rate
-    if epoch > 25:
-        lr = learning_rate / 2.
-    if epoch > 30:
-        lr = learning_rate / 4.
-    if epoch > 35:
-        lr = learning_rate / 10.
-    if epoch > 40:
-        lr = 1e-5
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
+lr_scheduler = ExponentialLR(optimizer, gamma=0.90)
 
 @trainer.on(Events.EPOCH_COMPLETED)
 def update_lr_scheduler(engine):
-    adjust_learning_rate(optimizer, engine.state.epoch)
+    lr_scheduler.step()
     lr = float(optimizer.param_groups[0]['lr'])
     print("Learning rate: {}".format(lr))
 
 
-# In[129]:
+# In[40]:
 
 
 @trainer.on(Events.EPOCH_STARTED)
@@ -211,29 +197,35 @@ def turn_on_layers(engine):
                 param.requires_grad = True
 
 
-# In[120]:
+# In[41]:
 
 
 handler = EarlyStopping(patience=6, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
 val_evaluator.add_event_handler(Events.COMPLETED, handler)
 
 
-# In[130]:
+# In[42]:
 
 
-checkpoints = ModelCheckpoint('models', f'Model_{model_name}_3channels', save_interval=2, n_saved=10, create_dir=True)
+checkpoints = ModelCheckpoint('models', f'Model_{model_name}_3channels', save_interval=3, n_saved=15, create_dir=True)
 trainer.add_event_handler(Events.EPOCH_COMPLETED, checkpoints, {f'{learning_rate_str}': model})
 
 
-# In[131]:
+# In[43]:
 
 
 pbar = ProgressBar(bar_format='')
-pbar.attach(trainer, output_transform=lambda x: {'loss': x})
+
+
+# In[44]:
+
+
+print('Training started')
+trainer.run(loader, max_epochs=50)
 
 
 # In[ ]:
 
 
-trainer.run(loader, max_epochs=50)
+
 

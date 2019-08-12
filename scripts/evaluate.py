@@ -7,7 +7,7 @@ from tqdm import tqdm_notebook
 
 from sklearn.model_selection import train_test_split
 
-def eval_model(model, loader, file_name, device='cuda'):
+def eval_model(model, loader, file_name, path_data, device='cuda'):
     model.eval()
     with torch.no_grad():
         preds = np.empty(0)
