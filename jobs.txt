@@ -4,3 +4,6 @@ floyd run --gpu --data michelml/datasets/rxrxai/1:rxrxai --env pytorch-1.0 --max
 # 3-channels / RGB
 floyd run --gpu --data michelml/datasets/rxrxai/1:rxrxai --data michelml/datasets/rxrxairgb512/1:rxrxairgb512 --env pytorch-1.0 --max-runtime 72000 "ipython workflow_rgb_job.py '30e-5' resnet50"
 
+# efficientnet-b4 - 3-channels / RGB
+floyd run --gpu2 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb512/1:rxrxairgb512 --env pytorch-1.0 "ipython efficientnet.py '35e-5' efficientnetb4"
+
