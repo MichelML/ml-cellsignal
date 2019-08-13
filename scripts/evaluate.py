@@ -7,7 +7,8 @@ from tqdm import tqdm_notebook
 
 from sklearn.model_selection import train_test_split
 
-def eval_model(model, loader, file_name, path_data, device='cuda'):
+def eval_model(model, loader, file_path, path_data, device='cuda'):
+    model.load_state_dict(torch.load(file_path))
     model.eval()
     with torch.no_grad():
         preds = np.empty(0)
@@ -19,4 +20,4 @@ def eval_model(model, loader, file_name, path_data, device='cuda'):
 
     submission = pd.read_csv(path_data + '/test.csv')
     submission['sirna'] = preds.astype(int)
-    submission.to_csv(f'my_submissions/submission_{file_name}.csv', index=False, columns=['id_code','sirna'])
+    submission.to_csv(f'submission.csv', index=False, columns=['id_code','sirna'])
