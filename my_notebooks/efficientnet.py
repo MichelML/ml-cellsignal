@@ -47,13 +47,13 @@ warnings.filterwarnings('ignore')
 
 from scripts.device import get_device
 
-get_ipython().run_line_magic('matplotlib', 'inline')
+# %matplotlib inline
 
 
 # In[2]:
 
 
-learning_rate_str, model_name = ['35e-5', 'efficientnet-b4']
+learning_rate_str, model_name = ['10e-5', 'efficientnet-b4']
 learning_rate = float(learning_rate_str)
 
 print(f'learning rate: {learning_rate}')
@@ -65,10 +65,10 @@ print(f'model name: {model_name}')
 # In[3]:
 
 
-img_dir = '../input/rxrxairgb512'
+img_dir = '../input/rxrxairgb'
 path_data = '../input/rxrxaicsv'
 device = get_device()
-batch_size = 4
+batch_size = 16
 torch.manual_seed(0)
 print(device)
 
@@ -152,7 +152,7 @@ trainer = create_supervised_trainer(model, optimizer, criterion, device=device)
 val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=device)
 
 
-# In[10]:
+# In[9]:
 
 
 @trainer.on(Events.EPOCH_COMPLETED)
@@ -163,7 +163,7 @@ def compute_and_display_val_metrics(engine):
           .format(engine.state.epoch, optimizer.param_groups[0]['lr'], metrics['loss'], metrics['accuracy']))
 
 
-# In[11]:
+# In[10]:
 
 
 # lr_scheduler = ExponentialLR(optimizer, gamma=0.99)
@@ -174,11 +174,11 @@ def compute_and_display_val_metrics(engine):
 #     lr = float(optimizer.param_groups[0]['lr'])
 #     print("Learning rate: {}".format(lr))
 
-scheduler = LinearCyclicalScheduler(optimizer, 'lr', 35e-5, 15e-5, len(loader))
-trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
+# scheduler = LinearCyclicalScheduler(optimizer, 'lr', 35e-5, 15e-5, len(loader))
+# trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 
 
-# In[12]:
+# In[11]:
 
 
 # @trainer.on(Events.EPOCH_STARTED)
@@ -201,30 +201,30 @@ trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 #                 param.requires_grad = True
 
 
-# In[13]:
+# In[12]:
 
 
 handler = EarlyStopping(patience=6, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
 val_evaluator.add_event_handler(Events.COMPLETED, handler)
 
 
-# In[14]:
+# In[13]:
 
 
 checkpoints = ModelCheckpoint('models', f'Model_{model_name}_3channels', save_interval=2, n_saved=10, create_dir=True)
 trainer.add_event_handler(Events.EPOCH_COMPLETED, checkpoints, {f'{learning_rate_str}': model})
 
 
+# In[14]:
+
+
+pbar = ProgressBar(bar_format='')
+pbar.attach(trainer, output_transform=lambda x: {'loss': x})
+
+
 # In[15]:
 
 
-# pbar = ProgressBar(bar_format='')
-# pbar.attach(trainer, output_transform=lambda x: {'loss': x})
-
-
-# In[16]:
-
-
 print('Training started')
-trainer.run(loader, max_epochs=50)
+trainer.run(loader, max_epochs=20)
 
