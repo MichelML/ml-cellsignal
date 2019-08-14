@@ -181,3 +181,11 @@ https://hackernoon.com/bag-of-tricks-for-image-classification-with-convolutional
 ----------------
 
 Efficientnet: https://www.learnopencv.com/efficientnet-theory-code/
+
+----------------
+
+Learning rate analogy: https://www.kaggle.com/c/home-credit-default-risk/discussion/61476#359324
+
+----------------
+
+combine multiple convolutional network outputs in a single result: https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/Su_Multi-View_Convolutional_Neural_ICCV_2015_paper.pdf
