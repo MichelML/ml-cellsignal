@@ -193,3 +193,7 @@ combine multiple convolutional network outputs in a single result: https://www.c
 -----------------
 
 merging multiple inputs with view layer https://github.com/zaidalyafeai/Machine-Learning/blob/master/Multi-input%20Network%20Pytorch.ipynb
+
+-----------------
+
+cut out and random erasing https://github.com/weiaicunzai/Bag_of_Tricks_for_Image_Classification_with_Convolutional_Neural_Networks
