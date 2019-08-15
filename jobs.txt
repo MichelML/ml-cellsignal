@@ -1,1 +1,0 @@
-floyd run --gpu --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb/1:rxrxairgb --env pytorch-1.0 "ipython experiment.py" --message ""

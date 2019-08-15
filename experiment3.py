@@ -1,15 +1,15 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
 # ## Load libraries
 
-# In[1]:
+# In[2]:
 
 
 get_ipython().system('pip install -q -r requirements.txt')
 
 
-# In[2]:
+# In[1]:
 
 
 import sys
@@ -47,19 +47,18 @@ warnings.filterwarnings('ignore')
 
 # ## Define dataset and model
 
-# In[3]:
+# In[2]:
 
 
 img_dir = '../input/rxrxairgb'
 path_data = '../input/rxrxaicsv'
 device = 'cuda'
 batch_size = 200
-learning_rate=30e-5
 torch.manual_seed(0)
 model_name = 'resnet18'
 
 
-# In[4]:
+# In[3]:
 
 
 jitter = (0.6, 1.4)
@@ -111,7 +110,7 @@ class ImagesDS(D.Dataset):
         return self.len
 
 
-# In[5]:
+# In[4]:
 
 
 # dataframes for training, cross-validation, and testing
@@ -132,7 +131,7 @@ ds_test = ImagesDS(df_test, mode='test', validation=True)
 tloader = D.DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=4)
 
 
-# In[6]:
+# In[5]:
 
 
 class ResNetTwoInputs(nn.Module):
@@ -167,14 +166,14 @@ class ResNetTwoInputs(nn.Module):
 model = ResNetTwoInputs()
 
 
-# In[7]:
+# In[6]:
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 
-# In[8]:
+# In[7]:
 
 
 metrics = {
@@ -188,7 +187,7 @@ val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=devic
 
 # #### EarlyStopping
 
-# In[ ]:
+# In[8]:
 
 
 handler = EarlyStopping(patience=50, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
@@ -197,52 +196,43 @@ val_evaluator.add_event_handler(Events.COMPLETED, handler)
 
 # #### LR Scheduler
 
-# In[ ]:
+# In[9]:
 
 
-def adjust_learning_rate(optimizer, epoch):
-    # inspired by https://www.kaggle.com/c/human-protein-atlas-image-classification/discussion/78109
-    lr = learning_rate
-    if epoch > 25:
-        lr = lr / 2.
-    if epoch > 30:
-        lr = lr / 4.
-    if epoch > 35:
-        lr = lr / 10.
-    if epoch > 40:
-        lr = 1e-5
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
+scheduler = CosineAnnealingScheduler(optimizer, 'lr', 3e-4, 1e-7, len(loader))
+trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 
-@trainer.on(Events.EPOCH_COMPLETED)
-def update_lr_scheduler(engine):
-    adjust_learning_rate(optimizer, engine.state.epoch)
-    lr = float(optimizer.param_groups[0]['lr'])
-    print("Learning rate: {}".format(lr))
+@trainer.on(Events.ITERATION_COMPLETED)
+def print_lr(engine):
+    epoch = engine.state.epoch
+    iteration = engine.state.iteration
+    
+    if epoch < 3 and iteration % 10 == 0:
+        print(f'Iteration {iteration} | LR {optimizer.param_groups[0]["lr"]}')
 
 
 # #### Compute and display metrics
 
-# In[ ]:
+# In[10]:
 
 
 @trainer.on(Events.EPOCH_COMPLETED)
 def compute_and_display_val_metrics(engine):
     epoch = engine.state.epoch
     metrics = val_evaluator.run(val_loader).metrics
-    print("Validation Results - Epoch: {} | LR: {:.4f}  Average Loss: {:.4f} | Accuracy: {:.4f} "
-          .format(engine.state.epoch, optimizer.param_groups[0]['lr'], metrics['loss'], metrics['accuracy']))
+    print("Validation Results - Epoch: {} | Average Loss: {:.4f} | Accuracy: {:.4f} "
+          .format(engine.state.epoch, metrics['loss'], metrics['accuracy']))
 
 
 # #### Save best epoch only
 
-# In[ ]:
+# In[11]:
 
 
 get_ipython().system('mkdir -p models')
 
 
-# In[ ]:
+# In[12]:
 
 
 def get_saved_model_path(epoch):
@@ -279,20 +269,20 @@ def save_best_epoch_only(engine):
 
 # #### Progress bar - uncomment when testing in notebook
 
-# In[ ]:
+# In[13]:
 
 
-# pbar = ProgressBar(bar_format='')
-# pbar.attach(trainer, output_transform=lambda x: {'loss': x})
+pbar = ProgressBar(bar_format='')
+pbar.attach(trainer, output_transform=lambda x: {'loss': x})
 
 
 # #### Train
 
-# In[ ]:
+# In[14]:
 
 
 print('Training started\n')
-trainer.run(loader, max_epochs=150)
+trainer.run(loader, max_epochs=120)
 
 
 # #### Evaluate
