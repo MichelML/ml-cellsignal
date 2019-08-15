@@ -189,3 +189,7 @@ Learning rate analogy: https://www.kaggle.com/c/home-credit-default-risk/discuss
 ----------------
 
 combine multiple convolutional network outputs in a single result: https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/Su_Multi-View_Convolutional_Neural_ICCV_2015_paper.pdf
+
+-----------------
+
+merging multiple inputs with view layer https://github.com/zaidalyafeai/Machine-Learning/blob/master/Multi-input%20Network%20Pytorch.ipynb
