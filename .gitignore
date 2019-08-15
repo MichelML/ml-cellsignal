@@ -617,13 +617,11 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/vim,node,macos,python,firebase,visualstudio,jupyternotebook
 
-# data folder
 data
 rxrxrgb
 rxrxrgb_256
 rxrxutils
 models
-
-#
 get_started_workspace.ipynb
 datacsv
+lrfinder
