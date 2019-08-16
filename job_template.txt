@@ -1,1 +1,1 @@
-floyd run --gpu --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb/1:rxrxairgb --env pytorch-1.0 "ipython experiment4.py" --message "experiment 4 - same as experiment 3 but with efficientnet-b0, 200 epochs early stopping after 50 epochs"
+floyd run --gpu2 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb/1:rxrxairgb --env pytorch-1.0 "ipython experiment5.py" --message "experiment 5 - same as experiment 4 but with efficientnet-b3, 40 epochs only"
