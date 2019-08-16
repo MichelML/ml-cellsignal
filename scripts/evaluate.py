@@ -12,9 +12,10 @@ def eval_model(model, loader, file_path, path_data, device='cuda'):
     model.eval()
     with torch.no_grad():
         preds = np.empty(0)
-        for x, _ in tqdm_notebook(loader): 
-            x = x.to(device)
-            output = model(x)
+        for x1, x2, _ in tqdm_notebook(loader): 
+            x1 = x1.to(device)
+            x2 = x2.to(device)
+            output = model(x1,x2)
             idx = output.max(dim=-1)[1].cpu().numpy()
             preds = np.append(preds, idx, axis=0)
 

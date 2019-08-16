@@ -26,7 +26,7 @@ from torch.optim.lr_scheduler import ExponentialLR
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-from torchvision import models, transforms
+from torchvision import transforms
 
 from ignite.engine import Events
 from scripts.ignite import create_supervised_evaluator, create_supervised_trainer
@@ -39,6 +39,8 @@ from tqdm import tqdm_notebook
 
 from sklearn.model_selection import train_test_split
 
+from efficientnet_pytorch import EfficientNet
+
 from scripts.evaluate import eval_model 
 
 import warnings
@@ -47,18 +49,18 @@ warnings.filterwarnings('ignore')
 
 # ## Define dataset and model
 
-# In[ ]:
+# In[3]:
 
 
 img_dir = '../input/rxrxairgb'
 path_data = '../input/rxrxaicsv'
 device = 'cuda'
-batch_size = 200
+batch_size = 32
 torch.manual_seed(0)
-model_name = 'resnet18'
+model_name = 'efficientnet-b0'
 
 
-# In[ ]:
+# In[4]:
 
 
 jitter = (0.6, 1.4)
@@ -110,7 +112,7 @@ class ImagesDS(D.Dataset):
         return self.len
 
 
-# In[ ]:
+# In[5]:
 
 
 # dataframes for training, cross-validation, and testing
@@ -131,22 +133,19 @@ ds_test = ImagesDS(df_test, mode='test', validation=True)
 tloader = D.DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=4)
 
 
-# In[ ]:
+# In[6]:
 
 
-class ResNetTwoInputs(nn.Module):
+class EfficientNetTwoInputs(nn.Module):
     def __init__(self):
-        super(ResNetTwoInputs, self).__init__()
+        super(EfficientNetTwoInputs, self).__init__()
         self.classes = 1108
         
-        model = getattr(models, model_name)(pretrained=True)
-        num_ftrs = model.fc.in_features
-        model.fc = nn.Identity()
+        model = model = EfficientNet.from_pretrained(model_name, num_classes=1108) 
+        model._fc = nn.Identity()
         
         self.resnet = model
-        self.avgpool2d = nn.AvgPool2d(3)
-        self.fc1 = nn.Linear(1024, 2048)
-        self.fc2 = nn.Linear(2048, self.classes)
+        self.fc = nn.Linear(2560, self.classes)
 
     def forward(self, x1, x2):
         x1_out = self.resnet(x1)
@@ -157,23 +156,21 @@ class ResNetTwoInputs(nn.Module):
         x2_out = x2_out.view(N, -1)
         
         out = torch.cat((x1_out, x2_out), 1)
-        
-        out = F.relu(self.fc1(out))
-        out = self.fc2(out)
+        out = self.fc(out)
 
         return out 
     
-model = ResNetTwoInputs()
+model = EfficientNetTwoInputs()
 
 
-# In[ ]:
+# In[7]:
 
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 
-# In[ ]:
+# In[8]:
 
 
 metrics = {
@@ -187,7 +184,7 @@ val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=devic
 
 # #### EarlyStopping
 
-# In[ ]:
+# In[9]:
 
 
 handler = EarlyStopping(patience=50, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
@@ -196,7 +193,7 @@ val_evaluator.add_event_handler(Events.COMPLETED, handler)
 
 # #### LR Scheduler
 
-# In[ ]:
+# In[10]:
 
 
 scheduler = CosineAnnealingScheduler(optimizer, 'lr', 3e-4, 1e-7, len(loader))
@@ -213,7 +210,7 @@ def print_lr(engine):
 
 # #### Compute and display metrics
 
-# In[ ]:
+# In[11]:
 
 
 @trainer.on(Events.EPOCH_COMPLETED)
@@ -226,13 +223,13 @@ def compute_and_display_val_metrics(engine):
 
 # #### Save best epoch only
 
-# In[ ]:
+# In[12]:
 
 
 get_ipython().system('mkdir -p models')
 
 
-# In[ ]:
+# In[13]:
 
 
 def get_saved_model_path(epoch):
@@ -269,7 +266,7 @@ def save_best_epoch_only(engine):
 
 # #### Progress bar - uncomment when testing in notebook
 
-# In[ ]:
+# In[14]:
 
 
 # pbar = ProgressBar(bar_format='')
@@ -278,11 +275,11 @@ def save_best_epoch_only(engine):
 
 # #### Train
 
-# In[ ]:
+# In[15]:
 
 
 print('Training started\n')
-trainer.run(loader, max_epochs=120)
+trainer.run(loader, max_epochs=200)
 
 
 # #### Evaluate
