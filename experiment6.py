@@ -270,8 +270,8 @@ def save_best_epoch_only(engine):
 # In[13]:
 
 
-pbar = ProgressBar(bar_format='')
-pbar.attach(trainer, output_transform=lambda x: {'loss': x})
+# pbar = ProgressBar(bar_format='')
+# pbar.attach(trainer, output_transform=lambda x: {'loss': x})
 
 
 # #### Train
