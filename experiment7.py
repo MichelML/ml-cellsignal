@@ -162,13 +162,14 @@ class EfficientNetTwoInputs(nn.Module):
         return out 
     
 model = EfficientNetTwoInputs()
+model.load_state_dict(torch.load('models/Model_efficientnet-b3_49.pth'))
 
 
 # In[6]:
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=2e-4)
 
 
 # In[7]:
@@ -234,7 +235,7 @@ get_ipython().system('mkdir -p models')
 
 
 def get_saved_model_path(epoch):
-    return f'models/Model_{model_name}_{epoch}.pth'
+    return f'models/Model_{model_name}_{epoch + 49}.pth'
 
 best_acc = 0.
 best_epoch = 1
@@ -280,7 +281,7 @@ def save_best_epoch_only(engine):
 
 
 print('Training started\n')
-trainer.run(loader, max_epochs=120)
+trainer.run(loader, max_epochs=50)
 
 
 # #### Evaluate

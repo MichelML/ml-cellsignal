@@ -52,12 +52,12 @@ warnings.filterwarnings('ignore')
 # In[2]:
 
 
-img_dir = '../input/rxrxairgb512'
+img_dir = '../input/rxrxairgb'
 path_data = '../input/rxrxaicsv'
 device = 'cuda'
-batch_size = 32
+batch_size = 2
 torch.manual_seed(0)
-model_name = 'efficientnet-b3'
+model_name = 'efficientnet-b6'
 
 
 # In[3]:
@@ -168,7 +168,7 @@ model = EfficientNetTwoInputs()
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 
 # In[7]:
@@ -188,7 +188,7 @@ val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=devic
 # In[8]:
 
 
-handler = EarlyStopping(patience=30, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
+handler = EarlyStopping(patience=10, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
 val_evaluator.add_event_handler(Events.COMPLETED, handler)
 
 
@@ -197,16 +197,16 @@ val_evaluator.add_event_handler(Events.COMPLETED, handler)
 # In[9]:
 
 
-scheduler = CosineAnnealingScheduler(optimizer, 'lr', 2e-4, 1e-7, len(loader))
+scheduler = CosineAnnealingScheduler(optimizer, 'lr', 3e-4, 1e-7, len(loader))
 trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 
-@trainer.on(Events.ITERATION_COMPLETED)
-def print_lr(engine):
-    epoch = engine.state.epoch
-    iteration = engine.state.iteration
+# @trainer.on(Events.ITERATION_COMPLETED)
+# def print_lr(engine):
+#     epoch = engine.state.epoch
+#     iteration = engine.state.iteration
     
-    if epoch < 2 and iteration % 100 == 0:
-        print(f'Iteration {iteration} | LR {optimizer.param_groups[0]["lr"]}')
+#     if epoch < 2 and iteration % 10 == 0:
+#         print(f'Iteration {iteration} | LR {optimizer.param_groups[0]["lr"]}')
 
 
 # #### Compute and display metrics
@@ -280,7 +280,7 @@ def save_best_epoch_only(engine):
 
 
 print('Training started\n')
-trainer.run(loader, max_epochs=120)
+trainer.run(loader, max_epochs=60)
 
 
 # #### Evaluate
@@ -288,5 +288,6 @@ trainer.run(loader, max_epochs=120)
 # In[ ]:
 
 
+model.cuda()
 eval_model(model, tloader, best_epoch_file, path_data)
 

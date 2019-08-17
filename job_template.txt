@@ -1,1 +1,1 @@
-floyd run --gpu2 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb512/1:rxrxairgb512 --env pytorch-1.0 "ipython experiment6.py" --message "experiment 6 - same as experiment 5 but w/ 512x512 images, 50 epochs only"
+floyd run --gpu2 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb512/1:rxrxairgb --env pytorch-1.0 "ipython experiment8.py" --message "experiment 8 - same as experiment 5 but w/ efficientnet b6, 60 epochs"
