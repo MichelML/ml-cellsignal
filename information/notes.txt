@@ -201,3 +201,7 @@ cut out and random erasing https://github.com/weiaicunzai/Bag_of_Tricks_for_Imag
 -----------------
 
 Pytorch ensembler: https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/44849
+
+-----------------
+
+Radam: https://github.com/LiyuanLucasLiu/RAdam
