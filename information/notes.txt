@@ -197,3 +197,7 @@ merging multiple inputs with view layer https://github.com/zaidalyafeai/Machine-
 -----------------
 
 cut out and random erasing https://github.com/weiaicunzai/Bag_of_Tricks_for_Image_Classification_with_Convolutional_Neural_Networks
+
+-----------------
+
+Pytorch ensembler: https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/44849
