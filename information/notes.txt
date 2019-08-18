@@ -205,3 +205,7 @@ Pytorch ensembler: https://www.kaggle.com/c/statoil-iceberg-classifier-challenge
 -----------------
 
 Radam: https://github.com/LiyuanLucasLiu/RAdam
+
+-----------------
+
+DeepLoc: https://github.com/okraus/DeepLoc
