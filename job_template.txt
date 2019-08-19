@@ -1,1 +1,1 @@
-floyd run --gpu --env pytorch-1.0 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb512/1:rxrxairgb512 --message 'eval 20 w/ .313 model' 'ipython eval10_experiment5.py'
+floyd run --gpu --env pytorch-1.0 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxai/1:rxrxai --message 'experiment 10: 6-channels 512px w/ 448 augmented crops w/ 2 sites efficient-net 3 - 5 epochs only' 'ipython experiment10.py'

@@ -8,8 +8,9 @@ The original methods.
 
 from __future__ import division
 import torch
-import torch.nn.functional as F
-from torchvision import transforms
+from torchvision.transforms import transforms
+from torchvision.transforms.transforms import Lambda, Compose
+from torchvision.transforms import functional as F
 import math
 import sys
 import random
@@ -380,19 +381,19 @@ def gen_transform_train(crop_size=448, jitter=(0.6, 1.4)):
         RandomVerticalFlip(randprob=randprob_v),
         # PCA Noise should go here,
         transforms.ToTensor(),
-        transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
+        transforms.Normalize(mean=[0.5], std=[0.5])
     ])
 
 def gen_transform_validation(crop_size=448):
     return transforms.Compose([
         transforms.CenterCrop(crop_size),
         transforms.ToTensor(),
-        transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
+        transforms.Normalize(mean=[0.5], std=[0.5])
      ])
 
 def gen_transform_test_multi(crop_size=448):
     return transforms.Compose([
         transforms.RandomCrop(crop_size),
         transforms.ToTensor(),
-        transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
+        transforms.Normalize(mean=[0.5], std=[0.5])
       ])
