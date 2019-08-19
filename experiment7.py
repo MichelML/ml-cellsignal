@@ -55,7 +55,7 @@ warnings.filterwarnings('ignore')
 img_dir = '../input/rxrxairgb512'
 path_data = '../input/rxrxaicsv'
 device = 'cuda'
-batch_size = 32
+batch_size = 8
 torch.manual_seed(0)
 model_name = 'efficientnet-b3'
 
@@ -67,7 +67,7 @@ jitter = (0.6, 1.4)
 class ImagesDS(D.Dataset):
     # taken textbook from https://arxiv.org/pdf/1812.01187.pdf
     transform_train = transforms.Compose([
-        transforms.RandomResizedCrop(224),
+        transforms.RandomResizedCrop(448),
         transforms.ColorJitter(brightness=jitter, contrast=jitter, saturation=jitter, hue=.1),
         transforms.RandomHorizontalFlip(p=0.5),
         # PCA Noise should go here,
@@ -76,7 +76,7 @@ class ImagesDS(D.Dataset):
     ])
     
     transform_validation = transforms.Compose([
-        transforms.CenterCrop(224),
+        transforms.CenterCrop(448),
         transforms.ToTensor(),
         transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
     ])
@@ -162,14 +162,13 @@ class EfficientNetTwoInputs(nn.Module):
         return out 
     
 model = EfficientNetTwoInputs()
-model.load_state_dict(torch.load('models/Model_efficientnet-b3_49.pth'))
 
 
 # In[6]:
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=2e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
 
 
 # In[7]:
@@ -198,7 +197,7 @@ val_evaluator.add_event_handler(Events.COMPLETED, handler)
 # In[9]:
 
 
-scheduler = CosineAnnealingScheduler(optimizer, 'lr', 2e-4, 1e-7, len(loader))
+scheduler = CosineAnnealingScheduler(optimizer, 'lr', 3e-4, 1e-7, len(loader))
 trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 
 @trainer.on(Events.ITERATION_COMPLETED)

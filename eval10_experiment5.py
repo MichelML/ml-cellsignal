@@ -41,7 +41,7 @@ from sklearn.model_selection import train_test_split
 
 from efficientnet_pytorch import EfficientNet
 
-from scripts.evaluate import eval_model 
+from scripts.evaluate import eval_model, eval_model_10
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -52,12 +52,12 @@ warnings.filterwarnings('ignore')
 # In[2]:
 
 
-img_dir = '../input/rxrxairgb'
+img_dir = '../input/rxrxairgb512'
 path_data = '../input/rxrxaicsv'
 device = 'cuda'
-batch_size = 24
+batch_size = 32
 torch.manual_seed(0)
-model_name = 'efficientnet-b4'
+model_name = 'efficientnet-b3'
 
 
 # In[3]:
@@ -67,7 +67,7 @@ jitter = (0.6, 1.4)
 class ImagesDS(D.Dataset):
     # taken textbook from https://arxiv.org/pdf/1812.01187.pdf
     transform_train = transforms.Compose([
-        transforms.RandomResizedCrop(224),
+        transforms.RandomResizedCrop(448),
         transforms.ColorJitter(brightness=jitter, contrast=jitter, saturation=jitter, hue=.1),
         transforms.RandomHorizontalFlip(p=0.5),
         # PCA Noise should go here,
@@ -76,7 +76,7 @@ class ImagesDS(D.Dataset):
     ])
     
     transform_validation = transforms.Compose([
-        transforms.CenterCrop(224),
+        transforms.CenterCrop(448),
         transforms.ToTensor(),
         transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
     ])
@@ -112,25 +112,51 @@ class ImagesDS(D.Dataset):
         return self.len
 
 
+class TestImagesDS(D.Dataset):
+    transform = transforms.Compose([
+        transforms.RandomCrop(448),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
+    ])
+
+    def __init__(self, df, img_dir=img_dir, mode='test', validation=False, site=1):
+        self.records = df.to_records(index=False)
+        self.site = site
+        self.mode = mode
+        self.img_dir = img_dir
+        self.len = df.shape[0]
+        self.validation = validation
+        
+    @staticmethod
+    def _load_img_as_tensor(file_name):
+        with Image.open(file_name) as img:
+            return TestImagesDS.transform(img)
+
+    def _get_img_path(self, index, site=1):
+        experiment, well, plate = self.records[index].experiment, self.records[index].well, self.records[index].plate
+        return f'{self.img_dir}/{self.mode}/{experiment}_{plate}_{well}_s{site}.jpeg'
+        
+    def get_image_pair(self, index):
+        return [self._load_img_as_tensor(self._get_img_path(index, site)) for site in [1,2]]
+    
+    def __getitem__(self, index):
+        image_pairs = [self.get_image_pair(index) for _ in range(20)]
+        
+        return image_pairs, self.records[index].id_code
+
+    def __len__(self):
+        return self.len
+
+
 # In[4]:
 
 
 # dataframes for training, cross-validation, and testing
-df = pd.read_csv(path_data+'/train.csv')
-df_train, df_val = train_test_split(df, test_size = 0.1, random_state=42)
 df_test = pd.read_csv(path_data+'/test.csv')
 
-# pytorch training dataset & loader
-ds = ImagesDS(df_train, mode='train', validation=False)
-loader = D.DataLoader(ds, batch_size=batch_size, shuffle=True, num_workers=4)
-
-# pytorch cross-validation dataset & loader
-ds_val = ImagesDS(df_val, mode='train', validation=True)
-val_loader = D.DataLoader(ds_val, batch_size=batch_size, shuffle=True, num_workers=4)
-
 # pytorch test dataset & loader
-ds_test = ImagesDS(df_test, mode='test', validation=True)
-tloader = D.DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=4)
+ds_test = TestImagesDS(df_test, mode='test', validation=True)
+tloader = D.DataLoader(ds_test, batch_size=1, shuffle=False, num_workers=4)
 
 
 # In[5]:
@@ -162,133 +188,13 @@ class EfficientNetTwoInputs(nn.Module):
         return out 
     
 model = EfficientNetTwoInputs()
-model.load_state_dict(torch.load('../input/rxrx_enetb4/Model_efficientnet-b4_22.pth'))
-
-
-# In[6]:
-
-
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
-
-
-# In[7]:
-
-
-metrics = {
-    'loss': Loss(criterion),
-    'accuracy': Accuracy(),
-}
-
-trainer = create_supervised_trainer(model, optimizer, criterion, device=device)
-val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=device)
-
-
-# #### EarlyStopping
-
-# In[8]:
-
-
-handler = EarlyStopping(patience=10, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
-val_evaluator.add_event_handler(Events.COMPLETED, handler)
-
-
-# #### LR Scheduler
-
-# In[9]:
-
-
-scheduler = CosineAnnealingScheduler(optimizer, 'lr', 3e-4, 1e-7, len(loader))
-trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
-
-# @trainer.on(Events.ITERATION_COMPLETED)
-# def print_lr(engine):
-#     epoch = engine.state.epoch
-#     iteration = engine.state.iteration
-    
-#     if epoch < 2 and iteration % 10 == 0:
-#         print(f'Iteration {iteration} | LR {optimizer.param_groups[0]["lr"]}')
-
-
-# #### Compute and display metrics
-
-# In[10]:
-
-
-@trainer.on(Events.EPOCH_COMPLETED)
-def compute_and_display_val_metrics(engine):
-    epoch = engine.state.epoch
-    metrics = val_evaluator.run(val_loader).metrics
-    print("Validation Results - Epoch: {} | Average Loss: {:.4f} | Accuracy: {:.4f} "
-          .format(engine.state.epoch, metrics['loss'], metrics['accuracy']))
-
-
-# #### Save best epoch only
-
-# In[11]:
-
-
-get_ipython().system('mkdir -p models')
-
-
-# In[12]:
-
-
-def get_saved_model_path(epoch):
-    return f'models/Model_{model_name}_{epoch}.pth'
-
-best_acc = 0.
-best_epoch = 1
-best_epoch_file = ''
-
-@trainer.on(Events.EPOCH_COMPLETED)
-def save_best_epoch_only(engine):
-    epoch = engine.state.epoch
-
-    global best_acc
-    global best_epoch
-    global best_epoch_file
-    best_acc = 0. if epoch == 1 else best_acc
-    best_epoch = 1 if epoch == 1 else best_epoch
-    best_epoch_file = '' if epoch == 1 else best_epoch_file
-
-    metrics = val_evaluator.run(val_loader).metrics
-
-    if metrics['accuracy'] > best_acc:
-        prev_best_epoch_file = get_saved_model_path(best_epoch)
-        if os.path.exists(prev_best_epoch_file):
-            os.remove(prev_best_epoch_file)
-            
-        best_acc = metrics['accuracy']
-        best_epoch = epoch
-        best_epoch_file = get_saved_model_path(best_epoch)
-        print(f'\nEpoch: {best_epoch} - New best accuracy! Accuracy: {best_acc}\n\n\n')
-        torch.save(model.state_dict(), best_epoch_file)
-
-
-# #### Progress bar - uncomment when testing in notebook
-
-# In[13]:
-
-
-# pbar = ProgressBar(bar_format='')
-# pbar.attach(trainer, output_transform=lambda x: {'loss': x})
-
-
-# #### Train
-
-# In[14]:
-
-
-print('Training started\n')
-trainer.run(loader, max_epochs=20)
 
 
 # #### Evaluate
 
-# In[ ]:
+# In[6]:
 
 
 model.cuda()
-eval_model(model, tloader, best_epoch_file, path_data)
+eval_model_10(model, tloader, 'models/Model_efficientnet-b3_93.pth', path_data)
 

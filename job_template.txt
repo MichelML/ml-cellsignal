@@ -1,1 +1,1 @@
-floyd run --gpu2 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb512/1:rxrxairgb --env pytorch-1.0 "ipython experiment8.py" --message "experiment 8 - same as experiment 5 but w/ efficientnet b6, 60 epochs"
+floyd run --gpu --env pytorch-1.0 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb512/1:rxrxairgb512 --message 'eval 20 w/ .313 model' 'ipython eval10_experiment5.py'
