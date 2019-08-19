@@ -369,7 +369,10 @@ class RandomCrop(object):
         return self.__class__.__name__ + '(size={0}, padding={1})'.format(self.size, self.padding)
 
 
-def gen_transform_train(randprob_h, randprob_v, crop_size=448, jitter=(0.6, 1.4)):
+def gen_transform_train(crop_size=448, jitter=(0.6, 1.4)):
+    randprob_h = random.random()
+    randprob_v = random.random()
+
     return transforms.Compose([
         RandomResizedCrop(crop_size),
         ColorJitter(brightness=jitter, contrast=jitter, saturation=jitter, hue=.1),
