@@ -87,8 +87,8 @@ class ImagesDS(D.Dataset):
             return transform(img)
         
     def __getitem__(self, index):
-        transform1 = ImageDS.transform_validation if self.validation else gen_transform_train()
-        transform2 = ImageDS.transform_validation if self.validation else gen_transform_train()
+        transform1 = ImagesDS.transform_validation if self.validation else gen_transform_train()
+        transform2 = ImagesDS.transform_validation if self.validation else gen_transform_train()
         
         paths1 = [self._get_img_path(index, ch, 1) for ch in self.channels]
         paths2 = [self._get_img_path(index, ch, 2) for ch in self.channels]

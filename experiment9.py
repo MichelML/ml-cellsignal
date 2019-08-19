@@ -87,8 +87,8 @@ class ImagesDS(D.Dataset):
             return transform(img)
         
     def __getitem__(self, index):
-        transform1 = ImageDS.transform_validation if self.validation else gen_transform_train()
-        transform2 = ImageDS.transform_validation if self.validation else gen_transform_train()
+        transform1 = ImagesDS.transform_validation if self.validation else gen_transform_train()
+        transform2 = ImagesDS.transform_validation if self.validation else gen_transform_train()
         
         paths1 = [self._get_img_path(index, ch, 1) for ch in self.channels]
         paths2 = [self._get_img_path(index, ch, 2) for ch in self.channels]
@@ -270,16 +270,16 @@ def save_best_epoch_only(engine):
 
 # #### Progress bar - uncomment when testing in notebook
 
-# In[13]:
+# In[15]:
 
 
-# pbar = ProgressBar(bar_format='')
-# pbar.attach(trainer, output_transform=lambda x: {'loss': x})
+pbar = ProgressBar(bar_format='')
+pbar.attach(trainer, output_transform=lambda x: {'loss': x})
 
 
 # #### Train
 
-# In[14]:
+# In[16]:
 
 
 print('Training started\n')
