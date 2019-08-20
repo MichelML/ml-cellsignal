@@ -209,3 +209,8 @@ Radam: https://github.com/LiyuanLucasLiu/RAdam
 -----------------
 
 DeepLoc: https://github.com/okraus/DeepLoc
+
+-----------------
+
+Focal loss paper: https://arxiv.org/pdf/1708.02002.pdf  
+Focal loss implementation in pytorch: https://github.com/clcarwin/focal_loss_pytorch/blob/master/focalloss.py
