@@ -9,7 +9,7 @@
 get_ipython().system('pip install -q -r requirements.txt')
 
 
-# In[2]:
+# In[1]:
 
 
 import sys
@@ -35,16 +35,14 @@ from ignite.contrib.handlers.tqdm_logger import ProgressBar
 from ignite.handlers import  EarlyStopping, ModelCheckpoint
 from ignite.contrib.handlers import LinearCyclicalScheduler, CosineAnnealingScheduler
 
-import random
-
 from tqdm import tqdm_notebook
 
 from sklearn.model_selection import train_test_split
 
-from efficientnet_pytorch import EfficientNet, utils as enet_utils
+from efficientnet_pytorch import EfficientNet
 
 from scripts.evaluate import eval_model
-from scripts.transforms import gen_transform_train, gen_transform_validation
+from scripts.focalloss import FocalLoss
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -52,63 +50,70 @@ warnings.filterwarnings('ignore')
 
 # ## Define dataset and model
 
-# In[3]:
+# In[2]:
 
 
-img_dir = '../input/rxrxai'
+img_dir = '../input/rxrxairgb'
 path_data = '../input/rxrxaicsv'
 device = 'cuda'
-batch_size = 10
+batch_size = 44
 torch.manual_seed(0)
 model_name = 'efficientnet-b0'
 
 
-# In[4]:
+# In[3]:
 
 
+jitter = (0.6, 1.4)
 class ImagesDS(D.Dataset):
-    transform_validation = gen_transform_validation(crop_size=448)
+    # taken textbook from https://arxiv.org/pdf/1812.01187.pdf
+    transform_train = transforms.Compose([
+        transforms.RandomResizedCrop(224),
+        transforms.ColorJitter(brightness=jitter, contrast=jitter, saturation=jitter, hue=.1),
+        transforms.RandomHorizontalFlip(p=0.5),
+        # PCA Noise should go here,
+        transforms.ToTensor(),
+        transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
+    ])
     
-    def __init__(self, df, img_dir=img_dir, mode='train', validation=False, channels=[1,2,3,4,5,6]):
+    transform_validation = transforms.Compose([
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=(123.68, 116.779, 103.939), std=(58.393, 57.12, 57.375))
+    ])
+
+    def __init__(self, df, img_dir=img_dir, mode='train', validation=False, site=1):
         self.records = df.to_records(index=False)
+        self.site = site
         self.mode = mode
         self.img_dir = img_dir
         self.len = df.shape[0]
         self.validation = validation
-        self.channels = channels
-
-    def _get_img_path(self, index, channel, site):
-        experiment, well, plate = self.records[index].experiment, self.records[index].well, self.records[index].plate
-        return '/'.join([self.img_dir,self.mode,experiment,f'Plate{plate}',f'{well}_s{site}_w{channel}.png'])
         
     @staticmethod
-    def _load_img_as_tensor(file_name, transform):
+    def _load_img_as_tensor(file_name, validation):
         with Image.open(file_name) as img:
-            return transform(img)
+            if not validation:
+                return ImagesDS.transform_train(img)
+            else:
+                return ImagesDS.transform_validation(img)
+
+    def _get_img_path(self, index, site=1):
+        experiment, well, plate = self.records[index].experiment, self.records[index].well, self.records[index].plate
+        return f'{self.img_dir}/{self.mode}/{experiment}_{plate}_{well}_s{site}.jpeg'
         
     def __getitem__(self, index):
-        transform1 = ImagesDS.transform_validation if self.validation else gen_transform_train()
-        transform2 = ImagesDS.transform_validation if self.validation else gen_transform_train()
-        
-        paths1 = [self._get_img_path(index, ch, 1) for ch in self.channels]
-        paths2 = [self._get_img_path(index, ch, 2) for ch in self.channels]
-        
-        img1 = torch.cat([self._load_img_as_tensor(img_path, transform1) for img_path in paths1])
-        img2 = torch.cat([self._load_img_as_tensor(img_path, transform2) for img_path in paths2])
-        
-        if random.random() > 0.5 and not self.validation:
-            img1, img2 = img2, img1
-        
+        img1, img2 = [self._load_img_as_tensor(self._get_img_path(index, site), self.validation) for site in [1,2]]
         if self.mode == 'train':
             return img1, img2, int(self.records[index].sirna)
         else:
             return img1, img2, self.records[index].id_code
-    
+
     def __len__(self):
         return self.len
 
 
-# In[5]:
+# In[4]:
 
 
 # dataframes for training, cross-validation, and testing
@@ -129,7 +134,7 @@ ds_test = ImagesDS(df_test, mode='test', validation=True)
 tloader = D.DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=4)
 
 
-# In[6]:
+# In[5]:
 
 
 class EfficientNetTwoInputs(nn.Module):
@@ -137,19 +142,11 @@ class EfficientNetTwoInputs(nn.Module):
         super(EfficientNetTwoInputs, self).__init__()
         self.classes = 1108
         
-        model = EfficientNet.from_pretrained(model_name, num_classes=1108) 
-        num_ftrs = model._fc.in_features
+        model = model = EfficientNet.from_pretrained(model_name, num_classes=1108) 
         model._fc = nn.Identity()
         
-        # accept 6 channels
-        trained_kernel = model._conv_stem.weight
-        new_conv = enet_utils.Conv2dStaticSamePadding(6, 32, kernel_size=(3, 3), stride=(2, 2), bias=False, image_size=512)
-        with torch.no_grad():
-            new_conv.weight[:,:] = torch.stack([torch.mean(trained_kernel, 1)]*6, dim=1)
-        model._conv_stem = new_conv
-        
         self.resnet = model
-        self.fc = nn.Linear(num_ftrs * 2, self.classes)
+        self.fc = nn.Linear(2560, self.classes)
 
     def forward(self, x1, x2):
         x1_out = self.resnet(x1)
@@ -167,14 +164,14 @@ class EfficientNetTwoInputs(nn.Module):
 model = EfficientNetTwoInputs()
 
 
+# In[6]:
+
+
+criterion = FocalLoss(gamma=2)
+optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
+
+
 # In[7]:
-
-
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=10e-4)
-
-
-# In[8]:
 
 
 metrics = {
@@ -188,19 +185,19 @@ val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=devic
 
 # #### EarlyStopping
 
-# In[9]:
+# In[8]:
 
 
-# handler = EarlyStopping(patience=30, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
-# val_evaluator.add_event_handler(Events.COMPLETED, handler)
+handler = EarlyStopping(patience=10, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
+val_evaluator.add_event_handler(Events.COMPLETED, handler)
 
 
 # #### LR Scheduler
 
-# In[10]:
+# In[9]:
 
 
-scheduler = CosineAnnealingScheduler(optimizer, 'lr', 10e-4, 1e-7, len(loader))
+scheduler = CosineAnnealingScheduler(optimizer, 'lr', 3e-4, 1e-7, len(loader))
 trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 
 @trainer.on(Events.ITERATION_COMPLETED)
@@ -208,13 +205,13 @@ def print_lr(engine):
     epoch = engine.state.epoch
     iteration = engine.state.iteration
     
-    if epoch < 2 and iteration % 100 == 0:
+    if epoch < 3 and iteration % 10 == 0:
         print(f'Iteration {iteration} | LR {optimizer.param_groups[0]["lr"]}')
 
 
 # #### Compute and display metrics
 
-# In[11]:
+# In[10]:
 
 
 @trainer.on(Events.EPOCH_COMPLETED)
@@ -227,17 +224,17 @@ def compute_and_display_val_metrics(engine):
 
 # #### Save best epoch only
 
-# In[12]:
+# In[11]:
 
 
 get_ipython().system('mkdir -p models')
 
 
-# In[13]:
+# In[12]:
 
 
 def get_saved_model_path(epoch):
-    return f'models/Model_{model_name}_{epoch + 49}.pth'
+    return f'models/Model_{model_name}_{epoch}.pth'
 
 best_acc = 0.
 best_epoch = 1
@@ -270,7 +267,7 @@ def save_best_epoch_only(engine):
 
 # #### Progress bar - uncomment when testing in notebook
 
-# In[16]:
+# In[13]:
 
 
 # pbar = ProgressBar(bar_format='')
@@ -279,11 +276,11 @@ def save_best_epoch_only(engine):
 
 # #### Train
 
-# In[17]:
+# In[14]:
 
 
 print('Training started\n')
-trainer.run(loader, max_epochs=5)
+trainer.run(loader, max_epochs=50)
 
 
 # #### Evaluate
@@ -291,5 +288,5 @@ trainer.run(loader, max_epochs=5)
 # In[ ]:
 
 
-# eval_model(model, tloader, best_epoch_file, path_data)
+eval_model(model, tloader, best_epoch_file, path_data)
 

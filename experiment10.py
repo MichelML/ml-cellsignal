@@ -171,7 +171,7 @@ model = EfficientNetTwoInputs()
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=10e-4)
 
 
 # In[7]:
@@ -200,7 +200,7 @@ val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=devic
 # In[9]:
 
 
-scheduler = CosineAnnealingScheduler(optimizer, 'lr', 3e-4, 1e-7, len(loader))
+scheduler = CosineAnnealingScheduler(optimizer, 'lr', 10e-4, 1e-7, len(loader))
 trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 
 @trainer.on(Events.ITERATION_COMPLETED)
@@ -283,7 +283,7 @@ def save_best_epoch_only(engine):
 
 
 print('Training started\n')
-trainer.run(loader, max_epochs=5)
+trainer.run(loader, max_epochs=2)
 
 
 # #### Evaluate
