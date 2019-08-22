@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # coding: utf-8
 
 # ## Load libraries
@@ -9,7 +9,7 @@
 get_ipython().system('pip install -q -r requirements.txt')
 
 
-# In[2]:
+# In[ ]:
 
 
 import sys
