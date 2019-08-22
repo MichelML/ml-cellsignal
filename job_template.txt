@@ -1,1 +1,1 @@
-floyd run --gpu --env pytorch-1.0 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxairgb/1:rxrxairgb --message 'experiment 12: trying warmup of 5 epochs based on experiment 4' 'ipython experiment12.py'
+floyd run --gpu --env pytorch-1.0 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxai/1:rxrxai --message 'experiment 13: efficientnet-4 w/ 6 channels+2 sites 512px - 40 epochs'
