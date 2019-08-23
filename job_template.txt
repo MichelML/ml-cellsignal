@@ -1,1 +1,1 @@
-floyd run --gpu --env pytorch-1.0 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxai/1:rxrxai --message 'experiment 13.1: same as exp #13 w/ lr from 2e-4 to 5e-8' 'ipython experiment13.py'
+floyd run --gpu --env pytorch-1.0 --data michelml/datasets/rxrxaicsv/1:rxrxaicsv --data michelml/datasets/rxrxai/1:rxrxai --message 'experiment 13: ' 'ipython experiment13.py'
