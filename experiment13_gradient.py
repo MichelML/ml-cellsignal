@@ -6,7 +6,7 @@
 # In[ ]:
 
 
-get_ipython().system('pip install -q -r requirements.txt')
+get_ipython().system('pip3 install -q -r requirements.txt')
 
 
 # In[ ]:

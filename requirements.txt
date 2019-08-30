@@ -1,12 +1,9 @@
 toolz
 scikit-image
 pandas
-
 pytorch-ignite==0.2.0
 pytorch-pretrained-bert==0.6.2
 pytorch==1.0.2
 torchvision==0.3.0
 Pillow==5.4.1
-
-efficientnet-pytorch==0.4.0
-
+efficientnet_pytorch==0.4.0
