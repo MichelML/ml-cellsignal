@@ -1,6 +1,6 @@
 gradient jobs create \
     --name "experiment 13 start @ 49th epoch" \
-    --machineType "P5000" \
+    --machineType "K80" \
     --ignoreFiles "data" \
 		--container paperspace/dl-containers:pytorch-py36-cu100-jupyter \
     --command "ipython experiment13_gradient.py"
