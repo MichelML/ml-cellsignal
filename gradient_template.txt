@@ -3,4 +3,4 @@ gradient jobs create \
     --machineType "P5000" \
     --ignoreFiles "data" \
 		--container paperspace/pytorch \
-    --command "ipython3 experiment13_gradient.py"
+    --command "ipython experiment13_gradient.py"
