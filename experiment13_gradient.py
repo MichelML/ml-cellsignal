@@ -3,19 +3,19 @@
 
 # ## Load libraries
 
-# In[1]:
+# In[ ]:
 
 
 get_ipython().system('pip install -q -r requirements.txt')
 
 
-# In[2]:
+# In[ ]:
 
 
 get_ipython().system('mkdir -p /artifacts')
 
 
-# In[3]:
+# In[ ]:
 
 
 import sys
@@ -59,7 +59,7 @@ warnings.filterwarnings('ignore')
 
 # ## Define dataset and model
 
-# In[4]:
+# In[ ]:
 
 
 img_dir = '/storage/rxrxai'
@@ -72,7 +72,7 @@ init_lr = 3e-4
 end_lr = 1e-7
 
 
-# In[5]:
+# In[ ]:
 
 
 class ImagesDS(D.Dataset):
@@ -88,7 +88,9 @@ class ImagesDS(D.Dataset):
 
     def _get_img_path(self, index, channel, site):
         experiment, well, plate = self.records[index].experiment, self.records[index].well, self.records[index].plate
-        return '/'.join([self.img_dir,self.mode,experiment,f'Plate{plate}',f'{well}_s{site}_w{channel}.png'])
+        plate = 'Plate' + plate
+
+        return '/'.join([self.img_dir,self.mode,experiment, plate, well, '_s', site, '_w', channel, '.png'])
         
     @staticmethod
     def _load_img_as_tensor(file_name, transform):
@@ -117,7 +119,7 @@ class ImagesDS(D.Dataset):
         return self.len
 
 
-# In[6]:
+# In[ ]:
 
 
 # dataframes for training, cross-validation, and testing
@@ -138,7 +140,7 @@ ds_test = ImagesDS(df_test, mode='test', validation=True)
 tloader = D.DataLoader(ds_test, batch_size=1, shuffle=False, num_workers=4)
 
 
-# In[7]:
+# In[ ]:
 
 
 class EfficientNetTwoInputs(nn.Module):
@@ -220,7 +222,7 @@ def print_lr(engine):
     iteration = engine.state.iteration
     
     if epoch < 2 and iteration % 100 == 0:
-        print(f'Iteration {iteration} | LR {optimizer.param_groups[0]["lr"]}')
+        print('Iteration ' + iteration + ' | LR ' + optimizer.param_groups[0]["lr"])
 
 
 # #### Compute and display metrics
@@ -248,7 +250,7 @@ get_ipython().system('mkdir -p models')
 
 
 def get_saved_model_path(epoch):
-    return f'/artifacts/Model_{model_name}_{epoch + 48}.pth'
+    return '/artifacts/Model_' + model_name + '_' + str(epoch + 48) + '.pth'
 
 best_acc = 0.
 best_epoch = 1
