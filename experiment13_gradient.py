@@ -277,7 +277,7 @@ def save_best_epoch_only(engine):
         best_acc = metrics['accuracy']
         best_epoch = epoch
         best_epoch_file = get_saved_model_path(best_epoch)
-        print(f'\nEpoch: {best_epoch} - New best accuracy! Accuracy: {best_acc}\n\n\n')
+        print('\nEpoch: ' + str(best_epoch) + ' - New best accuracy! Accuracy: ' + str(best_acc) + '\n\n\n')
         torch.save(model.state_dict(), best_epoch_file)
 
 
