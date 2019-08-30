@@ -1,0 +1,4 @@
+gradient jobs create \
+    --name "my job" \
+    --machineType "P5000" \
+    --command "ipython experiment13_gradient.py"
