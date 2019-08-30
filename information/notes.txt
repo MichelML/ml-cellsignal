@@ -162,7 +162,7 @@ Past work
 
 ------------
 
-Training neural net approach
+Training neural net approach / ml workflow
 
 http://karpathy.github.io/2019/04/25/recipe/
 
