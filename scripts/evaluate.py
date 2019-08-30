@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import rxrxutils.rxrx.io as rio
 from scipy import misc
 import torch
 from tqdm import tqdm_notebook

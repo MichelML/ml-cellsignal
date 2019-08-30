@@ -13,3 +13,7 @@ var
 *.swp
 .DS_Store
 models
+lrfinder
+information
+rxrxutils
+my_notebooks

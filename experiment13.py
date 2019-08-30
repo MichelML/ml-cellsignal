@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
 # ## Load libraries
@@ -9,7 +9,7 @@
 get_ipython().system('pip install -q -r requirements.txt')
 
 
-# In[2]:
+# In[3]:
 
 
 import sys
@@ -53,7 +53,7 @@ warnings.filterwarnings('ignore')
 
 # ## Define dataset and model
 
-# In[3]:
+# In[4]:
 
 
 img_dir = '../input/rxrxai'
@@ -63,9 +63,10 @@ batch_size = 4
 torch.manual_seed(0)
 model_name = 'efficientnet-b4'
 init_lr = 3e-4
+end_lr = 1e-7
 
 
-# In[4]:
+# In[5]:
 
 
 class ImagesDS(D.Dataset):
@@ -110,7 +111,7 @@ class ImagesDS(D.Dataset):
         return self.len
 
 
-# In[5]:
+# In[6]:
 
 
 # dataframes for training, cross-validation, and testing
@@ -131,7 +132,7 @@ ds_test = ImagesDS(df_test, mode='test', validation=True)
 tloader = D.DataLoader(ds_test, batch_size=1, shuffle=False, num_workers=4)
 
 
-# In[6]:
+# In[7]:
 
 
 class EfficientNetTwoInputs(nn.Module):
@@ -167,16 +168,18 @@ class EfficientNetTwoInputs(nn.Module):
         return out 
     
 model = EfficientNetTwoInputs()
+model.load_state_dict(torch.load('./enet4/Model_efficientnet-b4_89.pth'))
+model.train()
 
 
-# In[7]:
+# In[8]:
 
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=init_lr)
 
 
-# In[8]:
+# In[9]:
 
 
 metrics = {
@@ -190,7 +193,7 @@ val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=devic
 
 # #### EarlyStopping
 
-# In[9]:
+# In[10]:
 
 
 # handler = EarlyStopping(patience=30, score_function=lambda engine: engine.state.metrics['accuracy'], trainer=trainer)
@@ -199,10 +202,10 @@ val_evaluator = create_supervised_evaluator(model, metrics=metrics, device=devic
 
 # #### LR Scheduler
 
-# In[10]:
+# In[11]:
 
 
-scheduler = CosineAnnealingScheduler(optimizer, 'lr', init_lr, 1e-7, len(loader))
+scheduler = CosineAnnealingScheduler(optimizer, 'lr', init_lr, end_lr, len(loader))
 trainer.add_event_handler(Events.ITERATION_STARTED, scheduler)
 
 @trainer.on(Events.ITERATION_COMPLETED)
@@ -216,7 +219,7 @@ def print_lr(engine):
 
 # #### Compute and display metrics
 
-# In[11]:
+# In[12]:
 
 
 @trainer.on(Events.EPOCH_COMPLETED)
@@ -229,13 +232,13 @@ def compute_and_display_val_metrics(engine):
 
 # #### Save best epoch only
 
-# In[12]:
+# In[13]:
 
 
 get_ipython().system('mkdir -p models')
 
 
-# In[13]:
+# In[14]:
 
 
 def get_saved_model_path(epoch):
@@ -272,7 +275,7 @@ def save_best_epoch_only(engine):
 
 # #### Progress bar - uncomment when testing in notebook
 
-# In[14]:
+# In[15]:
 
 
 # pbar = ProgressBar(bar_format='')
@@ -281,11 +284,11 @@ def save_best_epoch_only(engine):
 
 # #### Train
 
-# In[15]:
+# In[16]:
 
 
 print('Training started\n')
-trainer.run(loader, max_epochs=40)
+trainer.run(loader, max_epochs=8)
 
 
 # #### Evaluate
