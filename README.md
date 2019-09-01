@@ -1,7 +1,3 @@
-[trello board](https://trello.com/b/Yx9Bs6bk/cellsignal-recursionpharma-neurips-competition-todos)
-
-[dataset on floydhub](https://www.floydhub.com/michelml/datasets/rxrxai)
-
 ## Capstone Proposal For Udacity's Machine Learning Nanodegree
 Michel Moreau
 July 2nd, 2019
