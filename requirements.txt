@@ -2,3 +2,4 @@ tqdm
 pytorch-ignite
 efficientnet-pytorch
 opencv-python
+seaborn
