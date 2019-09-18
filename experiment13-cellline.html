@@ -13106,42 +13106,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !pip install -q -r requirements.txt</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre><span class="ansi-red-fg">menpo 0.8.1 has requirement matplotlib&lt;2.0,&gt;=1.4, but you&#39;ll have matplotlib 3.0.2 which is incompatible.</span>
-<span class="ansi-red-fg">menpo 0.8.1 has requirement pillow&lt;5.0,&gt;=3.0, but you&#39;ll have pillow 5.4.1 which is incompatible.</span>
-<span class="ansi-red-fg">menpo 0.8.1 has requirement scipy&lt;1.0,&gt;=0.16, but you&#39;ll have scipy 1.2.0 which is incompatible.</span>
-<span class="ansi-yellow-fg">You are using pip version 10.0.1, however version 19.2.3 is available.
-You should consider upgrading via the &#39;pip install --upgrade pip&#39; command.</span>
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -13197,7 +13162,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">img_dir</span> <span class="o">=</span> <span class="s1">&#39;/storage/rxrxai&#39;</span>
@@ -13217,7 +13182,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ImagesDS</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
@@ -13269,7 +13234,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dataframes for training, cross-validation, and testing</span>
@@ -13286,7 +13251,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">EfficientNetTwoInputs</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -13329,7 +13294,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
@@ -13367,7 +13332,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># utilities to save best epoch</span>
@@ -13386,7 +13351,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">models</span>
@@ -13399,7 +13364,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">atrifacts</span>
@@ -13412,7 +13377,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
@@ -13430,7 +13395,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
     <span class="n">cat_test_df</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">cell</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CURRENT CATEGORY:&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CURRENT CATEGORY:&quot;</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
 
     <span class="n">cat_train_df</span><span class="p">,</span> <span class="n">cat_val_df</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
@@ -13440,12 +13405,12 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
     <span class="p">)</span>
     
     <span class="c1"># pytorch training dataset &amp; loader</span>
-    <span class="n">cat_ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_train_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">cat_train_ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_train_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">cat_train_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
     <span class="c1"># pytorch cross-validation dataset &amp; loader</span>
     <span class="n">cat_val_ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_val_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">cat_val_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_val_loader</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">cat_val_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_val_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
     <span class="c1"># model</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">EfficientNetTwoInputs</span><span class="p">()</span>
@@ -13540,11 +13505,74 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>HEPG2
-HUVEC
-RPE
-U2OS
+<pre>
+========================================
+CURRENT CATEGORY: HEPG2
+----------------------------------------
+Loaded pretrained weights for efficientnet-b4
 </pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">RuntimeError</span>                              Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-11-994f10083b8f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     33</span>     <span class="ansi-red-fg"># model</span>
+<span class="ansi-green-intense-fg ansi-bold">     34</span>     model <span class="ansi-blue-fg">=</span> EfficientNetTwoInputs<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 35</span><span class="ansi-red-fg">     </span>model<span class="ansi-blue-fg">.</span>load_state_dict<span class="ansi-blue-fg">(</span>torch<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;/storage/rxrxmodels/Model_efficientnet-b4_57.pth&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     36</span>     model<span class="ansi-blue-fg">.</span>train<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     37</span> 
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">load</span><span class="ansi-blue-fg">(f, map_location, pickle_module, **pickle_load_args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    384</span>         f <span class="ansi-blue-fg">=</span> f<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;rb&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    385</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 386</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> _load<span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">,</span> map_location<span class="ansi-blue-fg">,</span> pickle_module<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pickle_load_args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    387</span>     <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    388</span>         <span class="ansi-green-fg">if</span> new_fd<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">_load</span><span class="ansi-blue-fg">(f, map_location, pickle_module, **pickle_load_args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    571</span>     unpickler <span class="ansi-blue-fg">=</span> pickle_module<span class="ansi-blue-fg">.</span>Unpickler<span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pickle_load_args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    572</span>     unpickler<span class="ansi-blue-fg">.</span>persistent_load <span class="ansi-blue-fg">=</span> persistent_load
+<span class="ansi-green-fg">--&gt; 573</span><span class="ansi-red-fg">     </span>result <span class="ansi-blue-fg">=</span> unpickler<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    574</span> 
+<span class="ansi-green-intense-fg ansi-bold">    575</span>     deserialized_storage_keys <span class="ansi-blue-fg">=</span> pickle_module<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pickle_load_args<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">persistent_load</span><span class="ansi-blue-fg">(saved_id)</span>
+<span class="ansi-green-intense-fg ansi-bold">    534</span>                 obj <span class="ansi-blue-fg">=</span> data_type<span class="ansi-blue-fg">(</span>size<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    535</span>                 obj<span class="ansi-blue-fg">.</span>_torch_load_uninitialized <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">True</span>
+<span class="ansi-green-fg">--&gt; 536</span><span class="ansi-red-fg">                 </span>deserialized_objects<span class="ansi-blue-fg">[</span>root_key<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> restore_location<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    537</span>             storage <span class="ansi-blue-fg">=</span> deserialized_objects<span class="ansi-blue-fg">[</span>root_key<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    538</span>             <span class="ansi-green-fg">if</span> view_metadata <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">default_restore_location</span><span class="ansi-blue-fg">(storage, location)</span>
+<span class="ansi-green-intense-fg ansi-bold">    117</span> <span class="ansi-green-fg">def</span> default_restore_location<span class="ansi-blue-fg">(</span>storage<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    118</span>     <span class="ansi-green-fg">for</span> _<span class="ansi-blue-fg">,</span> _<span class="ansi-blue-fg">,</span> fn <span class="ansi-green-fg">in</span> _package_registry<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 119</span><span class="ansi-red-fg">         </span>result <span class="ansi-blue-fg">=</span> fn<span class="ansi-blue-fg">(</span>storage<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    120</span>         <span class="ansi-green-fg">if</span> result <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    121</span>             <span class="ansi-green-fg">return</span> result
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">_cuda_deserialize</span><span class="ansi-blue-fg">(obj, location)</span>
+<span class="ansi-green-intense-fg ansi-bold">     93</span> <span class="ansi-green-fg">def</span> _cuda_deserialize<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     94</span>     <span class="ansi-green-fg">if</span> location<span class="ansi-blue-fg">.</span>startswith<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;cuda&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 95</span><span class="ansi-red-fg">         </span>device <span class="ansi-blue-fg">=</span> validate_cuda_device<span class="ansi-blue-fg">(</span>location<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     96</span>         <span class="ansi-green-fg">if</span> getattr<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;_torch_load_uninitialized&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     97</span>             storage_type <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>torch<span class="ansi-blue-fg">.</span>cuda<span class="ansi-blue-fg">,</span> type<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>__name__<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">validate_cuda_device</span><span class="ansi-blue-fg">(location)</span>
+<span class="ansi-green-intense-fg ansi-bold">     77</span> 
+<span class="ansi-green-intense-fg ansi-bold">     78</span>     <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> torch<span class="ansi-blue-fg">.</span>cuda<span class="ansi-blue-fg">.</span>is_available<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 79</span><span class="ansi-red-fg">         raise RuntimeError(&#39;Attempting to deserialize object on a CUDA &#39;
+</span><span class="ansi-green-intense-fg ansi-bold">     80</span>                            <span class="ansi-blue-fg">&#39;device but torch.cuda.is_available() is False. &#39;</span>
+<span class="ansi-green-intense-fg ansi-bold">     81</span>                            <span class="ansi-blue-fg">&#39;If you are running on a CPU-only machine, &#39;</span>
+
+<span class="ansi-red-fg">RuntimeError</span>: Attempting to deserialize object on a CUDA device but torch.cuda.is_available() is False. If you are running on a CPU-only machine, please use torch.load with map_location=torch.device(&#39;cpu&#39;) to map your storages to the CPU.</pre>
 </div>
 </div>
 
@@ -13560,10 +13588,10 @@ U2OS
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># aggregate submission files</span>
 <span class="n">submissions</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
-    <span class="n">submissions</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;submission_</span><span class="si">{cell}</span><span class="s1">.csv&#39;</span><span class="p">)]</span>
+    <span class="n">submissions</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;/artifacts/submission_</span><span class="si">{cell}</span><span class="s1">.csv&#39;</span><span class="p">)]</span>
 
 <span class="n">submissions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">submissions</span><span class="p">)</span>
-<span class="n">submissions</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;submission.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id_code&#39;</span><span class="p">,</span><span class="s1">&#39;sirna&#39;</span><span class="p">])</span>
+<span class="n">submissions</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;/artifacts/submission.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id_code&#39;</span><span class="p">,</span><span class="s1">&#39;sirna&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -13598,7 +13626,7 @@ U2OS
  
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"version_major": 2, "state": {"921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"right": null, "grid_column": null, "grid_auto_columns": null, "border": null, "_model_name": "LayoutModel", "grid_gap": null, "width": null, "align_items": null, "left": null, "height": null, "_model_module": "@jupyter-widgets/base", "min_width": null, "grid_template_areas": null, "grid_auto_rows": null, "grid_area": null, "max_height": null, "grid_row": null, "grid_template_rows": null, "_view_module_version": "1.1.0", "_view_count": null, "flex": null, "overflow": null, "top": null, "_view_name": "LayoutView", "grid_auto_flow": null, "overflow_x": null, "display": null, "align_content": null, "_model_module_version": "1.1.0", "margin": null, "order": null, "grid_template_columns": null, "min_height": null, "overflow_y": null, "max_width": null, "bottom": null, "align_self": null, "justify_content": null, "flex_flow": null, "visibility": null, "padding": null, "_view_module": "@jupyter-widgets/base"}}, "fad7703039454db7af5d7fb4bce65003": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"right": null, "grid_column": null, "grid_auto_columns": null, "border": null, "_model_name": "LayoutModel", "grid_gap": null, "width": null, "align_items": null, "left": null, "height": null, "_model_module": "@jupyter-widgets/base", "min_width": null, "grid_template_areas": null, "grid_auto_rows": null, "grid_area": null, "max_height": null, "grid_row": null, "grid_template_rows": null, "_view_module_version": "1.1.0", "_view_count": null, "flex": null, "overflow": null, "top": null, "_view_name": "LayoutView", "grid_auto_flow": null, "overflow_x": null, "display": null, "align_content": null, "_model_module_version": "1.1.0", "margin": null, "order": null, "grid_template_columns": null, "min_height": null, "overflow_y": null, "max_width": null, "bottom": null, "align_self": null, "justify_content": null, "flex_flow": null, "visibility": null, "padding": null, "_view_module": "@jupyter-widgets/base"}}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "model_module_version": "1.4.0", "state": {"description_tooltip": null, "_model_name": "IntProgressModel", "_view_name": "ProgressView", "_view_module_version": "1.4.0", "orientation": "horizontal", "_model_module_version": "1.4.0", "_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "value": 2151, "description": "Loss: 128.54232788085938", "_view_module": "@jupyter-widgets/controls", "min": 0, "bar_style": "", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "max": 2283, "_view_count": null, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003"}}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "model_module_version": "1.4.0", "state": {"_model_name": "HBoxModel", "_view_name": "HBoxView", "_view_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "box_style": "", "_model_module_version": "1.4.0", "_dom_classes": [], "_view_module_version": "1.4.0", "_view_count": null, "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_model_module": "@jupyter-widgets/controls"}}, "7740dfb227e54da8b1510dac2d094406": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"right": null, "grid_column": null, "grid_auto_columns": null, "border": null, "_model_name": "LayoutModel", "grid_gap": null, "width": null, "align_items": null, "left": null, "height": null, "_model_module": "@jupyter-widgets/base", "min_width": null, "grid_template_areas": null, "grid_auto_rows": null, "grid_area": null, "max_height": null, "grid_row": null, "grid_template_rows": null, "_view_module_version": "1.1.0", "_view_count": null, "flex": null, "overflow": null, "top": null, "_view_name": "LayoutView", "grid_auto_flow": null, "overflow_x": null, "display": null, "align_content": null, "_model_module_version": "1.1.0", "margin": null, "order": null, "grid_template_columns": null, "min_height": null, "overflow_y": null, "max_width": null, "bottom": null, "align_self": null, "justify_content": null, "flex_flow": null, "visibility": null, "padding": null, "_view_module": "@jupyter-widgets/base"}}, "9dfcb7497f8842af817750eec565b8b9": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "model_module_version": "1.4.0", "state": {"description_tooltip": null, "_model_name": "HTMLModel", "_view_name": "HTMLView", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_model_module_version": "1.4.0", "_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "description": "", "placeholder": "\u200b", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_view_module_version": "1.4.0", "_view_count": null, "_view_module": "@jupyter-widgets/controls"}}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "model_module_version": "1.4.0", "state": {"description_width": "initial", "_model_name": "ProgressStyleModel", "_view_name": "StyleView", "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "_view_module_version": "1.1.0", "_view_count": null, "bar_color": null}}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "model_module_version": "1.4.0", "state": {"description_width": "", "_model_name": "DescriptionStyleModel", "_view_name": "StyleView", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "_view_module_version": "1.1.0", "_view_count": null, "_model_module": "@jupyter-widgets/controls"}}}, "version_minor": 0}
+{"version_major": 2, "version_minor": 0, "state": {"ff74a4321a59419cb24e116db9dd1e3e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_view_name": "ProgressView", "_model_module_version": "1.4.0", "value": 2151, "max": 2283, "orientation": "horizontal", "_model_name": "IntProgressModel", "bar_style": "", "_view_module_version": "1.4.0", "_dom_classes": [], "description": "Loss: 128.54232788085938", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "min": 0, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "description_tooltip": null, "_view_module": "@jupyter-widgets/controls", "_view_count": null, "_model_module": "@jupyter-widgets/controls"}, "model_name": "IntProgressModel"}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_view_module_version": "1.1.0", "_model_module_version": "1.4.0", "_view_name": "StyleView", "description_width": "", "_view_count": null, "_model_name": "DescriptionStyleModel", "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/controls"}, "model_name": "DescriptionStyleModel"}, "fad7703039454db7af5d7fb4bce65003": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "state": {"_view_name": "LayoutView", "_model_module_version": "1.1.0", "flex_flow": null, "max_width": null, "right": null, "grid_area": null, "grid_row": null, "min_height": null, "overflow_x": null, "visibility": null, "align_self": null, "bottom": null, "grid_auto_rows": null, "grid_gap": null, "overflow_y": null, "order": null, "width": null, "flex": null, "_view_count": null, "top": null, "_model_name": "LayoutModel", "align_items": null, "grid_auto_flow": null, "grid_auto_columns": null, "grid_column": null, "display": null, "grid_template_rows": null, "grid_template_areas": null, "min_width": null, "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "overflow": null, "left": null, "max_height": null, "justify_content": null, "border": null, "height": null, "padding": null, "align_content": null, "grid_template_columns": null, "margin": null, "_model_module": "@jupyter-widgets/base"}, "model_name": "LayoutModel"}, "7740dfb227e54da8b1510dac2d094406": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "state": {"_view_name": "LayoutView", "_model_module_version": "1.1.0", "flex_flow": null, "max_width": null, "right": null, "grid_area": null, "grid_row": null, "min_height": null, "overflow_x": null, "visibility": null, "align_self": null, "bottom": null, "grid_auto_rows": null, "grid_gap": null, "overflow_y": null, "order": null, "width": null, "flex": null, "_view_count": null, "top": null, "_model_name": "LayoutModel", "align_items": null, "grid_auto_flow": null, "grid_auto_columns": null, "grid_column": null, "display": null, "grid_template_rows": null, "grid_template_areas": null, "min_width": null, "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "overflow": null, "left": null, "max_height": null, "justify_content": null, "border": null, "height": null, "padding": null, "align_content": null, "grid_template_columns": null, "margin": null, "_model_module": "@jupyter-widgets/base"}, "model_name": "LayoutModel"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "state": {"_view_name": "LayoutView", "_model_module_version": "1.1.0", "flex_flow": null, "max_width": null, "right": null, "grid_area": null, "grid_row": null, "min_height": null, "overflow_x": null, "visibility": null, "align_self": null, "bottom": null, "grid_auto_rows": null, "grid_gap": null, "overflow_y": null, "order": null, "width": null, "flex": null, "_view_count": null, "top": null, "_model_name": "LayoutModel", "align_items": null, "grid_auto_flow": null, "grid_auto_columns": null, "grid_column": null, "display": null, "grid_template_rows": null, "grid_template_areas": null, "min_width": null, "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "overflow": null, "left": null, "max_height": null, "justify_content": null, "border": null, "height": null, "padding": null, "align_content": null, "grid_template_columns": null, "margin": null, "_model_module": "@jupyter-widgets/base"}, "model_name": "LayoutModel"}, "9dfcb7497f8842af817750eec565b8b9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_dom_classes": [], "_model_module_version": "1.4.0", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_view_name": "HTMLView", "_view_count": null, "_view_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "description": "", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "description_tooltip": null, "_model_name": "HTMLModel", "placeholder": "\u200b", "_model_module": "@jupyter-widgets/controls"}, "model_name": "HTMLModel"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_view_module_version": "1.1.0", "_model_module_version": "1.4.0", "_view_name": "StyleView", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_view_count": null, "_model_name": "ProgressStyleModel", "bar_color": null, "_model_module": "@jupyter-widgets/controls"}, "model_name": "ProgressStyleModel"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_dom_classes": [], "_model_module_version": "1.4.0", "_view_name": "HBoxView", "_view_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_view_count": null, "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "box_style": "", "_view_module_version": "1.4.0", "_model_name": "HBoxModel", "_model_module": "@jupyter-widgets/controls"}, "model_name": "HBoxModel"}}}
 </script>
 
 
