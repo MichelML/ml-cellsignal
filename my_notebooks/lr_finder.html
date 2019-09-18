@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>cell_line_model_hepg2</title>
+<title>lr_finder</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13109,8 +13109,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">recursionpharma</span><span class="o">/</span><span class="n">rxrx1</span><span class="o">-</span><span class="n">utils</span><span class="o">.</span><span class="n">git</span> <span class="o">&amp;&amp;</span> <span class="n">mv</span> <span class="n">rxrx1</span><span class="o">-</span><span class="n">utils</span> <span class="n">rxrxutils</span>
-<span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MichelML</span><span class="o">/</span><span class="n">ml</span><span class="o">-</span><span class="n">cellsignal</span><span class="o">.</span><span class="n">git</span> <span class="o">&amp;&amp;</span> <span class="n">mv</span> <span class="n">ml</span><span class="o">-</span><span class="n">cellsignal</span> <span class="n">pre_models</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 
     </div>
@@ -13127,16 +13126,11 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Cloning into &#39;rxrx1-utils&#39;...
-remote: Enumerating objects: 118, done.
-remote: Total 118 (delta 0), reused 0 (delta 0), pack-reused 118
-Receiving objects: 100% (118/118), 1.59 MiB | 0 bytes/s, done.
-Resolving deltas: 100% (59/59), done.
-Cloning into &#39;ml-cellsignal&#39;...
-remote: Enumerating objects: 249, done.
-remote: Total 249 (delta 0), reused 0 (delta 0), pack-reused 249
-Receiving objects: 100% (249/249), 374.43 MiB | 40.64 MiB/s, done.
-Resolving deltas: 100% (114/114), done.
+<pre><span class="ansi-red-fg">menpo 0.8.1 has requirement matplotlib&lt;2.0,&gt;=1.4, but you&#39;ll have matplotlib 3.0.2 which is incompatible.</span>
+<span class="ansi-red-fg">menpo 0.8.1 has requirement pillow&lt;5.0,&gt;=3.0, but you&#39;ll have pillow 5.4.1 which is incompatible.</span>
+<span class="ansi-red-fg">menpo 0.8.1 has requirement scipy&lt;1.0,&gt;=0.16, but you&#39;ll have scipy 1.2.0 which is incompatible.</span>
+<span class="ansi-yellow-fg">You are using pip version 10.0.1, however version 19.2.2 is available.
+You should consider upgrading via the &#39;pip install --upgrade pip&#39; command.</span>
 </pre>
 </div>
 </div>
@@ -13147,53 +13141,10 @@ Resolving deltas: 100% (114/114), done.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">rxrxutils.rxrx.io</span> <span class="k">as</span> <span class="nn">rio</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">misc</span>
-
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
-
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">D</span>
-<span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="k">import</span> <span class="n">ExponentialLR</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-
-<span class="kn">from</span> <span class="nn">torchvision</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">transforms</span>
-
-<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="k">import</span> <span class="n">Events</span><span class="p">,</span> <span class="n">create_supervised_evaluator</span><span class="p">,</span> <span class="n">create_supervised_trainer</span>
-<span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="k">import</span> <span class="n">Loss</span><span class="p">,</span> <span class="n">Accuracy</span>
-<span class="kn">from</span> <span class="nn">ignite.contrib.handlers.tqdm_logger</span> <span class="k">import</span> <span class="n">ProgressBar</span>
-<span class="kn">from</span> <span class="nn">ignite.handlers</span> <span class="k">import</span>  <span class="n">EarlyStopping</span><span class="p">,</span> <span class="n">ModelCheckpoint</span>
-
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm_notebook</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
-
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">ls</span> <span class="o">-</span><span class="mi">1</span> <span class="o">../</span><span class="nb">input</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">davidtvs</span><span class="o">/</span><span class="n">pytorch</span><span class="o">-</span><span class="n">lr</span><span class="o">-</span><span class="n">finder</span><span class="o">.</span><span class="n">git</span> <span class="o">&amp;&amp;</span> <span class="n">mv</span> <span class="n">pytorch</span><span class="o">-</span><span class="n">lr</span><span class="o">-</span><span class="n">finder</span> <span class="n">lrfinder</span>
 </pre></div>
 
     </div>
@@ -13210,15 +13161,109 @@ Resolving deltas: 100% (114/114), done.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>pixel_stats.csv
-recursion_dataset_license.pdf
-sample_submission.csv
-test
-test.csv
-test_controls.csv
-train
-train.csv
-train_controls.csv
+<pre>Cloning into &#39;pytorch-lr-finder&#39;...
+remote: Enumerating objects: 45, done.
+remote: Total 45 (delta 0), reused 0 (delta 0), pack-reused 45
+Unpacking objects: 100% (45/45), done.
+Checking connectivity... done.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">r</span> <span class="n">lrfinder</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-red-fg">  Could not find a version that satisfies the requirement pkg-resources==0.0.0 (from -r lrfinder/requirements.txt (line 6)) (from versions: )</span>
+<span class="ansi-red-fg">No matching distribution found for pkg-resources==0.0.0 (from -r lrfinder/requirements.txt (line 6))</span>
+<span class="ansi-yellow-fg">You are using pip version 10.0.1, however version 19.2.2 is available.
+You should consider upgrading via the &#39;pip install --upgrade pip&#39; command.</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">D</span>
+<span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="k">import</span> <span class="n">ExponentialLR</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
+
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">transforms</span>
+
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="k">import</span> <span class="n">Events</span>
+<span class="kn">from</span> <span class="nn">scripts.ignite</span> <span class="k">import</span> <span class="n">create_supervised_evaluator</span><span class="p">,</span> <span class="n">create_supervised_trainer</span>
+<span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="k">import</span> <span class="n">Loss</span><span class="p">,</span> <span class="n">Accuracy</span>
+<span class="kn">from</span> <span class="nn">ignite.contrib.handlers.tqdm_logger</span> <span class="k">import</span> <span class="n">ProgressBar</span>
+<span class="kn">from</span> <span class="nn">ignite.handlers</span> <span class="k">import</span>  <span class="n">EarlyStopping</span><span class="p">,</span> <span class="n">ModelCheckpoint</span>
+<span class="kn">from</span> <span class="nn">ignite.contrib.handlers</span> <span class="k">import</span> <span class="n">LinearCyclicalScheduler</span><span class="p">,</span> <span class="n">CosineAnnealingScheduler</span>
+
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm_notebook</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">scripts.evaluate</span> <span class="k">import</span> <span class="n">eval_model</span> 
+
+<span class="kn">from</span> <span class="nn">lrfinder.lr_finder</span> <span class="k">import</span> <span class="n">LRFinder</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/usr/local/lib/python3.6/site-packages/tqdm/autonotebook/__init__.py:14: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  &#34; (e.g. in jupyter console)&#34;, TqdmExperimentalWarning)
 </pre>
 </div>
 </div>
@@ -13236,69 +13281,72 @@ train_controls.csv
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">path_data</span> <span class="o">=</span> <span class="s1">&#39;../input&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img_dir</span> <span class="o">=</span> <span class="s1">&#39;../input/rxrxairgb&#39;</span>
+<span class="n">path_data</span> <span class="o">=</span> <span class="s1">&#39;../input/rxrxaicsv&#39;</span>
 <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-10</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;resnet18&#39;</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;torch._C.Generator at 0x7f0393d90a90&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ImagesDS</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jitter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ImagesDS</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="c1"># taken textbook from https://arxiv.org/pdf/1812.01187.pdf</span>
+    <span class="n">transform_train</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ColorJitter</span><span class="p">(</span><span class="n">brightness</span><span class="o">=</span><span class="n">jitter</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="n">jitter</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="n">jitter</span><span class="p">,</span> <span class="n">hue</span><span class="o">=.</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="c1"># PCA Noise should go here,</span>
         <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">123.68</span><span class="p">,</span> <span class="mf">116.779</span><span class="p">,</span> <span class="mf">103.939</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">58.393</span><span class="p">,</span> <span class="mf">57.12</span><span class="p">,</span> <span class="mf">57.375</span><span class="p">))</span>
+    <span class="p">])</span>
+    
+    <span class="n">transform_validation</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">123.68</span><span class="p">,</span> <span class="mf">116.779</span><span class="p">,</span> <span class="mf">103.939</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">58.393</span><span class="p">,</span> <span class="mf">57.12</span><span class="p">,</span> <span class="mf">57.375</span><span class="p">))</span>
     <span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">img_dir</span><span class="o">=</span><span class="n">img_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">records</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_records</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">channels</span> <span class="o">=</span> <span class="n">channels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img_dir</span> <span class="o">=</span> <span class="n">img_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">len</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">first</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="o">=</span> <span class="n">validation</span>
         
-    <span class="k">def</span> <span class="nf">_get_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="n">record</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()(</span><span class="n">rio</span><span class="o">.</span><span class="n">load_site</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">plate</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">well</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">path_data</span><span class="p">))</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_load_img_as_tensor</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">validation</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">img</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">validation</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ImagesDS</span><span class="o">.</span><span class="n">transform_train</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ImagesDS</span><span class="o">.</span><span class="n">transform_validation</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_img_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">experiment</span><span class="p">,</span> <span class="n">well</span><span class="p">,</span> <span class="n">plate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">well</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">plate</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{self.img_dir}</span><span class="s1">/</span><span class="si">{self.mode}</span><span class="s1">/</span><span class="si">{experiment}</span><span class="s1">_</span><span class="si">{plate}</span><span class="s1">_</span><span class="si">{well}</span><span class="s1">_s</span><span class="si">{site}</span><span class="s1">.jpeg&#39;</span>
         
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_img</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">img1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_img_as_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_img_path</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">sirna</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">img1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">sirna</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">id_code</span>
+            <span class="k">return</span> <span class="n">img1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">id_code</span>
 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">len</span>
@@ -13311,780 +13359,70 @@ train_controls.csv
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dataframes for training, cross-validation, and testing</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_data</span><span class="o">+</span><span class="s1">&#39;/train.csv&#39;</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.025</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_data</span><span class="o">+</span><span class="s1">&#39;/test.csv&#39;</span><span class="p">)</span>
-<span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_model_from_resnet50</span><span class="p">():</span>
-    <span class="n">classes</span> <span class="o">=</span> <span class="mi">1108</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="n">classes</span><span class="p">)</span>
-
-    <span class="c1"># let&#39;s make our model work with 6 channels</span>
-    <span class="n">trained_kernel</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">conv1</span><span class="o">.</span><span class="n">weight</span>
-    <span class="n">new_conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">new_conv</span><span class="o">.</span><span class="n">weight</span><span class="p">[:,:]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trained_kernel</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span><span class="o">*</span><span class="mi">6</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">new_conv</span>
-    
-    <span class="k">return</span> <span class="n">model</span>
-    
-<span class="n">model</span> <span class="o">=</span> <span class="n">create_model_from_resnet50</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>Downloading: &#34;https://download.pytorch.org/models/resnet50-19c8e357.pth&#34; to /tmp/.cache/torch/checkpoints/resnet50-19c8e357.pth
-100%|██████████| 102502400/102502400 [00:00&lt;00:00, 107134174.02it/s]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Training-on-each-cell-line">Training on each cell line<a class="anchor-link" href="#Training-on-each-cell-line">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">categories</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-<span class="n">category</span> <span class="o">=</span> <span class="n">categories</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># Retrieve desired category</span>
-<span class="n">category_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">category</span><span class="p">]</span>
-<span class="n">cat_test_df</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CURRENT CATEGORY:&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
-
-<span class="n">cat_train_df</span><span class="p">,</span> <span class="n">cat_val_df</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
-    <span class="n">category_df</span><span class="p">,</span> 
-    <span class="n">random_state</span><span class="o">=</span><span class="mi">2019</span><span class="p">,</span>
-    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.05</span>
-<span class="p">)</span>
 
 <span class="c1"># pytorch training dataset &amp; loader</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_train_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
 <span class="c1"># pytorch cross-validation dataset &amp; loader</span>
-<span class="n">ds_val</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_val_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="n">ds_val</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">df_val</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">val_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">ds_val</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
 <span class="c1"># pytorch test dataset &amp; loader</span>
-<span class="n">ds_test</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">df_test</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<span class="n">ds_test</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">df_test</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">tloader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">ds_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-<span class="c1"># Restore previously trained model</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pre_models/models/Model_ResNet50_12.pth&#39;</span><span class="p">))</span>
-
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0004</span><span class="p">)</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
-<span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">criterion</span><span class="p">),</span>
-<span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
-<span class="p">}</span>
-
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
-<span class="n">val_evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
-
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">compute_and_display_val_metrics</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="n">val_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span><span class="o">.</span><span class="n">metrics</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validation Results - Epoch: </span><span class="si">{}</span><span class="s2">  Average Loss: </span><span class="si">{:.4f}</span><span class="s2"> | Accuracy: </span><span class="si">{:.4f}</span><span class="s2"> &quot;</span>
-          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> 
-                      <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> 
-                      <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]))</span>
-
-<span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">ExponentialLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">update_lr_scheduler</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-    <span class="n">lr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Learning rate: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
-
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_STARTED</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">turn_on_layers</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
-    <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;fc&#39;</span><span class="p">:</span>
-                <span class="n">pbar</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39; is unfrozen&#39;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">pbar</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39; is frozen&#39;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">pbar</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Turn on all the layers&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
-
-<span class="n">checkpoints</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="s1">&#39;models&#39;</span><span class="p">,</span> <span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="n">save_interval</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_saved</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">create_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span> <span class="n">checkpoints</span><span class="p">,</span> <span class="p">{</span><span class="n">f</span><span class="s1">&#39;ResNet50_</span><span class="si">{category}</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">})</span>
-
-<span class="n">pbar</span> <span class="o">=</span> <span class="n">ProgressBar</span><span class="p">(</span><span class="n">bar_format</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">pbar</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">output_transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
-
-<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-
-<span class="c1"># Make prediction and add to output dataframe</span>
-<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm_notebook</span><span class="p">(</span><span class="n">tloader</span><span class="p">):</span> 
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-        <span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-========================================
-CURRENT CATEGORY: HEPG2
-----------------------------------------
-conv1 is frozen
-bn1 is frozen
-relu is frozen
-maxpool is frozen
-layer1 is frozen
-layer2 is frozen
-layer3 is frozen
-layer4 is frozen
-avgpool is frozen
-fc is unfrozen
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="d9d10f91-ccf2-4d1d-b86d-af47c489d3d4"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#d9d10f91-ccf2-4d1d-b86d-af47c489d3d4');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 1  Average Loss: 2.0822 | Accuracy: 0.5232 
-Learning rate: 0.00038
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="3d1839fc-2039-40a4-b28b-6345fb579986"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#3d1839fc-2039-40a4-b28b-6345fb579986');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 2  Average Loss: 1.7321 | Accuracy: 0.5773 
-Learning rate: 0.000361
-Turn on all the layers
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="2f93cbd3-1d48-4eb3-bbd4-806d4ee1eb2a"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#2f93cbd3-1d48-4eb3-bbd4-806d4ee1eb2a');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 3  Average Loss: 1.3218 | Accuracy: 0.6804 
-Learning rate: 0.00034294999999999996
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="bd716a4f-85be-412c-a5c9-65585964e3a0"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#bd716a4f-85be-412c-a5c9-65585964e3a0');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 4  Average Loss: 0.7974 | Accuracy: 0.8144 
-Learning rate: 0.00032580249999999994
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="12498623-42a3-492e-a4ec-2f85cc9eac20"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#12498623-42a3-492e-a4ec-2f85cc9eac20');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 5  Average Loss: 0.7663 | Accuracy: 0.8299 
-Learning rate: 0.0003095123749999999
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="58a1d583-e138-4ad8-a901-ae1628ebd07f"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#58a1d583-e138-4ad8-a901-ae1628ebd07f');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 6  Average Loss: 0.7128 | Accuracy: 0.8299 
-Learning rate: 0.0002940367562499999
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="5d84f57c-aca2-4b91-bf24-93eccdb90da9"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#5d84f57c-aca2-4b91-bf24-93eccdb90da9');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 7  Average Loss: 1.0669 | Accuracy: 0.7371 
-Learning rate: 0.0002793349184374999
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="8ba7710f-4be5-430f-beda-1e26232a81b6"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#8ba7710f-4be5-430f-beda-1e26232a81b6');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 8  Average Loss: 0.9093 | Accuracy: 0.7861 
-Learning rate: 0.00026536817251562487
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="98367c3d-76a6-4252-aabd-be5cb666cbb3"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#98367c3d-76a6-4252-aabd-be5cb666cbb3');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 9  Average Loss: 0.9914 | Accuracy: 0.7706 
-Learning rate: 0.0002520997638898436
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="86efb504-99dd-4516-8fc7-ef77905e7f1a"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#86efb504-99dd-4516-8fc7-ef77905e7f1a');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 10  Average Loss: 0.9301 | Accuracy: 0.7809 
-Learning rate: 0.00023949477569535144
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="d136ab83-8c17-43df-ac75-29e017b266a3"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#d136ab83-8c17-43df-ac75-29e017b266a3');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 11  Average Loss: 1.3462 | Accuracy: 0.6675 
-Learning rate: 0.00022752003691058385
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="1eb25349-28ea-428d-a87e-592539c7e6bd"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#1eb25349-28ea-428d-a87e-592539c7e6bd');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 12  Average Loss: 1.2537 | Accuracy: 0.6804 
-Learning rate: 0.00021614403506505466
-</pre>
 </div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="3274a366-ed9f-423f-9b93-c5a440be9012"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#3274a366-ed9f-423f-9b93-c5a440be9012');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 13  Average Loss: 1.1077 | Accuracy: 0.7371 
-Learning rate: 0.00020533683331180191
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="9a090774-f4f3-4002-85d9-ecc787f7ad48"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#9a090774-f4f3-4002-85d9-ecc787f7ad48');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 14  Average Loss: 1.6298 | Accuracy: 0.6263 
-Learning rate: 0.0001950699916462118
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="edc8e657-483d-49d0-aadb-e41a6c482d2a"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#edc8e657-483d-49d0-aadb-e41a6c482d2a');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Validation Results - Epoch: 15  Average Loss: 1.0386 | Accuracy: 0.7397 
-Learning rate: 0.00018531649206390122
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-
- 
- 
-<div id="d3b2fe97-ad4b-44f4-86df-95d89a65d2cd"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#d3b2fe97-ad4b-44f4-86df-95d89a65d2cd');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "02c344894ba549c7969b993bc2cf014d", "version_minor": 0, "version_major": 2}
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-</pre>
-</div>
-</div>
-
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">classes</span> <span class="o">=</span> <span class="mi">1108</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span><span class="p">,</span> <span class="n">classes</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pytorch test dataset &amp; loader</span>
-<span class="n">ds_test</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_test_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
-<span class="n">tloader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">ds_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+</pre></div>
 
-<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;models/Model_ResNet50_HEPG2_6.pth&#39;</span><span class="p">))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-<span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm_notebook</span><span class="p">(</span><span class="n">tloader</span><span class="p">):</span> 
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-        <span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    </div>
+</div>
+</div>
 
-<span class="n">submission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_data</span> <span class="o">+</span> <span class="s1">&#39;/test.csv&#39;</span><span class="p">)</span>
-<span class="n">submission</span> <span class="o">=</span> <span class="n">submission</span><span class="p">[</span><span class="n">submission</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">category</span><span class="p">)]</span>
-<span class="n">submission</span><span class="p">[</span><span class="s1">&#39;sirna&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preds</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">submission</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;submission_HEPG2.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id_code&#39;</span><span class="p">,</span><span class="s1">&#39;sirna&#39;</span><span class="p">])</span>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lr_finder</span> <span class="o">=</span> <span class="n">LRFinder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+<span class="n">lr_finder</span><span class="o">.</span><span class="n">range_test</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">end_lr</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">step_mode</span><span class="o">=</span><span class="s2">&quot;exp&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14105,13 +13443,13 @@ var element = $('#d3b2fe97-ad4b-44f4-86df-95d89a65d2cd');
 
  
  
-<div id="95573e28-1ecc-4033-a464-417029638aae"></div>
+<div id="2bad5c5c-542d-4ca6-92a3-623ff5af9450"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#95573e28-1ecc-4033-a464-417029638aae');
+var element = $('#2bad5c5c-542d-4ca6-92a3-623ff5af9450');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "13abab3e8cc54d3190153e68e1810913", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "model_id": "550533458c3b491aa2df3ce4d405cdb4", "version_major": 2}
 </script>
 </div>
 
@@ -14123,7 +13461,8 @@ var element = $('#95573e28-1ecc-4033-a464-417029638aae');
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>
+<pre>Stopping early, the loss has diverged
+Learning rate search finished. See the graph with {finder_name}.plot()
 </pre>
 </div>
 </div>
@@ -14132,24 +13471,37 @@ var element = $('#95573e28-1ecc-4033-a464-417029638aae');
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="submission_HEPG2.csv">Download submission file</a></p>
-<p><a href="models/Model_ResNet50_HEPG2_6.pth">Download weights file for HEPG2 model</a></p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lr_finder</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -14161,7 +13513,7 @@ var element = $('#95573e28-1ecc-4033-a464-417029638aae');
  
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"version_minor": 0, "state": {"2b62ae829edc4d60acf1d9a9e1d598d8": {"model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "_model_name": "DescriptionStyleModel", "_view_name": "StyleView", "description_width": "", "_view_module_version": "1.1.0"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "7740dfb227e54da8b1510dac2d094406": {"model_name": "LayoutModel", "state": {"grid_auto_rows": null, "margin": null, "grid_template_columns": null, "align_items": null, "_view_module_version": "1.1.0", "bottom": null, "left": null, "grid_row": null, "flex": null, "min_width": null, "grid_template_areas": null, "padding": null, "grid_auto_columns": null, "order": null, "overflow_x": null, "min_height": null, "align_content": null, "grid_area": null, "grid_column": null, "_view_count": null, "overflow_y": null, "flex_flow": null, "display": null, "_model_name": "LayoutModel", "_view_name": "LayoutView", "_model_module": "@jupyter-widgets/base", "width": null, "visibility": null, "grid_auto_flow": null, "border": null, "_view_module": "@jupyter-widgets/base", "top": null, "_model_module_version": "1.1.0", "max_height": null, "grid_template_rows": null, "align_self": null, "justify_content": null, "overflow": null, "max_width": null, "grid_gap": null, "right": null, "height": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_name": "LayoutModel", "state": {"grid_auto_rows": null, "margin": null, "grid_template_columns": null, "align_items": null, "_view_module_version": "1.1.0", "bottom": null, "left": null, "grid_row": null, "flex": null, "min_width": null, "grid_template_areas": null, "padding": null, "grid_auto_columns": null, "order": null, "overflow_x": null, "min_height": null, "align_content": null, "grid_area": null, "grid_column": null, "_view_count": null, "overflow_y": null, "flex_flow": null, "display": null, "_model_name": "LayoutModel", "_view_name": "LayoutView", "_model_module": "@jupyter-widgets/base", "width": null, "visibility": null, "grid_auto_flow": null, "border": null, "_view_module": "@jupyter-widgets/base", "top": null, "_model_module_version": "1.1.0", "max_height": null, "grid_template_rows": null, "align_self": null, "justify_content": null, "overflow": null, "max_width": null, "grid_gap": null, "right": null, "height": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "fad7703039454db7af5d7fb4bce65003": {"model_name": "LayoutModel", "state": {"grid_auto_rows": null, "margin": null, "grid_template_columns": null, "align_items": null, "_view_module_version": "1.1.0", "bottom": null, "left": null, "grid_row": null, "flex": null, "min_width": null, "grid_template_areas": null, "padding": null, "grid_auto_columns": null, "order": null, "overflow_x": null, "min_height": null, "align_content": null, "grid_area": null, "grid_column": null, "_view_count": null, "overflow_y": null, "flex_flow": null, "display": null, "_model_name": "LayoutModel", "_view_name": "LayoutView", "_model_module": "@jupyter-widgets/base", "width": null, "visibility": null, "grid_auto_flow": null, "border": null, "_view_module": "@jupyter-widgets/base", "top": null, "_model_module_version": "1.1.0", "max_height": null, "grid_template_rows": null, "align_self": null, "justify_content": null, "overflow": null, "max_width": null, "grid_gap": null, "right": null, "height": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_name": "ProgressStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "_model_name": "ProgressStyleModel", "_view_name": "StyleView", "description_width": "initial", "bar_color": null, "_view_module_version": "1.1.0"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_name": "IntProgressModel", "state": {"_view_count": null, "_model_module": "@jupyter-widgets/controls", "description": "Loss: 128.54232788085938", "_model_name": "IntProgressModel", "_view_module_version": "1.4.0", "min": 0, "max": 2283, "orientation": "horizontal", "value": 2151, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "_view_module": "@jupyter-widgets/controls", "description_tooltip": null, "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "_model_module_version": "1.4.0", "bar_style": "", "_dom_classes": [], "_view_name": "ProgressView"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_name": "HBoxModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "box_style": "", "_model_name": "HBoxModel", "_view_module_version": "1.4.0", "_dom_classes": [], "_view_name": "HBoxView", "_model_module_version": "1.4.0", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "9dfcb7497f8842af817750eec565b8b9": {"model_name": "HTMLModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_model_name": "HTMLModel", "description": "", "_view_module_version": "1.4.0", "_view_name": "HTMLView", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "placeholder": "\u200b", "_view_module": "@jupyter-widgets/controls", "description_tooltip": null, "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_model_module_version": "1.4.0", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_dom_classes": []}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}}, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "state": {"fad7703039454db7af5d7fb4bce65003": {"model_name": "LayoutModel", "state": {"flex": null, "grid_template_rows": null, "_view_module": "@jupyter-widgets/base", "display": null, "grid_template_columns": null, "grid_gap": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "grid_auto_columns": null, "_view_module_version": "1.1.0", "align_items": null, "min_width": null, "border": null, "visibility": null, "max_height": null, "overflow_y": null, "margin": null, "justify_content": null, "_model_module": "@jupyter-widgets/base", "height": null, "align_content": null, "overflow": null, "align_self": null, "grid_auto_flow": null, "width": null, "grid_template_areas": null, "_view_count": null, "min_height": null, "order": null, "max_width": null, "top": null, "bottom": null, "left": null, "flex_flow": null, "overflow_x": null, "_model_module_version": "1.1.0", "padding": null, "grid_area": null, "grid_row": null, "grid_auto_rows": null, "grid_column": null, "right": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_name": "IntProgressModel", "state": {"description": "Loss: 128.54232788085938", "_view_module": "@jupyter-widgets/controls", "min": 0, "_view_count": null, "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "_view_module_version": "1.4.0", "_model_name": "IntProgressModel", "bar_style": "", "_dom_classes": [], "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "orientation": "horizontal", "description_tooltip": null, "max": 2283, "_model_module": "@jupyter-widgets/controls", "value": 2151, "_model_module_version": "1.4.0", "_view_name": "ProgressView"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"model_name": "DescriptionStyleModel", "state": {"_view_module": "@jupyter-widgets/base", "_view_count": null, "_view_module_version": "1.1.0", "_model_name": "DescriptionStyleModel", "_view_name": "StyleView", "_model_module_version": "1.4.0", "_model_module": "@jupyter-widgets/controls", "description_width": ""}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_name": "HBoxModel", "state": {"box_style": "", "_view_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "_view_count": null, "_dom_classes": [], "_view_module_version": "1.4.0", "_model_name": "HBoxModel", "_view_name": "HBoxView", "_model_module_version": "1.4.0", "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "7740dfb227e54da8b1510dac2d094406": {"model_name": "LayoutModel", "state": {"flex": null, "grid_template_rows": null, "_view_module": "@jupyter-widgets/base", "display": null, "grid_template_columns": null, "grid_gap": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "grid_auto_columns": null, "_view_module_version": "1.1.0", "align_items": null, "min_width": null, "border": null, "visibility": null, "max_height": null, "overflow_y": null, "margin": null, "justify_content": null, "_model_module": "@jupyter-widgets/base", "height": null, "align_content": null, "overflow": null, "align_self": null, "grid_auto_flow": null, "width": null, "grid_template_areas": null, "_view_count": null, "min_height": null, "order": null, "max_width": null, "top": null, "bottom": null, "left": null, "flex_flow": null, "overflow_x": null, "_model_module_version": "1.1.0", "padding": null, "grid_area": null, "grid_row": null, "grid_auto_rows": null, "grid_column": null, "right": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_name": "ProgressStyleModel", "state": {"_view_module": "@jupyter-widgets/base", "_view_count": null, "bar_color": null, "_view_module_version": "1.1.0", "_model_name": "ProgressStyleModel", "_view_name": "StyleView", "_model_module_version": "1.4.0", "_model_module": "@jupyter-widgets/controls", "description_width": "initial"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_name": "LayoutModel", "state": {"flex": null, "grid_template_rows": null, "_view_module": "@jupyter-widgets/base", "display": null, "grid_template_columns": null, "grid_gap": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "grid_auto_columns": null, "_view_module_version": "1.1.0", "align_items": null, "min_width": null, "border": null, "visibility": null, "max_height": null, "overflow_y": null, "margin": null, "justify_content": null, "_model_module": "@jupyter-widgets/base", "height": null, "align_content": null, "overflow": null, "align_self": null, "grid_auto_flow": null, "width": null, "grid_template_areas": null, "_view_count": null, "min_height": null, "order": null, "max_width": null, "top": null, "bottom": null, "left": null, "flex_flow": null, "overflow_x": null, "_model_module_version": "1.1.0", "padding": null, "grid_area": null, "grid_row": null, "grid_auto_rows": null, "grid_column": null, "right": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "9dfcb7497f8842af817750eec565b8b9": {"model_name": "HTMLModel", "state": {"description": "", "_view_module": "@jupyter-widgets/controls", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "_view_count": null, "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_model_name": "HTMLModel", "placeholder": "\u200b", "_view_module_version": "1.4.0", "_dom_classes": [], "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "_view_name": "HTMLView", "_model_module_version": "1.4.0"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}}}
 </script>
 
 

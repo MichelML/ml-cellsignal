@@ -24,7 +24,7 @@ from torchvision import transforms
 
 from tqdm import tqdm_notebook
 
-def apply_plates_leak(all_predictions, sub_file='./submission_plates_leak.csv'):
+def apply_plates_leak(all_predictions, old_sub='./submission.csv', sub_file='./submission_plates_leak.csv'):
     """Apply the plates leak to pre-existing predictions.
     see https://www.kaggle.com/zaharch/keras-model-boosted-with-plates-leak
 
@@ -32,11 +32,11 @@ def apply_plates_leak(all_predictions, sub_file='./submission_plates_leak.csv'):
         all_predictions (two-dimensional list of float of shape 19897x1108): list representing the probabilities of each siRNA for each of the 19897 predictions to make.
     
     Output:
-        submission_plates_leak.csv
+        submission_plates_leak.csv or sub_file provided
     """ 
-    train_csv = pd.read_csv("../input/rxrxaicsv/train.csv")
-    test_csv = pd.read_csv("../input/rxrxaicsv/test.csv")
-    sub = pd.read_csv("./submission.csv")
+    train_csv = pd.read_csv("/storage/rxrxai/train.csv")
+    test_csv = pd.read_csv("/storage/rxrxai/test.csv")
+    sub = pd.read_csv(old_sub)
 
     plate_groups = np.zeros((1108,4), int)
     for sirna in range(1108):
@@ -85,5 +85,5 @@ def apply_plates_leak(all_predictions, sub_file='./submission_plates_leak.csv'):
         sub.loc[indices,'sirna'] = preds.argmax(1)
 
     print("Printing correlation with initial submission.csv :")
-    print((sub.sirna == pd.read_csv("./submission.csv").sirna).mean())
-    sub.to_csv('./submission_plates_leak.csv', index=False, columns=['id_code','sirna'])
+    print((sub.sirna == pd.read_csv(old_sub).sirna).mean())
+    sub.to_csv(sub_file, index=False, columns=['id_code','sirna'])

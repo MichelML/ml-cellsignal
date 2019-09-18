@@ -13040,45 +13040,6 @@ ul.typeahead-list  > li > a.pull-right {
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
-<style type="text/css">
-    
-/* Temporary definitions which will become obsolete with Notebook release 5.0 */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-bold { font-weight: bold; }
-
-    </style>
 
 
 <style type="text/css">
@@ -13112,7 +13073,7 @@ div#notebook {
 
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -13148,8 +13109,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>git clone https://github.com/recursionpharma/rxrx1-utils.git <span class="o">&amp;&amp;</span> mv rxrx1-utils rxrxutils
-<span class="o">!</span>git clone https://github.com/MichelML/ml-cellsignal.git <span class="o">&amp;&amp;</span> mv ml-cellsignal pre_models
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">recursionpharma</span><span class="o">/</span><span class="n">rxrx1</span><span class="o">-</span><span class="n">utils</span><span class="o">.</span><span class="n">git</span> <span class="o">&amp;&amp;</span> <span class="n">mv</span> <span class="n">rxrx1</span><span class="o">-</span><span class="n">utils</span> <span class="n">rxrxutils</span>
+<span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MichelML</span><span class="o">/</span><span class="n">ml</span><span class="o">-</span><span class="n">cellsignal</span><span class="o">.</span><span class="n">git</span> <span class="o">&amp;&amp;</span> <span class="n">mv</span> <span class="n">ml</span><span class="o">-</span><span class="n">cellsignal</span> <span class="n">pre_models</span>
 </pre></div>
 
     </div>
@@ -13219,7 +13180,7 @@ Resolving deltas: 100% (114/114), done.
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
-<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 </pre></div>
 
     </div>
@@ -13232,7 +13193,7 @@ Resolving deltas: 100% (114/114), done.
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls -1 ../input
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">ls</span> <span class="o">-</span><span class="mi">1</span> <span class="o">../</span><span class="nb">input</span>
 </pre></div>
 
     </div>
@@ -13554,13 +13515,13 @@ fc is unfrozen
 
  
  
-<div id="c72b10de-73e5-4b08-92c1-12676c461ca4"></div>
+<div id="65e479c5-4fce-4062-a33e-d8069cf2ac4f"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#c72b10de-73e5-4b08-92c1-12676c461ca4');
+var element = $('#65e479c5-4fce-4062-a33e-d8069cf2ac4f');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13588,13 +13549,13 @@ Learning rate: 0.00038
 
  
  
-<div id="add49cae-757d-425b-afc4-991f39e76642"></div>
+<div id="822bb2aa-7203-4654-9d20-b7a86ad1dfc2"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#add49cae-757d-425b-afc4-991f39e76642');
+var element = $('#822bb2aa-7203-4654-9d20-b7a86ad1dfc2');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13623,13 +13584,13 @@ Turn on all the layers
 
  
  
-<div id="11e50e88-b296-4118-9bda-04b2bce5fe95"></div>
+<div id="d15d1144-8c10-4927-9dfd-622461ef62ed"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#11e50e88-b296-4118-9bda-04b2bce5fe95');
+var element = $('#d15d1144-8c10-4927-9dfd-622461ef62ed');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13657,13 +13618,13 @@ Learning rate: 0.00034294999999999996
 
  
  
-<div id="c00c3bf2-db0b-47c1-a850-fa027f7feb06"></div>
+<div id="8ff0c3ba-7cdc-4dd0-8d84-9c4626904f18"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#c00c3bf2-db0b-47c1-a850-fa027f7feb06');
+var element = $('#8ff0c3ba-7cdc-4dd0-8d84-9c4626904f18');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13691,13 +13652,13 @@ Learning rate: 0.00032580249999999994
 
  
  
-<div id="156d9b6e-4b0d-4edf-9407-31fe3ccc218b"></div>
+<div id="ee9c6e6d-aea6-4ab9-bc40-23ba3d00ae0c"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#156d9b6e-4b0d-4edf-9407-31fe3ccc218b');
+var element = $('#ee9c6e6d-aea6-4ab9-bc40-23ba3d00ae0c');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13725,13 +13686,13 @@ Learning rate: 0.0003095123749999999
 
  
  
-<div id="a455cdb9-64c6-4fcd-ba98-6ef09c052ce0"></div>
+<div id="e9db6b60-97cc-42fc-8816-46e29768a225"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#a455cdb9-64c6-4fcd-ba98-6ef09c052ce0');
+var element = $('#e9db6b60-97cc-42fc-8816-46e29768a225');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13759,13 +13720,13 @@ Learning rate: 0.0002940367562499999
 
  
  
-<div id="2f3b4c55-efa3-417a-bebf-d3bcdf45475f"></div>
+<div id="f028249c-4c4d-41b7-bdaf-0958138dd975"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#2f3b4c55-efa3-417a-bebf-d3bcdf45475f');
+var element = $('#f028249c-4c4d-41b7-bdaf-0958138dd975');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13793,13 +13754,13 @@ Learning rate: 0.0002793349184374999
 
  
  
-<div id="08e5b7ce-9388-4a0d-8e3e-ca30040729d2"></div>
+<div id="3b912aac-318c-4c77-aefd-95b5ab3e6a25"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#08e5b7ce-9388-4a0d-8e3e-ca30040729d2');
+var element = $('#3b912aac-318c-4c77-aefd-95b5ab3e6a25');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13827,13 +13788,13 @@ Learning rate: 0.00026536817251562487
 
  
  
-<div id="b3988130-e9f5-4230-ac1a-2bca12b1eb67"></div>
+<div id="5446b144-3dd6-49fa-aec2-aee2a79a4135"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#b3988130-e9f5-4230-ac1a-2bca12b1eb67');
+var element = $('#5446b144-3dd6-49fa-aec2-aee2a79a4135');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13861,13 +13822,13 @@ Learning rate: 0.0002520997638898436
 
  
  
-<div id="11d483e4-6648-4f67-ae0d-fd0e4a0bf4a7"></div>
+<div id="c50d613c-0d8a-4df3-b9e7-b7e476f46f6a"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#11d483e4-6648-4f67-ae0d-fd0e4a0bf4a7');
+var element = $('#c50d613c-0d8a-4df3-b9e7-b7e476f46f6a');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13895,13 +13856,13 @@ Learning rate: 0.00023949477569535144
 
  
  
-<div id="36f3fda0-1e27-4fc6-a6f2-139216be8966"></div>
+<div id="7caa48b2-392e-4f68-9709-982d3ad09236"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#36f3fda0-1e27-4fc6-a6f2-139216be8966');
+var element = $('#7caa48b2-392e-4f68-9709-982d3ad09236');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13929,13 +13890,13 @@ Learning rate: 0.00022752003691058385
 
  
  
-<div id="f7e046be-680a-4c1c-933d-27264cfd96c7"></div>
+<div id="03b9bd7f-5426-40cd-974d-0988ab84a8bf"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#f7e046be-680a-4c1c-933d-27264cfd96c7');
+var element = $('#03b9bd7f-5426-40cd-974d-0988ab84a8bf');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13963,13 +13924,13 @@ Learning rate: 0.00021614403506505466
 
  
  
-<div id="100406f2-5319-4bea-89ff-69bca0a2a476"></div>
+<div id="502128d3-a8a6-4862-8320-2d6280ff9fe6"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#100406f2-5319-4bea-89ff-69bca0a2a476');
+var element = $('#502128d3-a8a6-4862-8320-2d6280ff9fe6');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -13997,13 +13958,13 @@ Learning rate: 0.00020533683331180191
 
  
  
-<div id="817ba635-d4ad-45b7-beda-3d1aac5ab7dc"></div>
+<div id="c83a9031-ff4d-4641-83d4-906fb26d167e"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#817ba635-d4ad-45b7-beda-3d1aac5ab7dc');
+var element = $('#c83a9031-ff4d-4641-83d4-906fb26d167e');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -14031,13 +13992,13 @@ Learning rate: 0.0001950699916462118
 
  
  
-<div id="a041ad2f-c267-4d54-865b-05669f0c21b9"></div>
+<div id="e4456eb0-d931-46eb-9527-dcf79cf2da41"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#a041ad2f-c267-4d54-865b-05669f0c21b9');
+var element = $('#e4456eb0-d931-46eb-9527-dcf79cf2da41');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": ""}
+{"version_major": 2, "model_id": "", "version_minor": 0}
 </script>
 </div>
 
@@ -14115,13 +14076,13 @@ Learning rate: 0.00018531649206390122
 
  
  
-<div id="512c0c48-8aeb-473c-a31b-652ba535bad3"></div>
+<div id="d030cf7f-e9b3-40c3-8d64-df41888553d2"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#512c0c48-8aeb-473c-a31b-652ba535bad3');
+var element = $('#d030cf7f-e9b3-40c3-8d64-df41888553d2');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "dca9016e99d541309f5260ddf896fff5"}
+{"version_major": 2, "model_id": "dca9016e99d541309f5260ddf896fff5", "version_minor": 0}
 </script>
 </div>
 
@@ -14156,7 +14117,7 @@ var element = $('#512c0c48-8aeb-473c-a31b-652ba535bad3');
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span>
 </pre></div>
 
     </div>
@@ -14171,7 +14132,7 @@ var element = $('#512c0c48-8aeb-473c-a31b-652ba535bad3');
  
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "_view_name": "StyleView", "description_width": ""}}, "7740dfb227e54da8b1510dac2d094406": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.1.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.1.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "9dfcb7497f8842af817750eec565b8b9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "model_name": "HTMLModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.4.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "placeholder": "\u200b", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]"}}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "model_name": "ProgressStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "_view_name": "StyleView", "bar_color": null, "description_width": "initial"}}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "model_name": "HBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.4.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406"}}, "fad7703039454db7af5d7fb4bce65003": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.1.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "model_name": "IntProgressModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "_model_name": "IntProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.4.0", "_view_name": "ProgressView", "bar_style": "", "description": "Loss: 128.54232788085938", "description_tooltip": null, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "max": 2283, "min": 0, "orientation": "horizontal", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "value": 2151}}}, "version_major": 2, "version_minor": 0}
+{"version_major": 2, "state": {"9dfcb7497f8842af817750eec565b8b9": {"model_name": "HTMLModel", "model_module_version": "1.4.0", "state": {"_model_name": "HTMLModel", "description_tooltip": null, "_view_module": "@jupyter-widgets/controls", "_view_name": "HTMLView", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_model_module": "@jupyter-widgets/controls", "description": "", "_dom_classes": [], "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "placeholder": "\u200b", "_model_module_version": "1.4.0", "_view_module_version": "1.4.0", "_view_count": null}, "model_module": "@jupyter-widgets/controls"}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_name": "IntProgressModel", "model_module_version": "1.4.0", "state": {"_model_name": "IntProgressModel", "description_tooltip": null, "_view_module": "@jupyter-widgets/controls", "_view_count": null, "_view_name": "ProgressView", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "min": 0, "_model_module": "@jupyter-widgets/controls", "description": "Loss: 128.54232788085938", "value": 2151, "orientation": "horizontal", "_model_module_version": "1.4.0", "max": 2283, "_view_module_version": "1.4.0", "_dom_classes": [], "bar_style": ""}, "model_module": "@jupyter-widgets/controls"}, "7740dfb227e54da8b1510dac2d094406": {"model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"max_width": null, "align_items": null, "grid_area": null, "overflow_x": null, "overflow_y": null, "grid_auto_columns": null, "height": null, "grid_auto_rows": null, "max_height": null, "_model_module": "@jupyter-widgets/base", "width": null, "grid_gap": null, "padding": null, "overflow": null, "grid_template_columns": null, "right": null, "align_content": null, "grid_row": null, "justify_content": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "margin": null, "_view_module": "@jupyter-widgets/base", "left": null, "min_width": null, "min_height": null, "display": null, "flex": null, "grid_template_areas": null, "top": null, "align_self": null, "order": null, "flex_flow": null, "grid_template_rows": null, "_model_module_version": "1.1.0", "_view_module_version": "1.1.0", "grid_auto_flow": null, "grid_column": null, "border": null, "visibility": null, "_view_count": null, "bottom": null}, "model_module": "@jupyter-widgets/base"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_name": "ProgressStyleModel", "model_module_version": "1.4.0", "state": {"_model_name": "ProgressStyleModel", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "description_width": "initial", "_view_name": "StyleView", "bar_color": null, "_view_module_version": "1.1.0", "_view_count": null, "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_name": "HBoxModel", "model_module_version": "1.4.0", "state": {"_model_name": "HBoxModel", "box_style": "", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "_view_name": "HBoxView", "_dom_classes": [], "_view_module_version": "1.4.0", "_view_count": null, "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "fad7703039454db7af5d7fb4bce65003": {"model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"max_width": null, "align_items": null, "grid_area": null, "overflow_x": null, "overflow_y": null, "grid_auto_columns": null, "height": null, "grid_auto_rows": null, "max_height": null, "_model_module": "@jupyter-widgets/base", "width": null, "grid_gap": null, "padding": null, "overflow": null, "grid_template_columns": null, "right": null, "align_content": null, "grid_row": null, "justify_content": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "margin": null, "_view_module": "@jupyter-widgets/base", "left": null, "min_width": null, "min_height": null, "display": null, "flex": null, "grid_template_areas": null, "top": null, "align_self": null, "order": null, "flex_flow": null, "grid_template_rows": null, "_model_module_version": "1.1.0", "_view_module_version": "1.1.0", "grid_auto_flow": null, "grid_column": null, "border": null, "visibility": null, "_view_count": null, "bottom": null}, "model_module": "@jupyter-widgets/base"}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"model_name": "DescriptionStyleModel", "model_module_version": "1.4.0", "state": {"_model_name": "DescriptionStyleModel", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "description_width": "", "_view_name": "StyleView", "_view_module_version": "1.1.0", "_view_count": null, "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"max_width": null, "align_items": null, "grid_area": null, "overflow_x": null, "overflow_y": null, "grid_auto_columns": null, "height": null, "grid_auto_rows": null, "max_height": null, "_model_module": "@jupyter-widgets/base", "width": null, "grid_gap": null, "padding": null, "overflow": null, "grid_template_columns": null, "right": null, "align_content": null, "grid_row": null, "justify_content": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "margin": null, "_view_module": "@jupyter-widgets/base", "left": null, "min_width": null, "min_height": null, "display": null, "flex": null, "grid_template_areas": null, "top": null, "align_self": null, "order": null, "flex_flow": null, "grid_template_rows": null, "_model_module_version": "1.1.0", "_view_module_version": "1.1.0", "grid_auto_flow": null, "grid_column": null, "border": null, "visibility": null, "_view_count": null, "bottom": null}, "model_module": "@jupyter-widgets/base"}}, "version_minor": 0}
 </script>
 
 
