@@ -13445,32 +13445,10 @@ train_controls.csv
     <span class="n">lr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">])</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Learning rate: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
 
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_STARTED</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">turn_on_layers</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
-    <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;fc&#39;</span><span class="p">:</span>
-                <span class="n">pbar</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39; is unfrozen&#39;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">pbar</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39; is frozen&#39;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">pbar</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Turn on all the layers&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
-
-<span class="n">checkpoints</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="s1">&#39;models&#39;</span><span class="p">,</span> <span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="n">save_interval</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_saved</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">create_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span> <span class="n">checkpoints</span><span class="p">,</span> <span class="p">{</span><span class="n">f</span><span class="s1">&#39;ResNet50_</span><span class="si">{category}</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">})</span>
-
 <span class="n">pbar</span> <span class="o">=</span> <span class="n">ProgressBar</span><span class="p">(</span><span class="n">bar_format</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 <span class="n">pbar</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">output_transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
 
-<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
 
 <span class="c1"># Make prediction and add to output dataframe</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -13524,13 +13502,13 @@ fc is unfrozen
 
  
  
-<div id="d9d10f91-ccf2-4d1d-b86d-af47c489d3d4"></div>
+<div id="575cb07e-4d04-43d8-9466-10a72ef84e2f"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#d9d10f91-ccf2-4d1d-b86d-af47c489d3d4');
+var element = $('#575cb07e-4d04-43d8-9466-10a72ef84e2f');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13558,13 +13536,13 @@ Learning rate: 0.00038
 
  
  
-<div id="3d1839fc-2039-40a4-b28b-6345fb579986"></div>
+<div id="35b5b292-7621-4d6f-9340-8fe77f9f3360"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#3d1839fc-2039-40a4-b28b-6345fb579986');
+var element = $('#35b5b292-7621-4d6f-9340-8fe77f9f3360');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13593,13 +13571,13 @@ Turn on all the layers
 
  
  
-<div id="2f93cbd3-1d48-4eb3-bbd4-806d4ee1eb2a"></div>
+<div id="7c7ee388-0058-45cd-a531-d266dc8c603d"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#2f93cbd3-1d48-4eb3-bbd4-806d4ee1eb2a');
+var element = $('#7c7ee388-0058-45cd-a531-d266dc8c603d');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13627,13 +13605,13 @@ Learning rate: 0.00034294999999999996
 
  
  
-<div id="bd716a4f-85be-412c-a5c9-65585964e3a0"></div>
+<div id="dd7ea64d-00f1-4407-9c02-5e9ce52d1dc9"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#bd716a4f-85be-412c-a5c9-65585964e3a0');
+var element = $('#dd7ea64d-00f1-4407-9c02-5e9ce52d1dc9');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13661,13 +13639,13 @@ Learning rate: 0.00032580249999999994
 
  
  
-<div id="12498623-42a3-492e-a4ec-2f85cc9eac20"></div>
+<div id="3bf866d0-6f81-4b61-988b-f13c5c19a413"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#12498623-42a3-492e-a4ec-2f85cc9eac20');
+var element = $('#3bf866d0-6f81-4b61-988b-f13c5c19a413');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13695,13 +13673,13 @@ Learning rate: 0.0003095123749999999
 
  
  
-<div id="58a1d583-e138-4ad8-a901-ae1628ebd07f"></div>
+<div id="d6ffe3c8-83dd-488a-a00f-75dc62ab72df"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#58a1d583-e138-4ad8-a901-ae1628ebd07f');
+var element = $('#d6ffe3c8-83dd-488a-a00f-75dc62ab72df');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13729,13 +13707,13 @@ Learning rate: 0.0002940367562499999
 
  
  
-<div id="5d84f57c-aca2-4b91-bf24-93eccdb90da9"></div>
+<div id="b6ad21cd-e913-48db-b813-2ac529368a58"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#5d84f57c-aca2-4b91-bf24-93eccdb90da9');
+var element = $('#b6ad21cd-e913-48db-b813-2ac529368a58');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13763,13 +13741,13 @@ Learning rate: 0.0002793349184374999
 
  
  
-<div id="8ba7710f-4be5-430f-beda-1e26232a81b6"></div>
+<div id="59061213-640b-49c2-b4d5-6849a3d7bf39"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#8ba7710f-4be5-430f-beda-1e26232a81b6');
+var element = $('#59061213-640b-49c2-b4d5-6849a3d7bf39');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13797,13 +13775,13 @@ Learning rate: 0.00026536817251562487
 
  
  
-<div id="98367c3d-76a6-4252-aabd-be5cb666cbb3"></div>
+<div id="5d7091a6-8d4c-42d7-a0ce-073d8c9f19f0"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#98367c3d-76a6-4252-aabd-be5cb666cbb3');
+var element = $('#5d7091a6-8d4c-42d7-a0ce-073d8c9f19f0');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13831,13 +13809,13 @@ Learning rate: 0.0002520997638898436
 
  
  
-<div id="86efb504-99dd-4516-8fc7-ef77905e7f1a"></div>
+<div id="9fec91ab-f0de-461a-a51d-a4ef5da018b0"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#86efb504-99dd-4516-8fc7-ef77905e7f1a');
+var element = $('#9fec91ab-f0de-461a-a51d-a4ef5da018b0');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13865,13 +13843,13 @@ Learning rate: 0.00023949477569535144
 
  
  
-<div id="d136ab83-8c17-43df-ac75-29e017b266a3"></div>
+<div id="dcedb518-ed01-4363-985d-aee9004007da"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#d136ab83-8c17-43df-ac75-29e017b266a3');
+var element = $('#dcedb518-ed01-4363-985d-aee9004007da');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13899,13 +13877,13 @@ Learning rate: 0.00022752003691058385
 
  
  
-<div id="1eb25349-28ea-428d-a87e-592539c7e6bd"></div>
+<div id="bb9224fb-36ee-45e2-81cd-22ee0b1bc6e1"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#1eb25349-28ea-428d-a87e-592539c7e6bd');
+var element = $('#bb9224fb-36ee-45e2-81cd-22ee0b1bc6e1');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13933,13 +13911,13 @@ Learning rate: 0.00021614403506505466
 
  
  
-<div id="3274a366-ed9f-423f-9b93-c5a440be9012"></div>
+<div id="f8cdb68c-cbb6-4894-a46b-a7a646dafe3d"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#3274a366-ed9f-423f-9b93-c5a440be9012');
+var element = $('#f8cdb68c-cbb6-4894-a46b-a7a646dafe3d');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -13967,13 +13945,13 @@ Learning rate: 0.00020533683331180191
 
  
  
-<div id="9a090774-f4f3-4002-85d9-ecc787f7ad48"></div>
+<div id="b02754f9-2979-42af-baa9-547c92521a07"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#9a090774-f4f3-4002-85d9-ecc787f7ad48');
+var element = $('#b02754f9-2979-42af-baa9-547c92521a07');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -14001,13 +13979,13 @@ Learning rate: 0.0001950699916462118
 
  
  
-<div id="edc8e657-483d-49d0-aadb-e41a6c482d2a"></div>
+<div id="6578754e-42ef-4dca-a630-456c4b09914e"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#edc8e657-483d-49d0-aadb-e41a6c482d2a');
+var element = $('#6578754e-42ef-4dca-a630-456c4b09914e');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": ""}
 </script>
 </div>
 
@@ -14035,13 +14013,13 @@ Learning rate: 0.00018531649206390122
 
  
  
-<div id="d3b2fe97-ad4b-44f4-86df-95d89a65d2cd"></div>
+<div id="4ae0b16e-9795-4108-b96d-ad53d1827b4e"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#d3b2fe97-ad4b-44f4-86df-95d89a65d2cd');
+var element = $('#4ae0b16e-9795-4108-b96d-ad53d1827b4e');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "02c344894ba549c7969b993bc2cf014d", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": "02c344894ba549c7969b993bc2cf014d"}
 </script>
 </div>
 
@@ -14105,13 +14083,13 @@ var element = $('#d3b2fe97-ad4b-44f4-86df-95d89a65d2cd');
 
  
  
-<div id="95573e28-1ecc-4033-a464-417029638aae"></div>
+<div id="5ccd3510-d7e3-4015-a516-3f76764a0eee"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#95573e28-1ecc-4033-a464-417029638aae');
+var element = $('#5ccd3510-d7e3-4015-a516-3f76764a0eee');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "13abab3e8cc54d3190153e68e1810913", "version_minor": 0, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "model_id": "13abab3e8cc54d3190153e68e1810913"}
 </script>
 </div>
 
@@ -14161,7 +14139,7 @@ var element = $('#95573e28-1ecc-4033-a464-417029638aae');
  
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"version_minor": 0, "state": {"2b62ae829edc4d60acf1d9a9e1d598d8": {"model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "_model_name": "DescriptionStyleModel", "_view_name": "StyleView", "description_width": "", "_view_module_version": "1.1.0"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "7740dfb227e54da8b1510dac2d094406": {"model_name": "LayoutModel", "state": {"grid_auto_rows": null, "margin": null, "grid_template_columns": null, "align_items": null, "_view_module_version": "1.1.0", "bottom": null, "left": null, "grid_row": null, "flex": null, "min_width": null, "grid_template_areas": null, "padding": null, "grid_auto_columns": null, "order": null, "overflow_x": null, "min_height": null, "align_content": null, "grid_area": null, "grid_column": null, "_view_count": null, "overflow_y": null, "flex_flow": null, "display": null, "_model_name": "LayoutModel", "_view_name": "LayoutView", "_model_module": "@jupyter-widgets/base", "width": null, "visibility": null, "grid_auto_flow": null, "border": null, "_view_module": "@jupyter-widgets/base", "top": null, "_model_module_version": "1.1.0", "max_height": null, "grid_template_rows": null, "align_self": null, "justify_content": null, "overflow": null, "max_width": null, "grid_gap": null, "right": null, "height": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_name": "LayoutModel", "state": {"grid_auto_rows": null, "margin": null, "grid_template_columns": null, "align_items": null, "_view_module_version": "1.1.0", "bottom": null, "left": null, "grid_row": null, "flex": null, "min_width": null, "grid_template_areas": null, "padding": null, "grid_auto_columns": null, "order": null, "overflow_x": null, "min_height": null, "align_content": null, "grid_area": null, "grid_column": null, "_view_count": null, "overflow_y": null, "flex_flow": null, "display": null, "_model_name": "LayoutModel", "_view_name": "LayoutView", "_model_module": "@jupyter-widgets/base", "width": null, "visibility": null, "grid_auto_flow": null, "border": null, "_view_module": "@jupyter-widgets/base", "top": null, "_model_module_version": "1.1.0", "max_height": null, "grid_template_rows": null, "align_self": null, "justify_content": null, "overflow": null, "max_width": null, "grid_gap": null, "right": null, "height": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "fad7703039454db7af5d7fb4bce65003": {"model_name": "LayoutModel", "state": {"grid_auto_rows": null, "margin": null, "grid_template_columns": null, "align_items": null, "_view_module_version": "1.1.0", "bottom": null, "left": null, "grid_row": null, "flex": null, "min_width": null, "grid_template_areas": null, "padding": null, "grid_auto_columns": null, "order": null, "overflow_x": null, "min_height": null, "align_content": null, "grid_area": null, "grid_column": null, "_view_count": null, "overflow_y": null, "flex_flow": null, "display": null, "_model_name": "LayoutModel", "_view_name": "LayoutView", "_model_module": "@jupyter-widgets/base", "width": null, "visibility": null, "grid_auto_flow": null, "border": null, "_view_module": "@jupyter-widgets/base", "top": null, "_model_module_version": "1.1.0", "max_height": null, "grid_template_rows": null, "align_self": null, "justify_content": null, "overflow": null, "max_width": null, "grid_gap": null, "right": null, "height": null}, "model_module_version": "1.1.0", "model_module": "@jupyter-widgets/base"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_name": "ProgressStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "_model_name": "ProgressStyleModel", "_view_name": "StyleView", "description_width": "initial", "bar_color": null, "_view_module_version": "1.1.0"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_name": "IntProgressModel", "state": {"_view_count": null, "_model_module": "@jupyter-widgets/controls", "description": "Loss: 128.54232788085938", "_model_name": "IntProgressModel", "_view_module_version": "1.4.0", "min": 0, "max": 2283, "orientation": "horizontal", "value": 2151, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "_view_module": "@jupyter-widgets/controls", "description_tooltip": null, "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "_model_module_version": "1.4.0", "bar_style": "", "_dom_classes": [], "_view_name": "ProgressView"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_name": "HBoxModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "box_style": "", "_model_name": "HBoxModel", "_view_module_version": "1.4.0", "_dom_classes": [], "_view_name": "HBoxView", "_model_module_version": "1.4.0", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406"}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}, "9dfcb7497f8842af817750eec565b8b9": {"model_name": "HTMLModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_count": null, "_model_name": "HTMLModel", "description": "", "_view_module_version": "1.4.0", "_view_name": "HTMLView", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "placeholder": "\u200b", "_view_module": "@jupyter-widgets/controls", "description_tooltip": null, "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_model_module_version": "1.4.0", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_dom_classes": []}, "model_module_version": "1.4.0", "model_module": "@jupyter-widgets/controls"}}, "version_major": 2}
+{"version_minor": 0, "version_major": 2, "state": {"2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module_version": "1.4.0", "model_name": "DescriptionStyleModel", "state": {"_model_module_version": "1.4.0", "_model_module": "@jupyter-widgets/controls", "_view_name": "StyleView", "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "_view_count": null, "description_width": "", "_model_name": "DescriptionStyleModel"}, "model_module": "@jupyter-widgets/controls"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module_version": "1.4.0", "model_name": "HBoxModel", "state": {"_model_module_version": "1.4.0", "_model_module": "@jupyter-widgets/controls", "_view_name": "HBoxView", "_view_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "box_style": "", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "_dom_classes": [], "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_view_count": null, "_model_name": "HBoxModel"}, "model_module": "@jupyter-widgets/controls"}, "fad7703039454db7af5d7fb4bce65003": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"width": null, "grid_auto_flow": null, "_view_module_version": "1.1.0", "border": null, "right": null, "overflow_y": null, "max_height": null, "grid_gap": null, "margin": null, "order": null, "overflow_x": null, "grid_template_areas": null, "bottom": null, "display": null, "_view_module": "@jupyter-widgets/base", "grid_column": null, "flex": null, "align_self": null, "overflow": null, "min_width": null, "height": null, "justify_content": null, "align_content": null, "_model_module": "@jupyter-widgets/base", "_view_name": "LayoutView", "grid_auto_rows": null, "padding": null, "grid_template_rows": null, "left": null, "grid_template_columns": null, "_model_name": "LayoutModel", "visibility": null, "_model_module_version": "1.1.0", "grid_row": null, "align_items": null, "max_width": null, "min_height": null, "grid_area": null, "flex_flow": null, "_view_count": null, "grid_auto_columns": null, "top": null}, "model_module": "@jupyter-widgets/base"}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_module_version": "1.4.0", "model_name": "IntProgressModel", "state": {"layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "description_tooltip": null, "_view_name": "ProgressView", "_view_module_version": "1.4.0", "description": "Loss: 128.54232788085938", "orientation": "horizontal", "_dom_classes": [], "bar_style": "", "value": 2151, "min": 0, "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "_view_count": null, "max": 2283, "_model_name": "IntProgressModel", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "9dfcb7497f8842af817750eec565b8b9": {"model_module_version": "1.4.0", "model_name": "HTMLModel", "state": {"_model_module": "@jupyter-widgets/controls", "_view_name": "HTMLView", "_view_module_version": "1.4.0", "description_tooltip": null, "description": "", "_view_count": null, "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "_model_name": "HTMLModel", "_model_module_version": "1.4.0", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_view_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_dom_classes": [], "placeholder": "\u200b"}, "model_module": "@jupyter-widgets/controls"}, "7740dfb227e54da8b1510dac2d094406": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"width": null, "grid_auto_flow": null, "_view_module_version": "1.1.0", "border": null, "right": null, "overflow_y": null, "max_height": null, "grid_gap": null, "margin": null, "order": null, "overflow_x": null, "grid_template_areas": null, "bottom": null, "display": null, "_view_module": "@jupyter-widgets/base", "grid_column": null, "flex": null, "align_self": null, "overflow": null, "min_width": null, "height": null, "justify_content": null, "align_content": null, "_model_module": "@jupyter-widgets/base", "_view_name": "LayoutView", "grid_auto_rows": null, "padding": null, "grid_template_rows": null, "left": null, "grid_template_columns": null, "_model_name": "LayoutModel", "visibility": null, "_model_module_version": "1.1.0", "grid_row": null, "align_items": null, "max_width": null, "min_height": null, "grid_area": null, "flex_flow": null, "_view_count": null, "grid_auto_columns": null, "top": null}, "model_module": "@jupyter-widgets/base"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"width": null, "grid_auto_flow": null, "_view_module_version": "1.1.0", "border": null, "right": null, "overflow_y": null, "max_height": null, "grid_gap": null, "margin": null, "order": null, "overflow_x": null, "grid_template_areas": null, "bottom": null, "display": null, "_view_module": "@jupyter-widgets/base", "grid_column": null, "flex": null, "align_self": null, "overflow": null, "min_width": null, "height": null, "justify_content": null, "align_content": null, "_model_module": "@jupyter-widgets/base", "_view_name": "LayoutView", "grid_auto_rows": null, "padding": null, "grid_template_rows": null, "left": null, "grid_template_columns": null, "_model_name": "LayoutModel", "visibility": null, "_model_module_version": "1.1.0", "grid_row": null, "align_items": null, "max_width": null, "min_height": null, "grid_area": null, "flex_flow": null, "_view_count": null, "grid_auto_columns": null, "top": null}, "model_module": "@jupyter-widgets/base"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_module_version": "1.4.0", "model_name": "ProgressStyleModel", "state": {"_model_module_version": "1.4.0", "_model_module": "@jupyter-widgets/controls", "_view_name": "StyleView", "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "bar_color": null, "_view_count": null, "description_width": "initial", "_model_name": "ProgressStyleModel"}, "model_module": "@jupyter-widgets/controls"}}}
 </script>
 
 

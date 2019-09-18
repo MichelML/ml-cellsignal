@@ -7,7 +7,7 @@ from collections import Counter
 
 from sklearn.model_selection import train_test_split
 
-def eval_model(model, loader, file_path, path_data, device='cuda', sub_file='submission.csv'):
+def eval_model(model, loader, file_path, path_data, device='cuda', sub_file='/atrifacts/submission.csv'):
     model.load_state_dict(torch.load(file_path))
     model.eval()
 

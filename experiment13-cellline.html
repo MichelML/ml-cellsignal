@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>experiment3</title>
+<title>experiment13-cellline</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13109,7 +13109,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !pip install -q -r requirements.txt</span>
 </pre></div>
 
     </div>
@@ -13129,7 +13129,7 @@ div#notebook {
 <pre><span class="ansi-red-fg">menpo 0.8.1 has requirement matplotlib&lt;2.0,&gt;=1.4, but you&#39;ll have matplotlib 3.0.2 which is incompatible.</span>
 <span class="ansi-red-fg">menpo 0.8.1 has requirement pillow&lt;5.0,&gt;=3.0, but you&#39;ll have pillow 5.4.1 which is incompatible.</span>
 <span class="ansi-red-fg">menpo 0.8.1 has requirement scipy&lt;1.0,&gt;=0.16, but you&#39;ll have scipy 1.2.0 which is incompatible.</span>
-<span class="ansi-yellow-fg">You are using pip version 10.0.1, however version 19.2.2 is available.
+<span class="ansi-yellow-fg">You are using pip version 10.0.1, however version 19.2.3 is available.
 You should consider upgrading via the &#39;pip install --upgrade pip&#39; command.</span>
 </pre>
 </div>
@@ -13141,7 +13141,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -13158,7 +13158,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
 
-<span class="kn">from</span> <span class="nn">torchvision</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="k">import</span> <span class="n">transforms</span>
 
 <span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="k">import</span> <span class="n">Events</span>
 <span class="kn">from</span> <span class="nn">scripts.ignite</span> <span class="k">import</span> <span class="n">create_supervised_evaluator</span><span class="p">,</span> <span class="n">create_supervised_trainer</span>
@@ -13167,11 +13167,17 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 <span class="kn">from</span> <span class="nn">ignite.handlers</span> <span class="k">import</span>  <span class="n">EarlyStopping</span><span class="p">,</span> <span class="n">ModelCheckpoint</span>
 <span class="kn">from</span> <span class="nn">ignite.contrib.handlers</span> <span class="k">import</span> <span class="n">LinearCyclicalScheduler</span><span class="p">,</span> <span class="n">CosineAnnealingScheduler</span>
 
+<span class="kn">import</span> <span class="nn">random</span>
+
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm_notebook</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
 
-<span class="kn">from</span> <span class="nn">scripts.evaluate</span> <span class="k">import</span> <span class="n">eval_model</span> 
+<span class="kn">from</span> <span class="nn">efficientnet_pytorch</span> <span class="k">import</span> <span class="n">EfficientNet</span><span class="p">,</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">enet_utils</span>
+
+<span class="kn">from</span> <span class="nn">scripts.evaluate</span> <span class="k">import</span> <span class="n">eval_model</span>
+<span class="kn">from</span> <span class="nn">scripts.transforms</span> <span class="k">import</span> <span class="n">gen_transform_train</span><span class="p">,</span> <span class="n">gen_transform_validation</span>
+<span class="kn">from</span> <span class="nn">scripts.plates_leak</span> <span class="k">import</span> <span class="n">apply_plates_leak</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
@@ -13191,15 +13197,17 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img_dir</span> <span class="o">=</span> <span class="s1">&#39;../input/rxrxairgb&#39;</span>
-<span class="n">path_data</span> <span class="o">=</span> <span class="s1">&#39;../input/rxrxaicsv&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img_dir</span> <span class="o">=</span> <span class="s1">&#39;/storage/rxrxai&#39;</span>
+<span class="n">path_data</span> <span class="o">=</span> <span class="s1">&#39;/storage/rxrxai&#39;</span>
 <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;resnet18&#39;</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;efficientnet-b4&#39;</span>
+<span class="n">init_lr</span> <span class="o">=</span> <span class="mf">3e-4</span>
+<span class="n">end_lr</span> <span class="o">=</span> <span class="mf">1e-7</span>
 </pre></div>
 
     </div>
@@ -13209,54 +13217,47 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jitter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">ImagesDS</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="c1"># taken textbook from https://arxiv.org/pdf/1812.01187.pdf</span>
-    <span class="n">transform_train</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">ColorJitter</span><span class="p">(</span><span class="n">brightness</span><span class="o">=</span><span class="n">jitter</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="n">jitter</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="n">jitter</span><span class="p">,</span> <span class="n">hue</span><span class="o">=.</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
-        <span class="c1"># PCA Noise should go here,</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">123.68</span><span class="p">,</span> <span class="mf">116.779</span><span class="p">,</span> <span class="mf">103.939</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">58.393</span><span class="p">,</span> <span class="mf">57.12</span><span class="p">,</span> <span class="mf">57.375</span><span class="p">))</span>
-    <span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ImagesDS</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="n">transform_validation</span> <span class="o">=</span> <span class="n">gen_transform_validation</span><span class="p">(</span><span class="n">crop_size</span><span class="o">=</span><span class="mi">448</span><span class="p">)</span>
     
-    <span class="n">transform_validation</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">123.68</span><span class="p">,</span> <span class="mf">116.779</span><span class="p">,</span> <span class="mf">103.939</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">58.393</span><span class="p">,</span> <span class="mf">57.12</span><span class="p">,</span> <span class="mf">57.375</span><span class="p">))</span>
-    <span class="p">])</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">img_dir</span><span class="o">=</span><span class="n">img_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">img_dir</span><span class="o">=</span><span class="n">img_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">records</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_records</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">img_dir</span> <span class="o">=</span> <span class="n">img_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">len</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="o">=</span> <span class="n">validation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channels</span> <span class="o">=</span> <span class="n">channels</span>
+
+    <span class="k">def</span> <span class="nf">_get_img_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">site</span><span class="p">):</span>
+        <span class="n">experiment</span><span class="p">,</span> <span class="n">well</span><span class="p">,</span> <span class="n">plate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">well</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">plate</span>
+        <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">img_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span><span class="n">experiment</span><span class="p">,</span><span class="n">f</span><span class="s1">&#39;Plate</span><span class="si">{plate}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{well}</span><span class="s1">_s</span><span class="si">{site}</span><span class="s1">_w</span><span class="si">{channel}</span><span class="s1">.png&#39;</span><span class="p">])</span>
         
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_load_img_as_tensor</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">validation</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_load_img_as_tensor</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">transform</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">img</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">validation</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">ImagesDS</span><span class="o">.</span><span class="n">transform_train</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">ImagesDS</span><span class="o">.</span><span class="n">transform_validation</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_get_img_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">experiment</span><span class="p">,</span> <span class="n">well</span><span class="p">,</span> <span class="n">plate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">well</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">plate</span>
-        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{self.img_dir}</span><span class="s1">/</span><span class="si">{self.mode}</span><span class="s1">/</span><span class="si">{experiment}</span><span class="s1">_</span><span class="si">{plate}</span><span class="s1">_</span><span class="si">{well}</span><span class="s1">_s</span><span class="si">{site}</span><span class="s1">.jpeg&#39;</span>
+            <span class="k">return</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="n">img1</span><span class="p">,</span> <span class="n">img2</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_img_as_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_img_path</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">site</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="p">)</span> <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="n">transform1</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="o">.</span><span class="n">transform_validation</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="k">else</span> <span class="n">gen_transform_train</span><span class="p">()</span>
+        <span class="n">transform2</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="o">.</span><span class="n">transform_validation</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="k">else</span> <span class="n">gen_transform_train</span><span class="p">()</span>
+        
+        <span class="n">paths1</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_img_path</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">]</span>
+        <span class="n">paths2</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_img_path</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">]</span>
+        
+        <span class="n">img1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_img_as_tensor</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">transform1</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">paths1</span><span class="p">])</span>
+        <span class="n">img2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_img_as_tensor</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">transform2</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">paths2</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="p">:</span>
+            <span class="n">img1</span><span class="p">,</span> <span class="n">img2</span> <span class="o">=</span> <span class="n">img2</span><span class="p">,</span> <span class="n">img1</span>
+        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">img1</span><span class="p">,</span> <span class="n">img2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">sirna</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">img1</span><span class="p">,</span> <span class="n">img2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">id_code</span>
-
+    
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">len</span>
 </pre></div>
@@ -13268,25 +13269,14 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dataframes for training, cross-validation, and testing</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_data</span><span class="o">+</span><span class="s1">&#39;/train.csv&#39;</span><span class="p">)</span>
-<span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_data</span><span class="o">+</span><span class="s1">&#39;/test.csv&#39;</span><span class="p">)</span>
-
-<span class="c1"># pytorch training dataset &amp; loader</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-<span class="c1"># pytorch cross-validation dataset &amp; loader</span>
-<span class="n">ds_val</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">df_val</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">val_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">ds_val</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-<span class="c1"># pytorch test dataset &amp; loader</span>
-<span class="n">ds_test</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">df_test</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">tloader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">ds_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -13296,22 +13286,27 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ResNetTwoInputs</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">EfficientNetTwoInputs</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ResNetTwoInputs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">EfficientNetTwoInputs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="mi">1108</span>
         
-        <span class="n">model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Identity</span><span class="p">()</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">EfficientNet</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">1108</span><span class="p">)</span> 
+        <span class="n">num_ftrs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_fc</span><span class="o">.</span><span class="n">in_features</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">_fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Identity</span><span class="p">()</span>
+        
+        <span class="c1"># accept 6 channels</span>
+        <span class="n">trained_kernel</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_conv_stem</span><span class="o">.</span><span class="n">weight</span>
+        <span class="n">new_conv</span> <span class="o">=</span> <span class="n">enet_utils</span><span class="o">.</span><span class="n">Conv2dStaticSamePadding</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">new_conv</span><span class="o">.</span><span class="n">weight</span><span class="p">[:,:]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trained_kernel</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span><span class="o">*</span><span class="mi">6</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">_conv_stem</span> <span class="o">=</span> <span class="n">new_conv</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">resnet</span> <span class="o">=</span> <span class="n">model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">avgpool2d</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">AvgPool2d</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">2048</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2048</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_ftrs</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
         <span class="n">x1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resnet</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
@@ -13322,13 +13317,9 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
         <span class="n">x2_out</span> <span class="o">=</span> <span class="n">x2_out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         
         <span class="n">out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">x1_out</span><span class="p">,</span> <span class="n">x2_out</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
-        
-        <span class="n">out</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">out</span> 
-    
-<span class="n">model</span> <span class="o">=</span> <span class="n">ResNetTwoInputs</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">out</span>
 </pre></div>
 
     </div>
@@ -13338,51 +13329,54 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">criterion</span><span class="p">),</span>
-    <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">epochs_per_cell</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">80</span><span class="p">,</span>
 <span class="p">}</span>
-
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
-<span class="n">val_evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">epochs_per_cell</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;HEPG2&#39;: 40, &#39;HUVEC&#39;: 20, &#39;RPE&#39;: 40, &#39;U2OS&#39;: 80}
+</pre>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="EarlyStopping">EarlyStopping<a class="anchor-link" href="#EarlyStopping">&#182;</a></h4>
+</div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">handler</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">patience</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">score_function</span><span class="o">=</span><span class="k">lambda</span> <span class="n">engine</span><span class="p">:</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">trainer</span><span class="o">=</span><span class="n">trainer</span><span class="p">)</span>
-<span class="n">val_evaluator</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># utilities to save best epoch</span>
+<span class="k">def</span> <span class="nf">get_saved_model_path</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;models/Model_</span><span class="si">{model_name}</span><span class="s1">_{epoch + 49}.pth&#39;</span>
+
+<span class="n">best_acc</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">best_epoch_file</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 </pre></div>
 
     </div>
@@ -13390,70 +13384,9 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="LR-Scheduler">LR Scheduler<a class="anchor-link" href="#LR-Scheduler">&#182;</a></h4>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">CosineAnnealingScheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">loader</span><span class="p">))</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
-
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">print_lr</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
-    <span class="n">iteration</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span>
-    
-    <span class="k">if</span> <span class="n">epoch</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Iteration </span><span class="si">{iteration}</span><span class="s1"> | LR </span><span class="si">{optimizer.param_groups[0][&quot;lr&quot;]}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Compute-and-display-metrics">Compute and display metrics<a class="anchor-link" href="#Compute-and-display-metrics">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">compute_and_display_val_metrics</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="n">val_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span><span class="o">.</span><span class="n">metrics</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validation Results - Epoch: </span><span class="si">{}</span><span class="s2"> | Average Loss: </span><span class="si">{:.4f}</span><span class="s2"> | Accuracy: </span><span class="si">{:.4f}</span><span class="s2"> &quot;</span>
-          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Save-best-epoch-only">Save best epoch only<a class="anchor-link" href="#Save-best-epoch-only">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">models</span>
@@ -13466,39 +13399,171 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">atrifacts</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">epochs_percell</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">cells</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">all_preds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
+    <span class="n">category_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">cell</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">cat_test_df</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">cell</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CURRENT CATEGORY:&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+
+    <span class="n">cat_train_df</span><span class="p">,</span> <span class="n">cat_val_df</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">category_df</span><span class="p">,</span> 
+        <span class="n">random_state</span><span class="o">=</span><span class="mi">2019</span><span class="p">,</span>
+        <span class="n">test_size</span><span class="o">=</span><span class="mf">0.05</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># pytorch training dataset &amp; loader</span>
+    <span class="n">cat_ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_train_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">cat_train_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="c1"># pytorch cross-validation dataset &amp; loader</span>
+    <span class="n">cat_val_ds</span> <span class="o">=</span> <span class="n">ImagesDS</span><span class="p">(</span><span class="n">cat_val_df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cat_val_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_val_loader</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="c1"># model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">EfficientNetTwoInputs</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/storage/rxrxmodels/Model_efficientnet-b4_57.pth&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    
+    <span class="c1"># metrics</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">init_lr</span><span class="p">)</span>
+    
+    <span class="c1"># multi-gpus training</span>
+    <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Using {torch.cuda.device_count()} GPUs to train on </span><span class="si">{cell}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>    
+    
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">criterion</span><span class="p">),</span>
+        <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
+    <span class="p">}</span>
+
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">val_evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># LR Scheduler</span>
+    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">CosineAnnealingScheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">init_lr</span><span class="p">,</span> <span class="n">end_lr</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">loader</span><span class="p">))</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
+
+    <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">print_lr</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+        <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span>
+    
+        <span class="k">if</span> <span class="n">epoch</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Iteration </span><span class="si">{iteration}</span><span class="s1"> | LR </span><span class="si">{optimizer.param_groups[0][&quot;lr&quot;]}</span><span class="s1">&#39;</span><span class="p">)</span>
+         
+    <span class="c1"># Computing metrics</span>
+    <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">compute_and_display_val_metrics</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+        <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">val_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span><span class="o">.</span><span class="n">metrics</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validation Results - Epoch: </span><span class="si">{}</span><span class="s2"> | Average Loss: </span><span class="si">{:.4f}</span><span class="s2"> | Accuracy: </span><span class="si">{:.4f}</span><span class="s2"> &quot;</span>
+              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]))</span>
+                  
+    <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">save_best_epoch_only</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+        <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
+
+        <span class="k">global</span> <span class="n">best_acc</span>
+        <span class="k">global</span> <span class="n">best_epoch</span>
+        <span class="k">global</span> <span class="n">best_epoch_file</span>
+        <span class="n">best_acc</span> <span class="o">=</span> <span class="mf">0.</span> <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">best_acc</span>
+        <span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">best_epoch</span>
+        <span class="n">best_epoch_file</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">best_epoch_file</span>
+
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">val_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span><span class="o">.</span><span class="n">metrics</span>
+
+        <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_acc</span><span class="p">:</span>
+            <span class="n">prev_best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">prev_best_epoch_file</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">prev_best_epoch_file</span><span class="p">)</span>
+
+            <span class="n">best_acc</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+            <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+            <span class="n">best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Epoch: </span><span class="si">{best_epoch}</span><span class="s1"> - New best accuracy! Accuracy: </span><span class="si">{best_acc}</span><span class="se">\n\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">best_epoch_file</span><span class="p">)</span>
+                  
+    <span class="n">pbar</span> <span class="o">=</span> <span class="n">ProgressBar</span><span class="p">(</span><span class="n">bar_format</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">pbar</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">output_transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+                  
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training started</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="c1">#     trainer.run(loader, max_epochs=epochs_per_cell[cell])</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+     
+
+    <span class="n">tloader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_test_df</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">cell_preds</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tloader</span><span class="p">,</span> <span class="n">best_epoch_file</span><span class="p">,</span> <span class="n">path_data</span><span class="p">,</span> <span class="n">sub_file</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;submission_</span><span class="si">{cell}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+    <span class="n">all_preds</span> <span class="o">+=</span> <span class="n">cell_preds</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>HEPG2
+HUVEC
+RPE
+U2OS
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_saved_model_path</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;models/Model_</span><span class="si">{model_name}</span><span class="s1">_</span><span class="si">{epoch}</span><span class="s1">.pth&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># aggregate submission files</span>
+<span class="n">submissions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
+    <span class="n">submissions</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;submission_</span><span class="si">{cell}</span><span class="s1">.csv&#39;</span><span class="p">)]</span>
 
-<span class="n">best_acc</span> <span class="o">=</span> <span class="mf">0.</span>
-<span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">best_epoch_file</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">save_best_epoch_only</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
-
-    <span class="k">global</span> <span class="n">best_acc</span>
-    <span class="k">global</span> <span class="n">best_epoch</span>
-    <span class="k">global</span> <span class="n">best_epoch_file</span>
-    <span class="n">best_acc</span> <span class="o">=</span> <span class="mf">0.</span> <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">best_acc</span>
-    <span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">best_epoch</span>
-    <span class="n">best_epoch_file</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">best_epoch_file</span>
-
-    <span class="n">metrics</span> <span class="o">=</span> <span class="n">val_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span><span class="o">.</span><span class="n">metrics</span>
-
-    <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_acc</span><span class="p">:</span>
-        <span class="n">prev_best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">prev_best_epoch_file</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">prev_best_epoch_file</span><span class="p">)</span>
-            
-        <span class="n">best_acc</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
-        <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
-        <span class="n">best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Epoch: </span><span class="si">{best_epoch}</span><span class="s1"> - New best accuracy! Accuracy: </span><span class="si">{best_acc}</span><span class="se">\n\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">best_epoch_file</span><span class="p">)</span>
+<span class="n">submissions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">submissions</span><span class="p">)</span>
+<span class="n">submissions</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;submission.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id_code&#39;</span><span class="p">,</span><span class="s1">&#39;sirna&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -13509,7 +13574,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Progress-bar---uncomment-when-testing-in-notebook">Progress bar - uncomment when testing in notebook<a class="anchor-link" href="#Progress-bar---uncomment-when-testing-in-notebook">&#182;</a></h4>
+<h4 id="apply-plates-leak">apply plates leak<a class="anchor-link" href="#apply-plates-leak">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -13518,49 +13583,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pbar = ProgressBar(bar_format=&#39;&#39;)</span>
-<span class="c1"># pbar.attach(trainer, output_transform=lambda x: {&#39;loss&#39;: x})</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Train">Train<a class="anchor-link" href="#Train">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training started</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Evaluate">Evaluate<a class="anchor-link" href="#Evaluate">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tloader</span><span class="p">,</span> <span class="n">best_epoch_file</span><span class="p">,</span> <span class="n">path_data</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">apply_plates_leak</span><span class="p">(</span><span class="n">all_preds</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13575,7 +13598,7 @@ You should consider upgrading via the &#39;pip install --upgrade pip&#39; comman
  
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"version_minor": 0, "state": {"2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module_version": "1.4.0", "model_name": "DescriptionStyleModel", "state": {"_view_name": "StyleView", "_model_name": "DescriptionStyleModel", "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "_view_count": null, "description_width": "", "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "fad7703039454db7af5d7fb4bce65003": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"max_height": null, "border": null, "width": null, "_model_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "flex": null, "grid_auto_rows": null, "order": null, "min_width": null, "grid_template_rows": null, "justify_content": null, "padding": null, "height": null, "left": null, "align_content": null, "bottom": null, "grid_auto_columns": null, "grid_template_areas": null, "grid_row": null, "grid_gap": null, "align_items": null, "_model_name": "LayoutModel", "right": null, "max_width": null, "margin": null, "overflow_y": null, "visibility": null, "display": null, "min_height": null, "grid_template_columns": null, "flex_flow": null, "_view_name": "LayoutView", "align_self": null, "grid_column": null, "overflow": null, "grid_area": null, "_view_module_version": "1.1.0", "top": null, "overflow_x": null, "grid_auto_flow": null, "_view_count": null, "_model_module": "@jupyter-widgets/base"}, "model_module": "@jupyter-widgets/base"}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_module_version": "1.4.0", "model_name": "IntProgressModel", "state": {"style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "_model_name": "IntProgressModel", "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "max": 2283, "description": "Loss: 128.54232788085938", "_view_count": null, "min": 0, "value": 2151, "bar_style": "", "_dom_classes": [], "_view_name": "ProgressView", "_view_module_version": "1.4.0", "description_tooltip": null, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "orientation": "horizontal", "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "9dfcb7497f8842af817750eec565b8b9": {"model_module_version": "1.4.0", "model_name": "HTMLModel", "state": {"style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_model_name": "HTMLModel", "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "description": "", "placeholder": "\u200b", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "_dom_classes": [], "_view_name": "HTMLView", "_view_module_version": "1.4.0", "description_tooltip": null, "_view_count": null, "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_module_version": "1.4.0", "model_name": "ProgressStyleModel", "state": {"_view_name": "StyleView", "_model_name": "ProgressStyleModel", "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "_view_count": null, "bar_color": null, "description_width": "initial", "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "7740dfb227e54da8b1510dac2d094406": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"max_height": null, "border": null, "width": null, "_model_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "flex": null, "grid_auto_rows": null, "order": null, "min_width": null, "grid_template_rows": null, "justify_content": null, "padding": null, "height": null, "left": null, "align_content": null, "bottom": null, "grid_auto_columns": null, "grid_template_areas": null, "grid_row": null, "grid_gap": null, "align_items": null, "_model_name": "LayoutModel", "right": null, "max_width": null, "margin": null, "overflow_y": null, "visibility": null, "display": null, "min_height": null, "grid_template_columns": null, "flex_flow": null, "_view_name": "LayoutView", "align_self": null, "grid_column": null, "overflow": null, "grid_area": null, "_view_module_version": "1.1.0", "top": null, "overflow_x": null, "grid_auto_flow": null, "_view_count": null, "_model_module": "@jupyter-widgets/base"}, "model_module": "@jupyter-widgets/base"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module_version": "1.4.0", "model_name": "HBoxModel", "state": {"_dom_classes": [], "_view_name": "HBoxView", "_view_count": null, "_model_name": "HBoxModel", "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.4.0", "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "box_style": "", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"max_height": null, "border": null, "width": null, "_model_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "flex": null, "grid_auto_rows": null, "order": null, "min_width": null, "grid_template_rows": null, "justify_content": null, "padding": null, "height": null, "left": null, "align_content": null, "bottom": null, "grid_auto_columns": null, "grid_template_areas": null, "grid_row": null, "grid_gap": null, "align_items": null, "_model_name": "LayoutModel", "right": null, "max_width": null, "margin": null, "overflow_y": null, "visibility": null, "display": null, "min_height": null, "grid_template_columns": null, "flex_flow": null, "_view_name": "LayoutView", "align_self": null, "grid_column": null, "overflow": null, "grid_area": null, "_view_module_version": "1.1.0", "top": null, "overflow_x": null, "grid_auto_flow": null, "_view_count": null, "_model_module": "@jupyter-widgets/base"}, "model_module": "@jupyter-widgets/base"}}, "version_major": 2}
+{"version_major": 2, "state": {"921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"right": null, "grid_column": null, "grid_auto_columns": null, "border": null, "_model_name": "LayoutModel", "grid_gap": null, "width": null, "align_items": null, "left": null, "height": null, "_model_module": "@jupyter-widgets/base", "min_width": null, "grid_template_areas": null, "grid_auto_rows": null, "grid_area": null, "max_height": null, "grid_row": null, "grid_template_rows": null, "_view_module_version": "1.1.0", "_view_count": null, "flex": null, "overflow": null, "top": null, "_view_name": "LayoutView", "grid_auto_flow": null, "overflow_x": null, "display": null, "align_content": null, "_model_module_version": "1.1.0", "margin": null, "order": null, "grid_template_columns": null, "min_height": null, "overflow_y": null, "max_width": null, "bottom": null, "align_self": null, "justify_content": null, "flex_flow": null, "visibility": null, "padding": null, "_view_module": "@jupyter-widgets/base"}}, "fad7703039454db7af5d7fb4bce65003": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"right": null, "grid_column": null, "grid_auto_columns": null, "border": null, "_model_name": "LayoutModel", "grid_gap": null, "width": null, "align_items": null, "left": null, "height": null, "_model_module": "@jupyter-widgets/base", "min_width": null, "grid_template_areas": null, "grid_auto_rows": null, "grid_area": null, "max_height": null, "grid_row": null, "grid_template_rows": null, "_view_module_version": "1.1.0", "_view_count": null, "flex": null, "overflow": null, "top": null, "_view_name": "LayoutView", "grid_auto_flow": null, "overflow_x": null, "display": null, "align_content": null, "_model_module_version": "1.1.0", "margin": null, "order": null, "grid_template_columns": null, "min_height": null, "overflow_y": null, "max_width": null, "bottom": null, "align_self": null, "justify_content": null, "flex_flow": null, "visibility": null, "padding": null, "_view_module": "@jupyter-widgets/base"}}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "model_module_version": "1.4.0", "state": {"description_tooltip": null, "_model_name": "IntProgressModel", "_view_name": "ProgressView", "_view_module_version": "1.4.0", "orientation": "horizontal", "_model_module_version": "1.4.0", "_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "value": 2151, "description": "Loss: 128.54232788085938", "_view_module": "@jupyter-widgets/controls", "min": 0, "bar_style": "", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "max": 2283, "_view_count": null, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003"}}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "model_module_version": "1.4.0", "state": {"_model_name": "HBoxModel", "_view_name": "HBoxView", "_view_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "box_style": "", "_model_module_version": "1.4.0", "_dom_classes": [], "_view_module_version": "1.4.0", "_view_count": null, "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_model_module": "@jupyter-widgets/controls"}}, "7740dfb227e54da8b1510dac2d094406": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0", "state": {"right": null, "grid_column": null, "grid_auto_columns": null, "border": null, "_model_name": "LayoutModel", "grid_gap": null, "width": null, "align_items": null, "left": null, "height": null, "_model_module": "@jupyter-widgets/base", "min_width": null, "grid_template_areas": null, "grid_auto_rows": null, "grid_area": null, "max_height": null, "grid_row": null, "grid_template_rows": null, "_view_module_version": "1.1.0", "_view_count": null, "flex": null, "overflow": null, "top": null, "_view_name": "LayoutView", "grid_auto_flow": null, "overflow_x": null, "display": null, "align_content": null, "_model_module_version": "1.1.0", "margin": null, "order": null, "grid_template_columns": null, "min_height": null, "overflow_y": null, "max_width": null, "bottom": null, "align_self": null, "justify_content": null, "flex_flow": null, "visibility": null, "padding": null, "_view_module": "@jupyter-widgets/base"}}, "9dfcb7497f8842af817750eec565b8b9": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "model_module_version": "1.4.0", "state": {"description_tooltip": null, "_model_name": "HTMLModel", "_view_name": "HTMLView", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_model_module_version": "1.4.0", "_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "description": "", "placeholder": "\u200b", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_view_module_version": "1.4.0", "_view_count": null, "_view_module": "@jupyter-widgets/controls"}}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "model_module_version": "1.4.0", "state": {"description_width": "initial", "_model_name": "ProgressStyleModel", "_view_name": "StyleView", "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.4.0", "_view_module_version": "1.1.0", "_view_count": null, "bar_color": null}}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "model_module_version": "1.4.0", "state": {"description_width": "", "_model_name": "DescriptionStyleModel", "_view_name": "StyleView", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.4.0", "_view_module_version": "1.1.0", "_view_count": null, "_model_module": "@jupyter-widgets/controls"}}}, "version_minor": 0}
 </script>
 
 

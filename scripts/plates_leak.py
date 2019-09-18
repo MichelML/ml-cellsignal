@@ -24,7 +24,7 @@ from torchvision import transforms
 
 from tqdm import tqdm_notebook
 
-def apply_plates_leak(all_predictions, old_sub='./submission.csv', sub_file='./submission_plates_leak.csv'):
+def apply_plates_leak(all_predictions, old_sub='/artifacts/submission.csv', sub_file='/artifacts/submission_plates_leak.csv'):
     """Apply the plates leak to pre-existing predictions.
     see https://www.kaggle.com/zaharch/keras-model-boosted-with-plates-leak
 
