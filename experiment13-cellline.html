@@ -13106,7 +13106,20 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -13162,13 +13175,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">img_dir</span> <span class="o">=</span> <span class="s1">&#39;/storage/rxrxai&#39;</span>
 <span class="n">path_data</span> <span class="o">=</span> <span class="s1">&#39;/storage/rxrxai&#39;</span>
 <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="mi">8</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;efficientnet-b4&#39;</span>
 <span class="n">init_lr</span> <span class="o">=</span> <span class="mf">3e-4</span>
@@ -13182,7 +13195,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ImagesDS</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
@@ -13234,7 +13247,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dataframes for training, cross-validation, and testing</span>
@@ -13251,7 +13264,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">EfficientNetTwoInputs</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -13294,7 +13307,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
@@ -13332,12 +13345,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># utilities to save best epoch</span>
-<span class="k">def</span> <span class="nf">get_saved_model_path</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;models/Model_</span><span class="si">{model_name}</span><span class="s1">_{epoch + 49}.pth&#39;</span>
+<span class="k">def</span> <span class="nf">get_saved_model_path</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;models/Model_</span><span class="si">{model_name}{cell}</span><span class="s1">_</span><span class="si">{epoch}</span><span class="s1">.pth&#39;</span>
 
 <span class="n">best_acc</span> <span class="o">=</span> <span class="mf">0.</span>
 <span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">1</span>
@@ -13351,7 +13364,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">models</span>
@@ -13364,10 +13377,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">atrifacts</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">artifacts</span>
 </pre></div>
 
     </div>
@@ -13377,7 +13390,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cells</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
@@ -13435,7 +13448,7 @@ div#notebook {
     <span class="n">val_evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
     
     <span class="c1"># LR Scheduler</span>
-    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">CosineAnnealingScheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">init_lr</span><span class="p">,</span> <span class="n">end_lr</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">loader</span><span class="p">))</span>
+    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">CosineAnnealingScheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">init_lr</span><span class="p">,</span> <span class="n">end_lr</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_train_loader</span><span class="p">))</span>
     <span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
 
     <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
@@ -13468,13 +13481,13 @@ div#notebook {
         <span class="n">metrics</span> <span class="o">=</span> <span class="n">val_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span><span class="o">.</span><span class="n">metrics</span>
 
         <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_acc</span><span class="p">:</span>
-            <span class="n">prev_best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">)</span>
+            <span class="n">prev_best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">prev_best_epoch_file</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">prev_best_epoch_file</span><span class="p">)</span>
 
             <span class="n">best_acc</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
             <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
-            <span class="n">best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">)</span>
+            <span class="n">best_epoch_file</span> <span class="o">=</span> <span class="n">get_saved_model_path</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Epoch: </span><span class="si">{best_epoch}</span><span class="s1"> - New best accuracy! Accuracy: </span><span class="si">{best_acc}</span><span class="se">\n\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">best_epoch_file</span><span class="p">)</span>
                   
@@ -13483,11 +13496,11 @@ div#notebook {
                   
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training started</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="c1">#     trainer.run(loader, max_epochs=epochs_per_cell[cell])</span>
-    <span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cat_train_loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
      
 
-    <span class="n">tloader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_test_df</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-    <span class="n">cell_preds</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tloader</span><span class="p">,</span> <span class="n">best_epoch_file</span><span class="p">,</span> <span class="n">path_data</span><span class="p">,</span> <span class="n">sub_file</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;submission_</span><span class="si">{cell}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+    <span class="n">cat_test_loader</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">cat_test_df</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">cell_preds</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">eval_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">cat_test_loader</span><span class="p">,</span> <span class="n">best_epoch_file</span><span class="p">,</span> <span class="n">path_data</span><span class="p">,</span> <span class="n">sub_file</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;submission_</span><span class="si">{cell}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
     <span class="n">all_preds</span> <span class="o">+=</span> <span class="n">cell_preds</span>
 </pre></div>
 
@@ -13510,6 +13523,8 @@ div#notebook {
 CURRENT CATEGORY: HEPG2
 ----------------------------------------
 Loaded pretrained weights for efficientnet-b4
+Training started
+
 </pre>
 </div>
 </div>
@@ -13522,57 +13537,113 @@ Loaded pretrained weights for efficientnet-b4
 <div class="output_subarea output_text output_error">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">RuntimeError</span>                              Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-11-994f10083b8f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     33</span>     <span class="ansi-red-fg"># model</span>
-<span class="ansi-green-intense-fg ansi-bold">     34</span>     model <span class="ansi-blue-fg">=</span> EfficientNetTwoInputs<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 35</span><span class="ansi-red-fg">     </span>model<span class="ansi-blue-fg">.</span>load_state_dict<span class="ansi-blue-fg">(</span>torch<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;/storage/rxrxmodels/Model_efficientnet-b4_57.pth&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     36</span>     model<span class="ansi-blue-fg">.</span>train<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     37</span> 
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-10-6a697659b0a2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">    102</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Training started\n&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    103</span> <span class="ansi-red-fg">#     trainer.run(loader, max_epochs=epochs_per_cell[cell])</span>
+<span class="ansi-green-fg">--&gt; 104</span><span class="ansi-red-fg">     </span>trainer<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>cat_train_loader<span class="ansi-blue-fg">,</span> max_epochs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    105</span> 
+<span class="ansi-green-intense-fg ansi-bold">    106</span> 
 
-<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">load</span><span class="ansi-blue-fg">(f, map_location, pickle_module, **pickle_load_args)</span>
-<span class="ansi-green-intense-fg ansi-bold">    384</span>         f <span class="ansi-blue-fg">=</span> f<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;rb&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    385</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 386</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> _load<span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">,</span> map_location<span class="ansi-blue-fg">,</span> pickle_module<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pickle_load_args<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    387</span>     <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    388</span>         <span class="ansi-green-fg">if</span> new_fd<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/ignite/engine/engine.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, data, max_epochs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    357</span>         <span class="ansi-green-fg">except</span> BaseException <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    358</span>             self<span class="ansi-blue-fg">.</span>_logger<span class="ansi-blue-fg">.</span>error<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Engine run is terminating due to exception: %s.&#34;</span><span class="ansi-blue-fg">,</span> str<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 359</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>_handle_exception<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    360</span> 
+<span class="ansi-green-intense-fg ansi-bold">    361</span>         <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>state
 
-<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">_load</span><span class="ansi-blue-fg">(f, map_location, pickle_module, **pickle_load_args)</span>
-<span class="ansi-green-intense-fg ansi-bold">    571</span>     unpickler <span class="ansi-blue-fg">=</span> pickle_module<span class="ansi-blue-fg">.</span>Unpickler<span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pickle_load_args<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    572</span>     unpickler<span class="ansi-blue-fg">.</span>persistent_load <span class="ansi-blue-fg">=</span> persistent_load
-<span class="ansi-green-fg">--&gt; 573</span><span class="ansi-red-fg">     </span>result <span class="ansi-blue-fg">=</span> unpickler<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    574</span> 
-<span class="ansi-green-intense-fg ansi-bold">    575</span>     deserialized_storage_keys <span class="ansi-blue-fg">=</span> pickle_module<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pickle_load_args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/ignite/engine/engine.py</span> in <span class="ansi-cyan-fg">_handle_exception</span><span class="ansi-blue-fg">(self, e)</span>
+<span class="ansi-green-intense-fg ansi-bold">    322</span>             self<span class="ansi-blue-fg">.</span>_fire_event<span class="ansi-blue-fg">(</span>Events<span class="ansi-blue-fg">.</span>EXCEPTION_RAISED<span class="ansi-blue-fg">,</span> e<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    323</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 324</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> e
+<span class="ansi-green-intense-fg ansi-bold">    325</span> 
+<span class="ansi-green-intense-fg ansi-bold">    326</span>     <span class="ansi-green-fg">def</span> run<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> data<span class="ansi-blue-fg">,</span> max_epochs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 
-<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">persistent_load</span><span class="ansi-blue-fg">(saved_id)</span>
-<span class="ansi-green-intense-fg ansi-bold">    534</span>                 obj <span class="ansi-blue-fg">=</span> data_type<span class="ansi-blue-fg">(</span>size<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    535</span>                 obj<span class="ansi-blue-fg">.</span>_torch_load_uninitialized <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">True</span>
-<span class="ansi-green-fg">--&gt; 536</span><span class="ansi-red-fg">                 </span>deserialized_objects<span class="ansi-blue-fg">[</span>root_key<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> restore_location<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    537</span>             storage <span class="ansi-blue-fg">=</span> deserialized_objects<span class="ansi-blue-fg">[</span>root_key<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">    538</span>             <span class="ansi-green-fg">if</span> view_metadata <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/ignite/engine/engine.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, data, max_epochs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>                 self<span class="ansi-blue-fg">.</span>state<span class="ansi-blue-fg">.</span>epoch <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-intense-fg ansi-bold">    345</span>                 self<span class="ansi-blue-fg">.</span>_fire_event<span class="ansi-blue-fg">(</span>Events<span class="ansi-blue-fg">.</span>EPOCH_STARTED<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 346</span><span class="ansi-red-fg">                 </span>hours<span class="ansi-blue-fg">,</span> mins<span class="ansi-blue-fg">,</span> secs <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_run_once_on_dataset<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>                 self<span class="ansi-blue-fg">.</span>_logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Epoch[%s] Complete. Time taken: %02d:%02d:%02d&#34;</span><span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>state<span class="ansi-blue-fg">.</span>epoch<span class="ansi-blue-fg">,</span> hours<span class="ansi-blue-fg">,</span> mins<span class="ansi-blue-fg">,</span> secs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    348</span>                 <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>should_terminate<span class="ansi-blue-fg">:</span>
 
-<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">default_restore_location</span><span class="ansi-blue-fg">(storage, location)</span>
-<span class="ansi-green-intense-fg ansi-bold">    117</span> <span class="ansi-green-fg">def</span> default_restore_location<span class="ansi-blue-fg">(</span>storage<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    118</span>     <span class="ansi-green-fg">for</span> _<span class="ansi-blue-fg">,</span> _<span class="ansi-blue-fg">,</span> fn <span class="ansi-green-fg">in</span> _package_registry<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 119</span><span class="ansi-red-fg">         </span>result <span class="ansi-blue-fg">=</span> fn<span class="ansi-blue-fg">(</span>storage<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    120</span>         <span class="ansi-green-fg">if</span> result <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    121</span>             <span class="ansi-green-fg">return</span> result
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/ignite/engine/engine.py</span> in <span class="ansi-cyan-fg">_run_once_on_dataset</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    311</span>         <span class="ansi-green-fg">except</span> BaseException <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    312</span>             self<span class="ansi-blue-fg">.</span>_logger<span class="ansi-blue-fg">.</span>error<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Current run is terminating due to exception: %s.&#34;</span><span class="ansi-blue-fg">,</span> str<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 313</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>_handle_exception<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    314</span> 
+<span class="ansi-green-intense-fg ansi-bold">    315</span>         time_taken <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> start_time
 
-<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">_cuda_deserialize</span><span class="ansi-blue-fg">(obj, location)</span>
-<span class="ansi-green-intense-fg ansi-bold">     93</span> <span class="ansi-green-fg">def</span> _cuda_deserialize<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> location<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     94</span>     <span class="ansi-green-fg">if</span> location<span class="ansi-blue-fg">.</span>startswith<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;cuda&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 95</span><span class="ansi-red-fg">         </span>device <span class="ansi-blue-fg">=</span> validate_cuda_device<span class="ansi-blue-fg">(</span>location<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     96</span>         <span class="ansi-green-fg">if</span> getattr<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;_torch_load_uninitialized&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     97</span>             storage_type <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>torch<span class="ansi-blue-fg">.</span>cuda<span class="ansi-blue-fg">,</span> type<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>__name__<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/ignite/engine/engine.py</span> in <span class="ansi-cyan-fg">_handle_exception</span><span class="ansi-blue-fg">(self, e)</span>
+<span class="ansi-green-intense-fg ansi-bold">    322</span>             self<span class="ansi-blue-fg">.</span>_fire_event<span class="ansi-blue-fg">(</span>Events<span class="ansi-blue-fg">.</span>EXCEPTION_RAISED<span class="ansi-blue-fg">,</span> e<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    323</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 324</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> e
+<span class="ansi-green-intense-fg ansi-bold">    325</span> 
+<span class="ansi-green-intense-fg ansi-bold">    326</span>     <span class="ansi-green-fg">def</span> run<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> data<span class="ansi-blue-fg">,</span> max_epochs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 
-<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/torch/serialization.py</span> in <span class="ansi-cyan-fg">validate_cuda_device</span><span class="ansi-blue-fg">(location)</span>
-<span class="ansi-green-intense-fg ansi-bold">     77</span> 
-<span class="ansi-green-intense-fg ansi-bold">     78</span>     <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> torch<span class="ansi-blue-fg">.</span>cuda<span class="ansi-blue-fg">.</span>is_available<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 79</span><span class="ansi-red-fg">         raise RuntimeError(&#39;Attempting to deserialize object on a CUDA &#39;
-</span><span class="ansi-green-intense-fg ansi-bold">     80</span>                            <span class="ansi-blue-fg">&#39;device but torch.cuda.is_available() is False. &#39;</span>
-<span class="ansi-green-intense-fg ansi-bold">     81</span>                            <span class="ansi-blue-fg">&#39;If you are running on a CPU-only machine, &#39;</span>
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/ignite/engine/engine.py</span> in <span class="ansi-cyan-fg">_run_once_on_dataset</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    299</span> 
+<span class="ansi-green-intense-fg ansi-bold">    300</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 301</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">for</span> batch <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>state<span class="ansi-blue-fg">.</span>dataloader<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    302</span>                 self<span class="ansi-blue-fg">.</span>state<span class="ansi-blue-fg">.</span>batch <span class="ansi-blue-fg">=</span> batch
+<span class="ansi-green-intense-fg ansi-bold">    303</span>                 self<span class="ansi-blue-fg">.</span>state<span class="ansi-blue-fg">.</span>iteration <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
 
-<span class="ansi-red-fg">RuntimeError</span>: Attempting to deserialize object on a CUDA device but torch.cuda.is_available() is False. If you are running on a CPU-only machine, please use torch.load with map_location=torch.device(&#39;cpu&#39;) to map your storages to the CPU.</pre>
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/torch/utils/data/dataloader.py</span> in <span class="ansi-cyan-fg">__next__</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    574</span>         <span class="ansi-green-fg">while</span> <span class="ansi-green-fg">True</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    575</span>             <span class="ansi-green-fg">assert</span> <span class="ansi-blue-fg">(</span><span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>shutdown <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>batches_outstanding <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 576</span><span class="ansi-red-fg">             </span>idx<span class="ansi-blue-fg">,</span> batch <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_get_batch<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    577</span>             self<span class="ansi-blue-fg">.</span>batches_outstanding <span class="ansi-blue-fg">-=</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-intense-fg ansi-bold">    578</span>             <span class="ansi-green-fg">if</span> idx <span class="ansi-blue-fg">!=</span> self<span class="ansi-blue-fg">.</span>rcvd_idx<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/torch/utils/data/dataloader.py</span> in <span class="ansi-cyan-fg">_get_batch</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    551</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    552</span>             <span class="ansi-green-fg">while</span> <span class="ansi-green-fg">True</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 553</span><span class="ansi-red-fg">                 </span>success<span class="ansi-blue-fg">,</span> data <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_try_get_batch<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    554</span>                 <span class="ansi-green-fg">if</span> success<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    555</span>                     <span class="ansi-green-fg">return</span> data
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/site-packages/torch/utils/data/dataloader.py</span> in <span class="ansi-cyan-fg">_try_get_batch</span><span class="ansi-blue-fg">(self, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    509</span>         <span class="ansi-red-fg">#   (bool: whether successfully get data, any: data if successful else None)</span>
+<span class="ansi-green-intense-fg ansi-bold">    510</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 511</span><span class="ansi-red-fg">             </span>data <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>data_queue<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">=</span>timeout<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    512</span>             <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">(</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">,</span> data<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    513</span>         <span class="ansi-green-fg">except</span> Exception <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/multiprocessing/queues.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-fg">(self, block, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    102</span>                 <span class="ansi-green-fg">if</span> block<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    103</span>                     timeout <span class="ansi-blue-fg">=</span> deadline <span class="ansi-blue-fg">-</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 104</span><span class="ansi-red-fg">                     </span><span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_poll<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    105</span>                         <span class="ansi-green-fg">raise</span> Empty
+<span class="ansi-green-intense-fg ansi-bold">    106</span>                 <span class="ansi-green-fg">elif</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_poll<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/multiprocessing/connection.py</span> in <span class="ansi-cyan-fg">poll</span><span class="ansi-blue-fg">(self, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    255</span>         self<span class="ansi-blue-fg">.</span>_check_closed<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    256</span>         self<span class="ansi-blue-fg">.</span>_check_readable<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 257</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_poll<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    258</span> 
+<span class="ansi-green-intense-fg ansi-bold">    259</span>     <span class="ansi-green-fg">def</span> __enter__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/multiprocessing/connection.py</span> in <span class="ansi-cyan-fg">_poll</span><span class="ansi-blue-fg">(self, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    412</span> 
+<span class="ansi-green-intense-fg ansi-bold">    413</span>     <span class="ansi-green-fg">def</span> _poll<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> timeout<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 414</span><span class="ansi-red-fg">         </span>r <span class="ansi-blue-fg">=</span> wait<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>self<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> timeout<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    415</span>         <span class="ansi-green-fg">return</span> bool<span class="ansi-blue-fg">(</span>r<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    416</span> 
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/multiprocessing/connection.py</span> in <span class="ansi-cyan-fg">wait</span><span class="ansi-blue-fg">(object_list, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    909</span> 
+<span class="ansi-green-intense-fg ansi-bold">    910</span>             <span class="ansi-green-fg">while</span> <span class="ansi-green-fg">True</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 911</span><span class="ansi-red-fg">                 </span>ready <span class="ansi-blue-fg">=</span> selector<span class="ansi-blue-fg">.</span>select<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    912</span>                 <span class="ansi-green-fg">if</span> ready<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    913</span>                     <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">.</span>fileobj <span class="ansi-green-fg">for</span> <span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">,</span> events<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">in</span> ready<span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.6/selectors.py</span> in <span class="ansi-cyan-fg">select</span><span class="ansi-blue-fg">(self, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    374</span>             ready <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    375</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 376</span><span class="ansi-red-fg">                 </span>fd_event_list <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_poll<span class="ansi-blue-fg">.</span>poll<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    377</span>             <span class="ansi-green-fg">except</span> InterruptedError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    378</span>                 <span class="ansi-green-fg">return</span> ready
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
 </div>
 </div>
 
@@ -13626,7 +13697,7 @@ Loaded pretrained weights for efficientnet-b4
  
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"version_major": 2, "version_minor": 0, "state": {"ff74a4321a59419cb24e116db9dd1e3e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_view_name": "ProgressView", "_model_module_version": "1.4.0", "value": 2151, "max": 2283, "orientation": "horizontal", "_model_name": "IntProgressModel", "bar_style": "", "_view_module_version": "1.4.0", "_dom_classes": [], "description": "Loss: 128.54232788085938", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "min": 0, "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "description_tooltip": null, "_view_module": "@jupyter-widgets/controls", "_view_count": null, "_model_module": "@jupyter-widgets/controls"}, "model_name": "IntProgressModel"}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_view_module_version": "1.1.0", "_model_module_version": "1.4.0", "_view_name": "StyleView", "description_width": "", "_view_count": null, "_model_name": "DescriptionStyleModel", "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/controls"}, "model_name": "DescriptionStyleModel"}, "fad7703039454db7af5d7fb4bce65003": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "state": {"_view_name": "LayoutView", "_model_module_version": "1.1.0", "flex_flow": null, "max_width": null, "right": null, "grid_area": null, "grid_row": null, "min_height": null, "overflow_x": null, "visibility": null, "align_self": null, "bottom": null, "grid_auto_rows": null, "grid_gap": null, "overflow_y": null, "order": null, "width": null, "flex": null, "_view_count": null, "top": null, "_model_name": "LayoutModel", "align_items": null, "grid_auto_flow": null, "grid_auto_columns": null, "grid_column": null, "display": null, "grid_template_rows": null, "grid_template_areas": null, "min_width": null, "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "overflow": null, "left": null, "max_height": null, "justify_content": null, "border": null, "height": null, "padding": null, "align_content": null, "grid_template_columns": null, "margin": null, "_model_module": "@jupyter-widgets/base"}, "model_name": "LayoutModel"}, "7740dfb227e54da8b1510dac2d094406": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "state": {"_view_name": "LayoutView", "_model_module_version": "1.1.0", "flex_flow": null, "max_width": null, "right": null, "grid_area": null, "grid_row": null, "min_height": null, "overflow_x": null, "visibility": null, "align_self": null, "bottom": null, "grid_auto_rows": null, "grid_gap": null, "overflow_y": null, "order": null, "width": null, "flex": null, "_view_count": null, "top": null, "_model_name": "LayoutModel", "align_items": null, "grid_auto_flow": null, "grid_auto_columns": null, "grid_column": null, "display": null, "grid_template_rows": null, "grid_template_areas": null, "min_width": null, "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "overflow": null, "left": null, "max_height": null, "justify_content": null, "border": null, "height": null, "padding": null, "align_content": null, "grid_template_columns": null, "margin": null, "_model_module": "@jupyter-widgets/base"}, "model_name": "LayoutModel"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0", "state": {"_view_name": "LayoutView", "_model_module_version": "1.1.0", "flex_flow": null, "max_width": null, "right": null, "grid_area": null, "grid_row": null, "min_height": null, "overflow_x": null, "visibility": null, "align_self": null, "bottom": null, "grid_auto_rows": null, "grid_gap": null, "overflow_y": null, "order": null, "width": null, "flex": null, "_view_count": null, "top": null, "_model_name": "LayoutModel", "align_items": null, "grid_auto_flow": null, "grid_auto_columns": null, "grid_column": null, "display": null, "grid_template_rows": null, "grid_template_areas": null, "min_width": null, "_view_module_version": "1.1.0", "_view_module": "@jupyter-widgets/base", "overflow": null, "left": null, "max_height": null, "justify_content": null, "border": null, "height": null, "padding": null, "align_content": null, "grid_template_columns": null, "margin": null, "_model_module": "@jupyter-widgets/base"}, "model_name": "LayoutModel"}, "9dfcb7497f8842af817750eec565b8b9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_dom_classes": [], "_model_module_version": "1.4.0", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_view_name": "HTMLView", "_view_count": null, "_view_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "description": "", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "description_tooltip": null, "_model_name": "HTMLModel", "placeholder": "\u200b", "_model_module": "@jupyter-widgets/controls"}, "model_name": "HTMLModel"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_view_module_version": "1.1.0", "_model_module_version": "1.4.0", "_view_name": "StyleView", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_view_count": null, "_model_name": "ProgressStyleModel", "bar_color": null, "_model_module": "@jupyter-widgets/controls"}, "model_name": "ProgressStyleModel"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0", "state": {"_dom_classes": [], "_model_module_version": "1.4.0", "_view_name": "HBoxView", "_view_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_view_count": null, "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "box_style": "", "_view_module_version": "1.4.0", "_model_name": "HBoxModel", "_model_module": "@jupyter-widgets/controls"}, "model_name": "HBoxModel"}}}
+{"state": {"921a9c670b6e4a2db86c75a7ff5d9ee6": {"state": {"padding": null, "grid_column": null, "grid_template_rows": null, "width": null, "align_content": null, "margin": null, "grid_auto_rows": null, "grid_template_columns": null, "max_width": null, "max_height": null, "visibility": null, "overflow_x": null, "grid_auto_columns": null, "flex": null, "justify_content": null, "grid_template_areas": null, "flex_flow": null, "min_height": null, "order": null, "align_self": null, "min_width": null, "grid_area": null, "overflow": null, "_view_module": "@jupyter-widgets/base", "grid_row": null, "align_items": null, "_view_count": null, "_model_module": "@jupyter-widgets/base", "overflow_y": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "bottom": null, "_model_module_version": "1.1.0", "grid_auto_flow": null, "left": null, "top": null, "grid_gap": null, "display": null, "_view_module_version": "1.1.0", "right": null, "height": null, "border": null}, "model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0"}, "e3ff3ae302394523bb5b28ee009842d5": {"state": {"_model_name": "HBoxModel", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "box_style": "", "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_view_module": "@jupyter-widgets/controls", "_dom_classes": [], "_view_count": null, "_model_module": "@jupyter-widgets/controls", "_view_module_version": "1.4.0", "_model_module_version": "1.4.0", "_view_name": "HBoxView"}, "model_name": "HBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0"}, "d2df0eb5abab4e3895ec792681cfa8d2": {"state": {"_model_name": "ProgressStyleModel", "_view_name": "StyleView", "bar_color": null, "_view_count": null, "_model_module": "@jupyter-widgets/controls", "_view_module_version": "1.1.0", "description_width": "initial", "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/base"}, "model_name": "ProgressStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0"}, "ff74a4321a59419cb24e116db9dd1e3e": {"state": {"bar_style": "", "value": 2151, "orientation": "horizontal", "description_tooltip": null, "_dom_classes": [], "_view_count": null, "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "min": 0, "_view_name": "ProgressView", "_model_name": "IntProgressModel", "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "_view_module": "@jupyter-widgets/controls", "max": 2283, "_view_module_version": "1.4.0", "_model_module_version": "1.4.0", "description": "Loss: 128.54232788085938"}, "model_name": "IntProgressModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0"}, "7740dfb227e54da8b1510dac2d094406": {"state": {"padding": null, "grid_column": null, "grid_template_rows": null, "width": null, "align_content": null, "margin": null, "grid_auto_rows": null, "grid_template_columns": null, "max_width": null, "max_height": null, "visibility": null, "overflow_x": null, "grid_auto_columns": null, "flex": null, "justify_content": null, "grid_template_areas": null, "flex_flow": null, "min_height": null, "order": null, "align_self": null, "min_width": null, "grid_area": null, "overflow": null, "_view_module": "@jupyter-widgets/base", "grid_row": null, "align_items": null, "_view_count": null, "_model_module": "@jupyter-widgets/base", "overflow_y": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "bottom": null, "_model_module_version": "1.1.0", "grid_auto_flow": null, "left": null, "top": null, "grid_gap": null, "display": null, "_view_module_version": "1.1.0", "right": null, "height": null, "border": null}, "model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0"}, "9dfcb7497f8842af817750eec565b8b9": {"state": {"value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "description_tooltip": null, "_dom_classes": [], "_view_count": null, "_model_module": "@jupyter-widgets/controls", "placeholder": "\u200b", "_view_name": "HTMLView", "_model_name": "HTMLModel", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_view_module": "@jupyter-widgets/controls", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_view_module_version": "1.4.0", "_model_module_version": "1.4.0", "description": ""}, "model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0"}, "fad7703039454db7af5d7fb4bce65003": {"state": {"padding": null, "grid_column": null, "grid_template_rows": null, "width": null, "align_content": null, "margin": null, "grid_auto_rows": null, "grid_template_columns": null, "max_width": null, "max_height": null, "visibility": null, "overflow_x": null, "grid_auto_columns": null, "flex": null, "justify_content": null, "grid_template_areas": null, "flex_flow": null, "min_height": null, "order": null, "align_self": null, "min_width": null, "grid_area": null, "overflow": null, "_view_module": "@jupyter-widgets/base", "grid_row": null, "align_items": null, "_view_count": null, "_model_module": "@jupyter-widgets/base", "overflow_y": null, "_view_name": "LayoutView", "_model_name": "LayoutModel", "bottom": null, "_model_module_version": "1.1.0", "grid_auto_flow": null, "left": null, "top": null, "grid_gap": null, "display": null, "_view_module_version": "1.1.0", "right": null, "height": null, "border": null}, "model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.1.0"}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"state": {"_model_name": "DescriptionStyleModel", "_view_name": "StyleView", "_view_module": "@jupyter-widgets/base", "_view_count": null, "_model_module": "@jupyter-widgets/controls", "_view_module_version": "1.1.0", "_model_module_version": "1.4.0", "description_width": ""}, "model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.4.0"}}, "version_major": 2, "version_minor": 0}
 </script>
 
 
