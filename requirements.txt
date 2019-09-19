@@ -1,5 +1,10 @@
-tqdm
-pytorch-ignite
-efficientnet-pytorch
-opencv-python
-seaborn
+toolz
+scikit-image
+pandas
+tqdm==4.31.1
+pytorch-ignite==0.2.0
+pytorch-pretrained-bert==0.6.2
+torch==1.1.0
+torchvision==0.3.0
+Pillow==5.4.1
+efficientnet-pytorch==0.4.0
