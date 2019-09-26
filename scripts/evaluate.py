@@ -73,7 +73,7 @@ def eval_model_per_cell_10(model, loader, file_path, path_data, sub_df, device='
     all_preds_10_len = len(all_preds_10)
     all_preds_10 = [all_preds_10[i] / 10. for i in range(all_preds_10_len)]
     
-    del submission, preds
+    del sub_df, preds
     gc.collect()
         
     return all_preds_10, preds
