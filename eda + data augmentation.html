@@ -13106,7 +13106,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -13143,7 +13143,7 @@ div#notebook {
 <span class="kn">from</span> <span class="nn">efficientnet_pytorch</span> <span class="k">import</span> <span class="n">EfficientNet</span><span class="p">,</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">enet_utils</span>
 
 <span class="kn">from</span> <span class="nn">scripts.evaluate</span> <span class="k">import</span> <span class="n">eval_model</span>
-<span class="kn">from</span> <span class="nn">scripts.transforms</span> <span class="k">import</span> <span class="n">gen_transform_train</span><span class="p">,</span> <span class="n">gen_transform_validation</span>
+<span class="kn">from</span> <span class="nn">scripts.transforms</span> <span class="k">import</span> <span class="n">gen_transform_train_wo_norm</span>
 <span class="kn">from</span> <span class="nn">scripts.plates_leak</span> <span class="k">import</span> <span class="n">apply_plates_leak</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -13212,11 +13212,12 @@ aptosplus		       retinopathy-train-2015	     rxrxmodels
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>pixel_stats.csv		       test.csv		  train.csv.zip
-pixel_stats.csv.zip	       test.zip		  train.zip
-recursion_dataset_license.pdf  test_controls.csv  train_controls.csv
-sample_submission.csv	       train
-test			       train.csv
+<pre>pixel_stats.csv		       test.csv		  train.zip
+pixel_stats.csv.zip	       test.zip		  train_controls.csv
+pixel_stats_agg.csv	       test_controls.csv  training_aug.csv
+recursion_dataset_license.pdf  train		  validation.csv
+sample_submission.csv	       train.csv
+test			       train.csv.zip
 </pre>
 </div>
 </div>
@@ -13373,7 +13374,7 @@ test			       train.csv
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_all</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -13390,7 +13391,7 @@ test			       train.csv
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[28]:</div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -14288,7 +14289,7 @@ U2OS 0.11082072674272503
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f5ce8c13278&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fa791b3edd8&gt;</pre>
 </div>
 
 </div>
@@ -14455,7 +14456,7 @@ U2OS 0.11082072674272503
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f5ce8bccac8&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fa791b32748&gt;</pre>
 </div>
 
 </div>
@@ -15328,7 +15329,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">stats_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="p">[]}</span>
@@ -15385,12 +15386,11 @@ channel 6 - mean: 9.06773161153738 | std: 4.91070227013248
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;HEPG2&#39;</span><span class="p">,</span> <span class="s1">&#39;HUVEC&#39;</span><span class="p">,</span> <span class="s1">&#39;RPE&#39;</span><span class="p">,</span> <span class="s1">&#39;U2OS&#39;</span><span class="p">]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">stats_dict</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">):</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="n">df_pixels</span><span class="p">[</span><span class="n">df_pixels</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">channel</span><span class="p">]</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span>
@@ -15515,7 +15515,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">stats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;/storage/rxrxai/pixel_stats_agg.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -15528,7 +15528,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_sirna</span> <span class="o">=</span> <span class="n">df_all</span><span class="p">[</span><span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">]</span>
@@ -15545,7 +15545,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[70]:</div>
+    <div class="prompt output_prompt">Out[26]:</div>
 
 
 
@@ -16162,7 +16162,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !cat /storage/rxrxai/sample_submission.csv`</span>
@@ -16189,7 +16189,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_all</span><span class="p">[</span><span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;count&#39;</span><span class="p">])</span>
@@ -16205,7 +16205,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[39]:</div>
+    <div class="prompt output_prompt">Out[28]:</div>
 
 
 
@@ -16308,7 +16308,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[112]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_augmentations_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -16326,7 +16326,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[115]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_cp</span> <span class="o">=</span> <span class="n">df_all</span><span class="p">[</span><span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -16360,7 +16360,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[116]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">experiments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_train_cp</span><span class="p">[[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
@@ -16395,7 +16395,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[117]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sub_valid</span> <span class="o">=</span> <span class="p">[]</span>
@@ -16415,7 +16415,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[137]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">add_aug_rows</span><span class="p">(</span><span class="n">packed_args</span><span class="p">):</span>
@@ -16424,7 +16424,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;experiment&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;id_code&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;plate&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;sirna&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;well&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ds&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;aug&#39;</span><span class="p">:</span> <span class="p">[]})</span>
 
     <span class="k">for</span> <span class="n">nth_aug</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_augmentations_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]]):</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;experiment&#39;</span><span class="p">:</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{row[&quot;experiment&quot;]}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;id_code&#39;</span><span class="p">:</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{row[&quot;id_code&quot;]}</span><span class="s1">_a</span><span class="si">{nth_aug}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;plate&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;plate&#39;</span><span class="p">],</span> <span class="s1">&#39;sirna&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sirna&#39;</span><span class="p">],</span> <span class="s1">&#39;well&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;well&#39;</span><span class="p">],</span> <span class="s1">&#39;ds&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">],</span> <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">],</span> <span class="s1">&#39;aug&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;experiment&#39;</span><span class="p">:</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{row[&quot;experiment&quot;]}</span><span class="s1">_a</span><span class="si">{nth_aug}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;id_code&#39;</span><span class="p">:</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{row[&quot;id_code&quot;]}</span><span class="s1">_a</span><span class="si">{nth_aug}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;plate&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;plate&#39;</span><span class="p">],</span> <span class="s1">&#39;sirna&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sirna&#39;</span><span class="p">],</span> <span class="s1">&#39;well&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;well&#39;</span><span class="p">],</span> <span class="s1">&#39;ds&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">],</span> <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">],</span> <span class="s1">&#39;aug&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     
     <span class="k">return</span> <span class="n">df</span>
 </pre></div>
@@ -16436,7 +16436,7 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[138]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">time</span>
@@ -16458,8 +16458,8 @@ channel 6 U2OS - mean: 15.246410689108854 | std: 7.774823745945344
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 1min, sys: 3.77 s, total: 1min 4s
-Wall time: 3min 33s
+<pre>CPU times: user 45.6 s, sys: 771 ms, total: 46.4 s
+Wall time: 2min 50s
 </pre>
 </div>
 </div>
@@ -16470,7 +16470,7 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[140]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">augs</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span>
@@ -16494,47 +16494,47 @@ Wall time: 3min 33s
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>True
 36515
-[  experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B03_a0    1.0  513.0  B03  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B03_a1    1.0  513.0  B03  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B03_a2    1.0  513.0  B03  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B03_a3    1.0  513.0  B03  train  HEPG2  1.0,   experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B04_a0    1.0  840.0  B04  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B04_a1    1.0  840.0  B04  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B04_a2    1.0  840.0  B04  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B04_a3    1.0  840.0  B04  train  HEPG2  1.0,   experiment            id_code  plate   sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B05_a0    1.0  1020.0  B05  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B05_a1    1.0  1020.0  B05  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B05_a2    1.0  1020.0  B05  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B05_a3    1.0  1020.0  B05  train  HEPG2  1.0,   experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B06_a0    1.0  254.0  B06  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B06_a1    1.0  254.0  B06  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B06_a2    1.0  254.0  B06  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B06_a3    1.0  254.0  B06  train  HEPG2  1.0,   experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B07_a0    1.0  144.0  B07  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B07_a1    1.0  144.0  B07  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B07_a2    1.0  144.0  B07  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B07_a3    1.0  144.0  B07  train  HEPG2  1.0,   experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B08_a0    1.0  503.0  B08  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B08_a1    1.0  503.0  B08  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B08_a2    1.0  503.0  B08  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B08_a3    1.0  503.0  B08  train  HEPG2  1.0,   experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B09_a0    1.0  188.0  B09  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B09_a1    1.0  188.0  B09  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B09_a2    1.0  188.0  B09  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B09_a3    1.0  188.0  B09  train  HEPG2  1.0,   experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B10_a0    1.0  700.0  B10  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B10_a1    1.0  700.0  B10  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B10_a2    1.0  700.0  B10  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B10_a3    1.0  700.0  B10  train  HEPG2  1.0,   experiment            id_code  plate   sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B11_a0    1.0  1100.0  B11  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B11_a1    1.0  1100.0  B11  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B11_a2    1.0  1100.0  B11  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B11_a3    1.0  1100.0  B11  train  HEPG2  1.0,   experiment            id_code  plate  sirna well     ds   cell  aug
-0   HEPG2-01  HEPG2-01_1_B12_a0    1.0  611.0  B12  train  HEPG2  1.0
-1   HEPG2-01  HEPG2-01_1_B12_a1    1.0  611.0  B12  train  HEPG2  1.0
-2   HEPG2-01  HEPG2-01_1_B12_a2    1.0  611.0  B12  train  HEPG2  1.0
-3   HEPG2-01  HEPG2-01_1_B12_a3    1.0  611.0  B12  train  HEPG2  1.0]
+[    experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B03_a0    1.0  513.0  B03  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B03_a1    1.0  513.0  B03  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B03_a2    1.0  513.0  B03  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B03_a3    1.0  513.0  B03  train  HEPG2  1.0,     experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B04_a0    1.0  840.0  B04  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B04_a1    1.0  840.0  B04  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B04_a2    1.0  840.0  B04  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B04_a3    1.0  840.0  B04  train  HEPG2  1.0,     experiment            id_code  plate   sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B05_a0    1.0  1020.0  B05  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B05_a1    1.0  1020.0  B05  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B05_a2    1.0  1020.0  B05  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B05_a3    1.0  1020.0  B05  train  HEPG2  1.0,     experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B06_a0    1.0  254.0  B06  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B06_a1    1.0  254.0  B06  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B06_a2    1.0  254.0  B06  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B06_a3    1.0  254.0  B06  train  HEPG2  1.0,     experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B07_a0    1.0  144.0  B07  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B07_a1    1.0  144.0  B07  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B07_a2    1.0  144.0  B07  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B07_a3    1.0  144.0  B07  train  HEPG2  1.0,     experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B08_a0    1.0  503.0  B08  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B08_a1    1.0  503.0  B08  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B08_a2    1.0  503.0  B08  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B08_a3    1.0  503.0  B08  train  HEPG2  1.0,     experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B09_a0    1.0  188.0  B09  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B09_a1    1.0  188.0  B09  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B09_a2    1.0  188.0  B09  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B09_a3    1.0  188.0  B09  train  HEPG2  1.0,     experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B10_a0    1.0  700.0  B10  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B10_a1    1.0  700.0  B10  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B10_a2    1.0  700.0  B10  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B10_a3    1.0  700.0  B10  train  HEPG2  1.0,     experiment            id_code  plate   sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B11_a0    1.0  1100.0  B11  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B11_a1    1.0  1100.0  B11  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B11_a2    1.0  1100.0  B11  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B11_a3    1.0  1100.0  B11  train  HEPG2  1.0,     experiment            id_code  plate  sirna well     ds   cell  aug
+0  HEPG2-01_a0  HEPG2-01_1_B12_a0    1.0  611.0  B12  train  HEPG2  1.0
+1  HEPG2-01_a1  HEPG2-01_1_B12_a1    1.0  611.0  B12  train  HEPG2  1.0
+2  HEPG2-01_a2  HEPG2-01_1_B12_a2    1.0  611.0  B12  train  HEPG2  1.0
+3  HEPG2-01_a3  HEPG2-01_1_B12_a3    1.0  611.0  B12  train  HEPG2  1.0]
 </pre>
 </div>
 </div>
@@ -16545,7 +16545,7 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[141]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_final</span> <span class="o">=</span> <span class="n">df_train_cp</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -16560,7 +16560,7 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[142]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_final</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -16576,7 +16576,7 @@ Wall time: 3min 33s
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[142]:</div>
+    <div class="prompt output_prompt">Out[37]:</div>
 
 
 
@@ -16678,7 +16678,7 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[143]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_final</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
@@ -16694,7 +16694,7 @@ Wall time: 3min 33s
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[143]:</div>
+    <div class="prompt output_prompt">Out[38]:</div>
 
 
 
@@ -16730,7 +16730,7 @@ Wall time: 3min 33s
   <tbody>
     <tr>
       <th>149450</th>
-      <td>U2OS-03</td>
+      <td>U2OS-03_a5</td>
       <td>U2OS-03_4_O23_a5</td>
       <td>4.0</td>
       <td>509.0</td>
@@ -16741,7 +16741,7 @@ Wall time: 3min 33s
     </tr>
     <tr>
       <th>149451</th>
-      <td>U2OS-03</td>
+      <td>U2OS-03_a6</td>
       <td>U2OS-03_4_O23_a6</td>
       <td>4.0</td>
       <td>509.0</td>
@@ -16752,7 +16752,7 @@ Wall time: 3min 33s
     </tr>
     <tr>
       <th>149452</th>
-      <td>U2OS-03</td>
+      <td>U2OS-03_a7</td>
       <td>U2OS-03_4_O23_a7</td>
       <td>4.0</td>
       <td>509.0</td>
@@ -16763,7 +16763,7 @@ Wall time: 3min 33s
     </tr>
     <tr>
       <th>149453</th>
-      <td>U2OS-03</td>
+      <td>U2OS-03_a8</td>
       <td>U2OS-03_4_O23_a8</td>
       <td>4.0</td>
       <td>509.0</td>
@@ -16774,7 +16774,7 @@ Wall time: 3min 33s
     </tr>
     <tr>
       <th>149454</th>
-      <td>U2OS-03</td>
+      <td>U2OS-03_a9</td>
       <td>U2OS-03_4_O23_a9</td>
       <td>4.0</td>
       <td>509.0</td>
@@ -16796,7 +16796,7 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[144]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_train_final</span><span class="p">))</span>
@@ -16827,7 +16827,7 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[146]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_final_wo_valid</span> <span class="o">=</span> <span class="n">df_train_final</span><span class="p">[</span><span class="o">~</span><span class="n">df_train_final</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">df_valid</span><span class="p">)]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
@@ -16840,7 +16840,7 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[147]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_train_final_wo_valid</span><span class="p">))</span>
@@ -16871,13 +16871,131 @@ Wall time: 3min 33s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[148]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_final_wo_valid</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;/storage/rxrxai/training_aug.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_final_wo_valid</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[43]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>experiment</th>
+      <th>id_code</th>
+      <th>plate</th>
+      <th>sirna</th>
+      <th>well</th>
+      <th>ds</th>
+      <th>cell</th>
+      <th>aug</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>149450</th>
+      <td>U2OS-03_a5</td>
+      <td>U2OS-03_4_O23_a5</td>
+      <td>4.0</td>
+      <td>509.0</td>
+      <td>O23</td>
+      <td>train</td>
+      <td>U2OS</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>149451</th>
+      <td>U2OS-03_a6</td>
+      <td>U2OS-03_4_O23_a6</td>
+      <td>4.0</td>
+      <td>509.0</td>
+      <td>O23</td>
+      <td>train</td>
+      <td>U2OS</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>149452</th>
+      <td>U2OS-03_a7</td>
+      <td>U2OS-03_4_O23_a7</td>
+      <td>4.0</td>
+      <td>509.0</td>
+      <td>O23</td>
+      <td>train</td>
+      <td>U2OS</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>149453</th>
+      <td>U2OS-03_a8</td>
+      <td>U2OS-03_4_O23_a8</td>
+      <td>4.0</td>
+      <td>509.0</td>
+      <td>O23</td>
+      <td>train</td>
+      <td>U2OS</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>149454</th>
+      <td>U2OS-03_a9</td>
+      <td>U2OS-03_4_O23_a9</td>
+      <td>4.0</td>
+      <td>509.0</td>
+      <td>O23</td>
+      <td>train</td>
+      <td>U2OS</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -16889,6 +17007,145 @@ Wall time: 3min 33s
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_cp_imgs</span> <span class="o">=</span> <span class="n">df_train_cp</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">to_records</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train_cp_imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cell</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[45]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;HEPG2&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">l1</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">rxrxai</span><span class="o">/</span><span class="n">train</span><span class="o">/**/*</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>487739
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_img_path</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">site</span><span class="p">,</span> <span class="n">aug</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">experiment</span><span class="p">,</span> <span class="n">well</span><span class="p">,</span> <span class="n">plate</span> <span class="o">=</span> <span class="n">df_train_cp_imgs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="n">df_train_cp_imgs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">well</span><span class="p">,</span> <span class="n">df_train_cp_imgs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">plate</span>
+    <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;/storage/rxrxai&#39;</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{experiment}{aug}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;Plate</span><span class="si">{plate}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{well}</span><span class="s1">_s</span><span class="si">{site}</span><span class="s1">_w</span><span class="si">{channel}</span><span class="s1">.png&#39;</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">add_aug_images</span><span class="p">(</span><span class="n">packed_args</span><span class="p">):</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="o">=</span> <span class="n">packed_args</span>
+
+    <span class="k">for</span> <span class="n">nth_aug</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_augmentations_dict</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">cell</span><span class="p">]):</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="n">gen_transform_train_wo_norm</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="n">experiment</span> <span class="o">=</span> <span class="n">df_train_cp_imgs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">experiment</span>
+                <span class="n">plate</span> <span class="o">=</span> <span class="n">df_train_cp_imgs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plate</span>
+                <span class="n">aug_suffix</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;_a</span><span class="si">{nth_aug}</span><span class="s1">&#39;</span>
+                <span class="n">aug_dir</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;/storage/rxrxai/train/</span><span class="si">{experiment}{aug_suffix}</span><span class="s1">/Plate</span><span class="si">{plate}</span><span class="s1">&#39;</span>
+                
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">aug_dir</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">aug_dir</span><span class="p">)</span>
+
+                <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">get_img_path</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">site</span><span class="p">))</span> <span class="k">as</span> <span class="n">img</span><span class="p">:</span>
+                    <span class="n">image</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+                    <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">get_img_path</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">site</span><span class="p">,</span> <span class="n">aug</span><span class="o">=</span><span class="n">aug_suffix</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">()</span>                   
+<span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">add_aug_images</span><span class="p">,</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_train_cp_imgs</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="err">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">l1</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">rxrxai</span><span class="o">/</span><span class="n">train</span><span class="o">/**/*</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
     </div>
   </div>
 </body>
@@ -16896,7 +17153,7 @@ Wall time: 3min 33s
  
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"d2df0eb5abab4e3895ec792681cfa8d2": {"state": {"_model_name": "ProgressStyleModel", "_view_count": null, "_model_module": "@jupyter-widgets/controls", "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "description_width": "initial", "_model_module_version": "1.4.0", "bar_color": null, "_view_name": "StyleView"}, "model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "model_module_version": "1.4.0"}, "fad7703039454db7af5d7fb4bce65003": {"state": {"overflow_y": null, "align_items": null, "_model_module_version": "1.1.0", "order": null, "grid_auto_columns": null, "_view_module": "@jupyter-widgets/base", "grid_template_rows": null, "grid_gap": null, "min_width": null, "visibility": null, "overflow": null, "border": null, "_view_name": "LayoutView", "right": null, "justify_content": null, "flex_flow": null, "top": null, "_view_module_version": "1.1.0", "left": null, "padding": null, "grid_auto_rows": null, "max_width": null, "display": null, "bottom": null, "grid_column": null, "grid_template_columns": null, "margin": null, "grid_template_areas": null, "grid_row": null, "flex": null, "_model_name": "LayoutModel", "_model_module": "@jupyter-widgets/base", "align_self": null, "height": null, "align_content": null, "grid_auto_flow": null, "max_height": null, "overflow_x": null, "width": null, "min_height": null, "_view_count": null, "grid_area": null}, "model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0"}, "e3ff3ae302394523bb5b28ee009842d5": {"state": {"_model_name": "HBoxModel", "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "_model_module": "@jupyter-widgets/controls", "_view_module": "@jupyter-widgets/controls", "_view_name": "HBoxView", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"], "_model_module_version": "1.4.0", "box_style": "", "_view_module_version": "1.4.0", "_view_count": null, "_dom_classes": []}, "model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "model_module_version": "1.4.0"}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"state": {"_model_name": "DescriptionStyleModel", "_view_count": null, "_model_module": "@jupyter-widgets/controls", "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.1.0", "description_width": "", "_model_module_version": "1.4.0", "_view_name": "StyleView"}, "model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "model_module_version": "1.4.0"}, "7740dfb227e54da8b1510dac2d094406": {"state": {"overflow_y": null, "align_items": null, "_model_module_version": "1.1.0", "order": null, "grid_auto_columns": null, "_view_module": "@jupyter-widgets/base", "grid_template_rows": null, "grid_gap": null, "min_width": null, "visibility": null, "overflow": null, "border": null, "_view_name": "LayoutView", "right": null, "justify_content": null, "flex_flow": null, "top": null, "_view_module_version": "1.1.0", "left": null, "padding": null, "grid_auto_rows": null, "max_width": null, "display": null, "bottom": null, "grid_column": null, "grid_template_columns": null, "margin": null, "grid_template_areas": null, "grid_row": null, "flex": null, "_model_name": "LayoutModel", "_model_module": "@jupyter-widgets/base", "align_self": null, "height": null, "align_content": null, "grid_auto_flow": null, "max_height": null, "overflow_x": null, "width": null, "min_height": null, "_view_count": null, "grid_area": null}, "model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0"}, "ff74a4321a59419cb24e116db9dd1e3e": {"state": {"layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "_model_module": "@jupyter-widgets/controls", "description_tooltip": null, "_view_module_version": "1.4.0", "description": "Loss: 128.54232788085938", "bar_style": "", "_view_name": "ProgressView", "_model_name": "IntProgressModel", "_view_count": null, "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "_dom_classes": [], "min": 0, "orientation": "horizontal", "max": 2283, "value": 2151, "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2"}, "model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "model_module_version": "1.4.0"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"state": {"overflow_y": null, "align_items": null, "_model_module_version": "1.1.0", "order": null, "grid_auto_columns": null, "_view_module": "@jupyter-widgets/base", "grid_template_rows": null, "grid_gap": null, "min_width": null, "visibility": null, "overflow": null, "border": null, "_view_name": "LayoutView", "right": null, "justify_content": null, "flex_flow": null, "top": null, "_view_module_version": "1.1.0", "left": null, "padding": null, "grid_auto_rows": null, "max_width": null, "display": null, "bottom": null, "grid_column": null, "grid_template_columns": null, "margin": null, "grid_template_areas": null, "grid_row": null, "flex": null, "_model_name": "LayoutModel", "_model_module": "@jupyter-widgets/base", "align_self": null, "height": null, "align_content": null, "grid_auto_flow": null, "max_height": null, "overflow_x": null, "width": null, "min_height": null, "_view_count": null, "grid_area": null}, "model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.1.0"}, "9dfcb7497f8842af817750eec565b8b9": {"state": {"layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "_model_module": "@jupyter-widgets/controls", "description_tooltip": null, "placeholder": "\u200b", "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "description": "", "_view_name": "HTMLView", "_model_name": "HTMLModel", "_view_count": null, "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_view_module_version": "1.4.0", "_dom_classes": []}, "model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "model_module_version": "1.4.0"}}, "version_major": 2, "version_minor": 0}
+{"version_major": 2, "version_minor": 0, "state": {"d2df0eb5abab4e3895ec792681cfa8d2": {"model_module_version": "1.4.0", "model_name": "ProgressStyleModel", "state": {"_model_module_version": "1.4.0", "_view_module_version": "1.1.0", "_view_name": "StyleView", "_view_count": null, "_model_name": "ProgressStyleModel", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/controls", "bar_color": null}, "model_module": "@jupyter-widgets/controls"}, "2b62ae829edc4d60acf1d9a9e1d598d8": {"model_module_version": "1.4.0", "model_name": "DescriptionStyleModel", "state": {"_model_module_version": "1.4.0", "_view_module_version": "1.1.0", "_view_name": "StyleView", "_view_count": null, "_model_name": "DescriptionStyleModel", "description_width": "", "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/controls"}, "model_module": "@jupyter-widgets/controls"}, "921a9c670b6e4a2db86c75a7ff5d9ee6": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"left": null, "grid_auto_flow": null, "max_height": null, "align_self": null, "_view_count": null, "min_height": null, "width": null, "min_width": null, "grid_template_areas": null, "visibility": null, "flex": null, "_model_name": "LayoutModel", "grid_column": null, "grid_auto_columns": null, "display": null, "grid_area": null, "grid_template_rows": null, "top": null, "border": null, "overflow_y": null, "grid_gap": null, "order": null, "_view_module_version": "1.1.0", "bottom": null, "max_width": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/base", "padding": null, "grid_auto_rows": null, "right": null, "grid_row": null, "height": null, "overflow_x": null, "grid_template_columns": null, "_model_module_version": "1.1.0", "_view_name": "LayoutView", "flex_flow": null, "align_content": null, "align_items": null, "margin": null, "overflow": null}, "model_module": "@jupyter-widgets/base"}, "ff74a4321a59419cb24e116db9dd1e3e": {"model_module_version": "1.4.0", "model_name": "IntProgressModel", "state": {"orientation": "horizontal", "description_tooltip": null, "_dom_classes": [], "_view_count": null, "value": 2151, "_model_module": "@jupyter-widgets/controls", "_view_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_fad7703039454db7af5d7fb4bce65003", "style": "IPY_MODEL_d2df0eb5abab4e3895ec792681cfa8d2", "_model_name": "IntProgressModel", "max": 2283, "_view_name": "ProgressView", "description": "Loss: 128.54232788085938", "bar_style": "", "_model_module_version": "1.4.0", "_view_module_version": "1.4.0", "min": 0}, "model_module": "@jupyter-widgets/controls"}, "9dfcb7497f8842af817750eec565b8b9": {"model_module_version": "1.4.0", "model_name": "HTMLModel", "state": {"_view_module_version": "1.4.0", "_dom_classes": [], "_view_count": null, "value": " 94% 2151/2283 [22:45&lt;01:23,  1.58it/s]", "_model_module": "@jupyter-widgets/controls", "_view_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_921a9c670b6e4a2db86c75a7ff5d9ee6", "style": "IPY_MODEL_2b62ae829edc4d60acf1d9a9e1d598d8", "_model_name": "HTMLModel", "description_tooltip": null, "_view_name": "HTMLView", "description": "", "placeholder": "\u200b", "_model_module_version": "1.4.0"}, "model_module": "@jupyter-widgets/controls"}, "fad7703039454db7af5d7fb4bce65003": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"left": null, "grid_auto_flow": null, "max_height": null, "align_self": null, "_view_count": null, "min_height": null, "width": null, "min_width": null, "grid_template_areas": null, "visibility": null, "flex": null, "_model_name": "LayoutModel", "grid_column": null, "grid_auto_columns": null, "display": null, "grid_area": null, "grid_template_rows": null, "top": null, "border": null, "overflow_y": null, "grid_gap": null, "order": null, "_view_module_version": "1.1.0", "bottom": null, "max_width": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/base", "padding": null, "grid_auto_rows": null, "right": null, "grid_row": null, "height": null, "overflow_x": null, "grid_template_columns": null, "_model_module_version": "1.1.0", "_view_name": "LayoutView", "flex_flow": null, "align_content": null, "align_items": null, "margin": null, "overflow": null}, "model_module": "@jupyter-widgets/base"}, "e3ff3ae302394523bb5b28ee009842d5": {"model_module_version": "1.4.0", "model_name": "HBoxModel", "state": {"_view_name": "HBoxView", "_model_name": "HBoxModel", "_view_module_version": "1.4.0", "_dom_classes": [], "_view_count": null, "_model_module_version": "1.4.0", "_view_module": "@jupyter-widgets/controls", "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_7740dfb227e54da8b1510dac2d094406", "box_style": "", "children": ["IPY_MODEL_ff74a4321a59419cb24e116db9dd1e3e", "IPY_MODEL_9dfcb7497f8842af817750eec565b8b9"]}, "model_module": "@jupyter-widgets/controls"}, "7740dfb227e54da8b1510dac2d094406": {"model_module_version": "1.1.0", "model_name": "LayoutModel", "state": {"left": null, "grid_auto_flow": null, "max_height": null, "align_self": null, "_view_count": null, "min_height": null, "width": null, "min_width": null, "grid_template_areas": null, "visibility": null, "flex": null, "_model_name": "LayoutModel", "grid_column": null, "grid_auto_columns": null, "display": null, "grid_area": null, "grid_template_rows": null, "top": null, "border": null, "overflow_y": null, "grid_gap": null, "order": null, "_view_module_version": "1.1.0", "bottom": null, "max_width": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "_model_module": "@jupyter-widgets/base", "padding": null, "grid_auto_rows": null, "right": null, "grid_row": null, "height": null, "overflow_x": null, "grid_template_columns": null, "_model_module_version": "1.1.0", "_view_name": "LayoutView", "flex_flow": null, "align_content": null, "align_items": null, "margin": null, "overflow": null}, "model_module": "@jupyter-widgets/base"}}}
 </script>
 
 
