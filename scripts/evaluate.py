@@ -76,7 +76,7 @@ def eval_model_per_cell_10(model, loader, file_path, path_data, sub_df, device='
     del sub_df, preds
     gc.collect()
         
-    return all_preds_10, preds
+    return all_preds_10
 
 def eval_model(model, loader, file_path, path_data, device='cuda', sub_file='/artifacts/submission.csv'):
     model.load_state_dict(torch.load(file_path))
